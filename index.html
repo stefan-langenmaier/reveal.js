@@ -101,9 +101,9 @@
 
 					<h2>Only one version</h2>
 					<ul>
-						<li>no re-installs, just has to installed <a href="www.gentoo.org">once</a></li>
+						<li>no re-installs, has to be installed <a href="http://www.gentoo.org/">only once</a></li>
 						<li>bleeding edge falls back into stable (later we get to that)</li>
-						<li>not really true, stable, unstable, masked, slots, but there is only <a href="packages.gentoo.org">one current Gentoo</a></li>
+						<li>not really true, stable, unstable, masked, slots, but there is only <a href="http://packages.gentoo.org/package/dev-lang/php">one current Gentoo</a></li>
 					</ul>
 					<aside class="notes">
 						Never do a dist-upgrade, look a the website www.gentoo.org that's because you will only visit that page once.
@@ -133,7 +133,8 @@
 						</p>
 
 						<aside class="notes">
-							EXAMPLE of useflags and overlay. firefox. iceweasel.
+							emerge firefox -av
+							useflags. firefox. iceweasel. unsupported system packages.
 						</aside>
 					</section>
 
@@ -142,6 +143,11 @@
 						<p>
 							I want more configuration options! You can have it. Even down to the license.
 						</p>
+
+						<aside class="notes">
+							nano /etc/portage/package.*
+							show files
+						</aside>
 					</section>
 					
 				</section>
@@ -154,15 +160,12 @@
 							<li>Java 5-8</li>
 							<li>Python 2.6-3.4</li>
 							<li>Mysql 4.0-5.5</li>
-							<li>PHP 5.3-5.5</li>
+							<li>PHP 5.3-5.6</li>
 						</ul>
 
 						<aside class="notes">
 							But your dev environment has a lot of different requirements?
-							EXAMPLE SLOTS emerge php-4 =php-5.5.2-r2 -av
-							EXAMPLE     virtual with license
-								emerge jdk
-								license: emerge dev-java/ibm-jdk-bin -av
+							emerge "=dev-lang/php-5.3.28" ">=dev-lang/php-5.5" -av
 						</aside>
 					</section>
 
@@ -170,14 +173,13 @@
 						<h2>Flexibilty</h2>
 						<h3>virtuals</h3>
 						<ul>
-							<li>EXAMPLE jdk</li>
+							<li>jdk (OpenJDK, Oracle, IBM, ...)</li>
 							<li>Mysql vs MariaDB</li>
 						</ul>
 
 						<aside class="notes">
-							EXAMPLE     virtual with license
-								emerge jdk
-								license: emerge dev-java/ibm-jdk-bin -av
+							also see license
+							emerge dev-java/ibm-jdk-bin -av
 						</aside>
 					</section>
 
@@ -215,7 +217,10 @@
 					</p>
 
 					<aside class="notes">
-						How can I cope with all these options? That is what Gentoo is for. EXAMPLE of local system.
+						How can I cope with all these options? That is what Gentoo is for.
+						eselect profile list
+						eselect java-vm list
+
 						Everything is in text files.
 					</aside>
 				</section>
@@ -235,13 +240,18 @@
 				<section>
 					<h2>Development</h2>
 					<ul>
-						<li>EXAMPLE live ebuild (EGIT variable)</li>
+						<li>live ebuild (EGIT variable)</li>
 						<li>hooks (for patching certain packages)</li>
 						<li>cross-compiling (crossdev)</li>
 					</ul>
 					<aside class="notes">
-						But in your development, you don't need all that funky stuff to setup your system? You cannot install Gentoo on that underpowered toaster?
+						But in your development, you don't need all that funky stuff to setup your system?
+						emerge =dev-python/django-9999 -av --autounmask-write=y
+						
 						You have problems with firefox in your installation, just add a patch in the appropriate folder an it will be applied
+
+						You cannot install Gentoo on that underpowered toaster?
+						
 					</aside>
 
 				</section>
@@ -254,6 +264,7 @@
 					</ul>	
 
 					<aside class="notes">
+						Personal opinions are following!
 						Conclusion, especially crazy setups have already be done in Gentoo.
 						only surpassed by ubuntu (quantity)
 						arch (quantity, quality)
@@ -292,9 +303,9 @@
 							<li>vanilla, almost no patches (like arch)</li>
 							<li>less code linked (use flags) means less code for errors</li>
 						</li>
-						<li>speed, NO, gentoo is not faster as the advantage is neglibile
+						<li>speed, NO, gentoo is not faster as the advantage is negligible
 						<ul>
-							<li>but the system maybe has less installed (ubuntu, fedora, mandriva, suse), less code means less errors and means more ram</li>
+							<li>but the system maybe has less installed (in comparison to ubuntu, fedora, mandriva, suse), less code means less errors and means more ram</li>
 						</ul>
 						</li>
 					</ul>
@@ -303,11 +314,11 @@
 				<section>
 					<h2>Historical problems</h2>
 					<p>Daniel Robbins (left the project for Microsoft, this caused a little bit of chaos)
-					Now heis back, h's the head of funtoo, I had the feeling he was not to well greeted back in the gentoo community, by some of the former devs</p>
-					<p>Gentoo foundation/council/trustees (In that chaos they forgot to renew/register Gentoo as non profit, some people thought Gentoo would die, this was in 2007?, it is still felt to this day)
-        				Some say the gentoo organization is over-engineered now</p>
+					Now he's back, he's the head of funtoo, I had the feeling he wasn't welcomed back in the gentoo community, by some of the former devs</p>
+					<p>Gentoo foundation/council/trustees (In that chaos they forgot to renew/register Gentoo as non profit, some people thought Gentoo would die, this was in 2007?
+        				Some say the gentoo organization is now over-engineered</p>
 					<p>git (portage is held in a cvs repo!, this was supposed to change in 2009?, still hasn't happened)
-        				development is nowadays happening in overlays, almost all overlays are on moderns dvcs, and are agnostics of this, only the main repo is still on cvs and they seem to still struggle to put all the quality control infrastructure to git.</p>
+        				development is nowadays happening in overlays, almost all overlays are on moderns dvcs, and are agnostics of this, only the main repo is still on cvs and they seem to still struggle to put all the quality control infrastructure on git.</p>
 
 					<aside class="notes">
 						This is all hearsay from me, don't trust this exactly!
