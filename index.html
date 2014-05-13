@@ -52,35 +52,59 @@
 				</section>
 
 				<section>
-					<h2>Terms and tools</h2>
-					<ul>
-						<li><em>portage</em>, repository of packages or so called ebuilds, complete copy locally</li>
-						<li><em>ebuild</em> is a recipe how to create a package from the source files and how to install</li>
-						<li><em>emerge</em> is a tool that executes theses ebuilds and does depdency resolution, depdency resolution is really tough in gentoo</li>
-						<li><em>eselect</em> profiles and alternatives</li>
-						<li>eread</li>
-						<li>etc-update</li>
-						<li>genkernel</li>
-						<li>eix</li>
-						<li>gentoolkit</li>
-						<li>revdep-rebuild</li>
-					</ul>
+					<section>
+						<h2>Terms and tools</h2>
+						<ul>
+							<li><em>portage</em> is the repository of packages or so called ebuilds, complete copy locally</li>
+							<li><em>ebuild</em> is a recipe how to create a package from the source files and how to install</li>
+							<li><em>emerge</em> is a tool that executes theses ebuilds and does depdency resolution, depdency resolution is really tough in gentoo</li>
+						</ul>
 
-					<h2>So what features do we get?</h2>
+						<aside class="notes">
+							Necessary tools
+							ebuilds for example can provide also Firefox(TM) because it is not compiled
+						</aside>
 
-					<aside class="notes">
-						Necessary tools, helping tools, third party tools
-					</aside>
+					</section>
+					<section>
+						<h2>Terms and tools</h2>
+						<ul>
+							<li>eread - don't want to follow the installation, read about it later</li>
+							<li>etc-update - don't want to update the configuration now, do it when you have time, Gentoo never overwrites configurations</li>
+							<li>genkernel - don't remeber how to create a initramfs? me neither. have you ever create a symlink wrong?</li>
+						</ul>
+
+						<aside class="notes">
+							helping tools
+						</aside>
+
+					</section>
+					<section>
+						<h2>Terms and tools</h2>
+						<ul>
+							<li>eix - extras speed for emerge</li>
+							<li>gentoolkit - more search tools</li>
+							<li>revdep-rebuild - find executables with wrong/old/missing libraries, this tools finds it and reinstall their dependencies</li>
+						</ul>
+
+						<h2>So what features do we get?</h2>
+
+						<aside class="notes">
+							third party
+						</aside>
+
+					</section>
+
 				</section>
 
 				<section>
 
 					<h2>Only one version</h2>
-					<p>
-	* no re-installs, just has to installed once
-	* bleeding edge falls back into stable (later we get to that)
-	* not really true, stable, unstable, masked, slots, but there is only one current Gentoo
-					</p>
+					<ul>
+						<li>no re-installs, just has to installed <a href="www.gentoo.org">once</a></li>
+						<li>bleeding edge falls back into stable (later we get to that)</li>
+						<li>not really true, stable, unstable, masked, slots, but there is only <a href="packages.gentoo.org">one current Gentoo</a></li>
+					</ul>
 					<aside class="notes">
 						Never do a dist-upgrade, look a the website www.gentoo.org that's because you will only visit that page once.
 					</aside>
@@ -88,109 +112,169 @@
 				</section>
 
 				<section>
-					<h2>Customizable</h2>
-				    <h3>/etc/portage/make.conf</h3> 
-					<p>
-						(RICERS!) (Gentoo is for ricers)
-					</p>
+					<section>
+						<h2>Customizable</h2>
+					    	<h3>/etc/portage/make.conf</h3> 
+						<ul>
+							<li>CFLAGS, <a href="http://funroll-loops.info/">Ricers</a></li>
+							<li>USE flags</li>
+							<li>Input devices, graphic input, cameras and scanner</li>
+							<li>production or dev</li>
+							<li>keyword</li>
+							<li>overlays</li>
+							<li>licenses</li>
+						</ul>
+					</section>
 
-					<h3>use flags</h3>
-					<p>
-						The true power of gentoo
-					</p>
+					<section>
+						<h3>USE flags</h3>
+						<p>
+							The true power of gentoo
+						</p>
 
-					<h3>/etc/portage/package.*</h3>
-					<p>
-						I want more configuration options! You can have it. Even down to the license.
-					</p>
+						<aside class="notes">
+							EXAMPLE of useflags and overlay. firefox. iceweasel.
+						</aside>
+					</section>
+
+					<section>
+						<h3>/etc/portage/package.*</h3>
+						<p>
+							I want more configuration options! You can have it. Even down to the license.
+						</p>
+					</section>
+					
 				</section>
 
 				<section>
-					<h2>Flexibilty</h2>
-					<p>
-    slots
-        exemple java
-        exemple python
-        exemple mysql
-		exemple php
-    virtuals
-        exemple java
-        exemple python
-    supported architectures
-		arm
-		x86
+					<section>
+						<h2>Flexibilty</h2>
+						<h3>slots</h3>
+						<ul>
+							<li>Java 5-8</li>
+							<li>Python 2.6-3.4</li>
+							<li>Mysql 4.0-5.5</li>
+							<li>PHP 5.3-5.5</li>
+						</ul>
 
-					</p>
+						<aside class="notes">
+							But your dev environment has a lot of different requirements?
+							EXAMPLE SLOTS emerge php-4 =php-5.5.2-r2 -av
+							EXAMPLE     virtual with license
+								emerge jdk
+								license: emerge dev-java/ibm-jdk-bin -av
+						</aside>
+					</section>
 
-					<aside class="notes">
-						But your dev environment has a lot of different requirements?
-					</aside>
+					<section>
+						<h2>Flexibilty</h2>
+						<h3>virtuals</h3>
+						<ul>
+							<li>EXAMPLE jdk</li>
+							<li>Mysql vs MariaDB</li>
+						</ul>
+
+						<aside class="notes">
+							EXAMPLE     virtual with license
+								emerge jdk
+								license: emerge dev-java/ibm-jdk-bin -av
+						</aside>
+					</section>
+
+					<section>
+						<h2>Flexibilty</h2>
+						<h3>supported architectures</h3>
+							<ul>
+								<li>arm</li>
+								<li>x86</li>
+								<li>...</li>
+								<li>alpha</li>
+								<li>hppa</li>
+								<li>ia</li>
+								<li>m68k</li>
+								<li>mips</li>
+								<li>ppc</li>
+								<li>sh</li>
+								<li>sparc</li>
+								<li>x64</li>
+							</ul>
+
+						<aside class="notes">
+							gentoo might have the biggest list of supportet architectures, only debian plays in that league, combined with profiles this is crazy
+						</aside>
+					</section>
 				</section>
 
 				<section>
 					<h2>Maintenance</h2>
-					<p>
-						eselect profiles
+					<ul>
+						<li>emerge --deplcean</li>
+						<li>eselect profiles (for USE flags)</li>
+						<li>eselect python list (for slots)</li>
+						<li>sets</li>
 					</p>
 
 					<aside class="notes">
-						How can I cope with all these options?
+						How can I cope with all these options? That is what Gentoo is for. EXAMPLE of local system.
+						Everything is in text files.
 					</aside>
 				</section>
 
 				<section>
 					<h2>Choice</h2>
-					<p>
-    systemd vs openrc
-    	maybe even surpasses debian
-    kernel (linux default, but also bsd, mac and windows)
+					<ul>
+						<li>systemd vs openrc</li>
+						<li>kernel (linux default, but also *bsd, mac and windows)</li>
 					</p>
 
 					<aside class="notes">
-						You're greedy and you want even more?
+						You're greedy and you want even more? Maybe even surpasses debian in choice.
 					</aside>
 				</section>
 
 				<section>
 					<h2>Development</h2>
-
-		live ebuild
-		    EGIT variable
-		hooks (for patching certain packages)
-		cross-compiling (crossdev)
-
+					<ul>
+						<li>EXAMPLE live ebuild (EGIT variable)</li>
+						<li>hooks (for patching certain packages)</li>
+						<li>cross-compiling (crossdev)</li>
+					</ul>
 					<aside class="notes">
-						But in your development, you don't need all that funky stuff?
+						But in your development, you don't need all that funky stuff to setup your system? You cannot install Gentoo on that underpowered toaster?
+						You have problems with firefox in your installation, just add a patch in the appropriate folder an it will be applied
 					</aside>
 
 				</section>
 
 				<section>
 					<h2>Strength</h2>
-					
-    package manager, most complex resolution, most effective finds errors
-    documentation
-        only surpassed by ubuntu (quantity)
-        arch (quantity, quality)
+					<ul>
+						<li>package manager, most complex resolution, most effective finds errors</li>
+					    	<li>documentation</li>
+					</ul>	
 
 					<aside class="notes">
 						Conclusion, especially crazy setups have already be done in Gentoo.
+						only surpassed by ubuntu (quantity)
+						arch (quantity, quality)
 					</aside>
 
 				</section>
 
 				<section>
 					<h2>Weakness</h2>
-					
+					<ul>
+						<li>speed of installation</li>
+						<li>there is no automated installer</li>
+						<li>there is no gui for the package manager</li>
+					</ul>	
 
-    speed of installation
-    there is no automated installer
-    there is no gui for the package manager
+					can be solved with
 
-can be solved with
-
-    funtoo
-    sabayon
+					<ul>
+						<li>funtoo</li>
+						<li>sabayon</li>
+					</ul>	
 
 
 					<aside class="notes">
@@ -201,51 +285,35 @@ can be solved with
 
 				<section>
 					<h2>Rumors</h2>
-					<p>
-
-    unstable (maybe during compilation as the build combination may have never been tried and less testing than a distro like fedore or ubuntu)
-        working close with upstream
-        vanilla, almost no patches (like arch)
-        less code linked (use flags) means less code for errors
-    speed, no gentoo is not faster as the advantage is neglibile
-        but the system maybe has less shit installed (ubuntu, fedora, mandriva, suse)
-
-					</p>
+					<ul>
+						<li>unstable (maybe during compilation as the build combination may have never been tried and less testing than a distro like fedore or ubuntu)
+						<ul>
+							<li>working close with upstream</li>
+							<li>vanilla, almost no patches (like arch)</li>
+							<li>less code linked (use flags) means less code for errors</li>
+						</li>
+						<li>speed, NO, gentoo is not faster as the advantage is neglibile
+						<ul>
+							<li>but the system maybe has less installed (ubuntu, fedora, mandriva, suse), less code means less errors and means more ram</li>
+						</ul>
+						</li>
+					</ul>
 				</section>
 
 				<section>
 					<h2>Historical problems</h2>
-					<p>
-
-    Daniel Robbins (left the project for Microsoft, this caused a little bit of chaos)
-        is back, is the head of funtoo, I had the feeling he was not to well greeted back in the gentoo community, by some of the former devs
-    gentoo foundation/council/trustees (In that chaos they forgot to renew/register Gentoo as non profit, some people thought Gentoo would die, this was in 2007?, it is still felt to this day)
-        some say the gentoo organization is over-engineered now
-    git (portage is held in a cvs repo!, this was supposed to change in 2009?, still hasn't happened)
-        development is nowadays happening in overlays, almost all overlays are on moderns dvcs, and are agnostics of this, only the main repo is still on cvs and they seem to still struggle put all the quality control infrastructure to git
-
-					</p>
+					<p>Daniel Robbins (left the project for Microsoft, this caused a little bit of chaos)
+					Now heis back, h's the head of funtoo, I had the feeling he was not to well greeted back in the gentoo community, by some of the former devs</p>
+					<p>Gentoo foundation/council/trustees (In that chaos they forgot to renew/register Gentoo as non profit, some people thought Gentoo would die, this was in 2007?, it is still felt to this day)
+        				Some say the gentoo organization is over-engineered now</p>
+					<p>git (portage is held in a cvs repo!, this was supposed to change in 2009?, still hasn't happened)
+        				development is nowadays happening in overlays, almost all overlays are on moderns dvcs, and are agnostics of this, only the main repo is still on cvs and they seem to still struggle to put all the quality control infrastructure to git.</p>
 
 					<aside class="notes">
 						This is all hearsay from me, don't trust this exactly!
 					</aside>
 
 				</section>
-
-				<section>
-					<h2>Examples</h2>
-					<p>
-	slots with php
-		emerge php:4 =php-5.5.2-r2 -av
-    virtual with license
-		emerge jdk
-    git live ebuild
-    custom patch
-
-					</p>
-				</section>
-
-
 
 				<section>
 					<h1>Thanks</h1>
