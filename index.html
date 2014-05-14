@@ -49,6 +49,12 @@
 					<p>
 						Gentoo is a source-based, rolling-release meta-distribution! :)
 					</p>
+
+					<aside class="notes">
+						Differences are hard so this will be a shameless plug for the features of Gentoo
+						Popularity: Hard to judge Gentoo is according to distrowatch on place for 40 of the most popular distro
+						But also used as basis for ChromeOS and CoreOS
+					</aside>
 				</section>
 
 				<section>
@@ -110,8 +116,8 @@
 					<h2>Only one version</h2>
 					<ul>
 						<li>no re-installs, has to be installed <a href="http://www.gentoo.org/">only once</a></li>
-						<li>bleeding edge falls back into stable (later we get to that)</li>
 						<li>not really true, stable, unstable, masked, slots, but there is only <a href="http://packages.gentoo.org/package/dev-lang/php">one current Gentoo</a></li>
+						<li>bleeding edge falls back into stable (later we get to that)</li>
 					</ul>
 					
 					<aside class="notes">
@@ -225,8 +231,10 @@
 					<h2>Maintenance</h2>
 					<ul>
 						<li>emerge --deplcean</li>
-						<li>eselect profiles (for USE flags)</li>
+						<li>eselect profile list (for USE flags)</li>
 						<li>eselect python list (for slots)</li>
+						<li>emerge -u world</li>
+						<li>emerge -u system</li>
 						<li>sets</li>
 					</p>
 
@@ -234,6 +242,7 @@
 						How can I cope with all these options? That is what Gentoo is for.
 						eselect profile list
 						eselect java-vm list
+						eselect python list
 
 						Everything is in text files.
 					</aside>
@@ -276,7 +285,7 @@
 					<h2>Strength</h2>
 					<ul>
 						<li>package manager</li>
-					  <li>documentation</li>
+						<li>documentation</li>
 					</ul>	
 
 					<aside class="notes">
@@ -301,10 +310,10 @@
 						
 						<p>can be solved with</p>
 
-					  <ul>
+					  	<ul>
 						  <li>funtoo</li>
 						  <li>sabayon</li>
-					  </ul>
+					  	</ul>
 					</aside>
 
 				</section>
@@ -314,7 +323,6 @@
 					<ul>
 						<li>unstable
 						<ul>
-							<li>working close with upstream</li>
 							<li>vanilla, almost no patches (like arch)</li>
 							<li>less code linked (use flags) means less code for errors</li>
 						</ul>
