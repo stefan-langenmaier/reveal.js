@@ -55,42 +55,50 @@
 					<section>
 						<h2>Terms and tools</h2>
 						<ul>
-							<li><em>portage</em> is the repository of packages or so called ebuilds, complete copy locally</li>
-							<li><em>ebuild</em> is a recipe how to create a package from the source files and how to install</li>
-							<li><em>emerge</em> is a tool that executes theses ebuilds and does depdency resolution, depdency resolution is really tough in gentoo</li>
+							<li>portage</li>
+							<li>ebuild</li>
+							<li>emerge</li>
 						</ul>
 
 						<aside class="notes">
 							Necessary tools
 							ebuilds for example can provide also Firefox(TM) because it is not compiled
+							* is the repository of packages or so called ebuilds, complete copy locally
+							* is a recipe how to create a package from the source files and how to install
+							* is a tool that executes theses ebuilds and does depdency resolution, depdency resolution is really tough in gentoo
 						</aside>
 
 					</section>
 					<section>
 						<h2>Terms and tools</h2>
 						<ul>
-							<li>eread - don't want to follow the installation, read about it later</li>
-							<li>etc-update - don't want to update the configuration now, do it when you have time, Gentoo never overwrites configurations</li>
-							<li>genkernel - don't remeber how to create a initramfs? me neither. have you ever create a symlink wrong?</li>
+							<li>eread</li>
+							<li>etc-update</li>
+							<li>genkernel</li>
 						</ul>
 
 						<aside class="notes">
 							helping tools
+							*  - don't want to follow the installation, read about it later
+							*  - don't want to update the configuration now, do it when you have time, Gentoo never overwrites configurations
+							*  - don't remeber how to create a initramfs? me neither. have you ever create a symlink wrong?
 						</aside>
 
 					</section>
 					<section>
 						<h2>Terms and tools</h2>
 						<ul>
-							<li>eix - extras speed for emerge</li>
-							<li>gentoolkit - more search tools</li>
-							<li>revdep-rebuild - find executables with wrong/old/missing libraries, this tools finds it and reinstall their dependencies</li>
+							<li>eix</li>
+							<li>gentoolkit</li>
+							<li>revdep-rebuild</li>
 						</ul>
-
-						<h2>So what features do we get?</h2>
 
 						<aside class="notes">
 							third party
+							So what features do we get?
+							*  - extras speed for emerge
+							*  - more search tools
+							*  - find executables with wrong/old/missing libraries, this tools finds it and reinstall their dependencies
 						</aside>
 
 					</section>
@@ -105,6 +113,7 @@
 						<li>bleeding edge falls back into stable (later we get to that)</li>
 						<li>not really true, stable, unstable, masked, slots, but there is only <a href="http://packages.gentoo.org/package/dev-lang/php">one current Gentoo</a></li>
 					</ul>
+					
 					<aside class="notes">
 						Never do a dist-upgrade, look a the website www.gentoo.org that's because you will only visit that page once.
 					</aside>
@@ -124,15 +133,20 @@
 							<li>overlays</li>
 							<li>licenses</li>
 						</ul>
+						
+						<aside class="notes">
+						  Let's start with the stereotypes of Gentoo
+						</aside>
 					</section>
 
 					<section>
 						<h3>USE flags</h3>
 						<p>
-							The true power of gentoo
+							Example with firefox
 						</p>
 
 						<aside class="notes">
+						  The true power of gentoo
 							emerge firefox -av
 							useflags. firefox. iceweasel. unsupported system packages.
 						</aside>
@@ -189,7 +203,7 @@
 							<ul>
 								<li>arm</li>
 								<li>x86</li>
-								<li>...</li>
+								<li>amd64</li>
 								<li>alpha</li>
 								<li>hppa</li>
 								<li>ia</li>
@@ -229,11 +243,12 @@
 					<h2>Choice</h2>
 					<ul>
 						<li>systemd vs openrc</li>
-						<li>kernel (linux default, but also *bsd, mac and windows)</li>
-					</p>
+						<li>kernel (linux default, but also *bsd, mac and windows AND *no* kernel)</li>
+					</ul>
 
 					<aside class="notes">
 						You're greedy and you want even more? Maybe even surpasses debian in choice.
+						No kernel, perfect for containerized environments
 					</aside>
 				</section>
 
@@ -244,6 +259,7 @@
 						<li>hooks (for patching certain packages)</li>
 						<li>cross-compiling (crossdev)</li>
 					</ul>
+					
 					<aside class="notes">
 						But in your development, you don't need all that funky stuff to setup your system?
 						emerge =dev-python/django-9999 -av --autounmask-write=y
@@ -259,8 +275,8 @@
 				<section>
 					<h2>Strength</h2>
 					<ul>
-						<li>package manager, most complex resolution, most effective finds errors</li>
-					    	<li>documentation</li>
+						<li>package manager</li>
+					  <li>documentation</li>
 					</ul>	
 
 					<aside class="notes">
@@ -280,16 +296,15 @@
 						<li>there is no gui for the package manager</li>
 					</ul>	
 
-					can be solved with
-
-					<ul>
-						<li>funtoo</li>
-						<li>sabayon</li>
-					</ul>	
-
-
 					<aside class="notes">
 						Porque no los dos?
+						
+						<p>can be solved with</p>
+
+					  <ul>
+						  <li>funtoo</li>
+						  <li>sabayon</li>
+					  </ul>
 					</aside>
 
 				</section>
@@ -297,31 +312,42 @@
 				<section>
 					<h2>Rumors</h2>
 					<ul>
-						<li>unstable (maybe during compilation as the build combination may have never been tried and less testing than a distro like fedore or ubuntu)
+						<li>unstable
 						<ul>
 							<li>working close with upstream</li>
 							<li>vanilla, almost no patches (like arch)</li>
 							<li>less code linked (use flags) means less code for errors</li>
-						</li>
-						<li>speed, NO, gentoo is not faster as the advantage is negligible
+						</ul>
+						<li>speed
 						<ul>
 							<li>but the system maybe has less installed (in comparison to ubuntu, fedora, mandriva, suse), less code means less errors and means more ram</li>
 						</ul>
 						</li>
 					</ul>
+					
+				  <aside class="notes">
+						* (maybe during compilation as the build combination may have never been tried and less testing than a distro like fedore or ubuntu)
+						* NO, gentoo is not faster as the advantage is negligible
+					</aside>
+					 
 				</section>
 
 				<section>
 					<h2>Historical problems</h2>
-					<p>Daniel Robbins (left the project for Microsoft, this caused a little bit of chaos)
-					Now he's back, he's the head of funtoo, I had the feeling he wasn't welcomed back in the gentoo community, by some of the former devs</p>
-					<p>Gentoo foundation/council/trustees (In that chaos they forgot to renew/register Gentoo as non profit, some people thought Gentoo would die, this was in 2007?
-        				Some say the gentoo organization is now over-engineered</p>
-					<p>git (portage is held in a cvs repo!, this was supposed to change in 2009?, still hasn't happened)
-        				development is nowadays happening in overlays, almost all overlays are on moderns dvcs, and are agnostics of this, only the main repo is still on cvs and they seem to still struggle to put all the quality control infrastructure on git.</p>
+					<ul>
+					  <li>Daniel Robbins</li>
+					  <li>Gentoo foundation/council/trustees</li>
+					  <li>git</li>
+					</ul>
 
 					<aside class="notes">
 						This is all hearsay from me, don't trust this exactly!
+						* (left the project for Microsoft, this caused a little bit of chaos)
+					Now he's back, he's the head of funtoo, I had the feeling he wasn't welcomed back in the gentoo community, by some of the former devs
+					  *  (In that chaos they forgot to renew/register Gentoo as non profit, some people thought Gentoo would die, this was in 2007?
+        				Some say the gentoo organization is now over-engineered
+        	  *  (portage is held in a cvs repo!, this was supposed to change in 2009?, still hasn't happened)
+        				development is nowadays happening in overlays, almost all overlays are on moderns dvcs, and are agnostics of this, only the main repo is still on cvs and they seem to still struggle to put all the quality control infrastructure on git.
 					</aside>
 
 				</section>
