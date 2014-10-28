@@ -4,9 +4,9 @@
 	<head>
 		<meta charset="utf-8">
 
-		<title>Microformats/Microdata/RDFa</title>
+		<title>Microformats/Microdata/RDFa(lite)</title>
 
-		<meta name="description" content="A survey on the current state of microformats, microdata and RDFa">
+		<meta name="description" content="A survey on the current state of microformats, microdata and RDFa (lite)">
 		<meta name="author" content="Stefan Langenmaier">
 
 		<meta name="apple-mobile-web-app-capable" content="yes" />
@@ -43,89 +43,145 @@
 			<!-- Any section element inside of this container is displayed as a slide -->
 			<div class="slides">
 				<section>
-					<h1>Microformats/Microdata/RDFa</h1>
+					<h1>Microformats / Microdata / RDFa (lite) - a survey</h1>
 					<h3>This must be the worst title in the history of slides</h3>
 					<p>
-						<small>Created by <a href="http://up-log.de/octopress">Stefan Langenmaier</a></small>
+						<small>Created by <a href="https://github.com/stefan-langenmaier/reveal.js">Stefan Langenmaier</a></small>
 					</p>
 				</section>
 
 				<section>
-					<h2>Heads Up</h2>
+					<h2>Web 2.0</h2>
 					<p>
-						reveal.js is a framework for easily creating beautiful presentations using HTML. You'll need a browser with
-						support for CSS 3D transforms to see it in its full glory.
+						<ul>
+						  <li>mash-ups</li>
+						  <li>folksonomies</li>
+						  <li>metadata markup/semantic web</li>
+						  <li>social</li>
+						  <li>...</li>
+						</ul>
 					</p>
 
 					<aside class="notes">
-						Oh hey, these are some notes. They'll be hidden in your presentation, but you can see them if you open the speaker notes window (hit 's' on your keyboard).
+						In the beginning of the buzzword time for Web 2.0 the following terms were of equal importance
+						* mash-ups
+						* folksonmies
+						* metadata markup/semantic web
+						* social
+						* ...
+						We mostly got the social part, but with the cost of losing the decentralization. Mash-ups were hyped for some time, but they not really lived up to the potential, the semantic web was buried in proprietary silos.
+						
+						http://de.wikipedia.org/wiki/Web_2.0
 					</aside>
 				</section>
 
 				<!-- Example of nested vertical slides -->
 				<section>
-					<section>
-						<h2>Vertical Slides</h2>
+						<h2>Where are we?</h2>
 						<p>
-							Slides can be nested inside of other slides,
-							try pressing <a href="#" class="navigate-down">down</a>.
+							A lot has improved since the beginning of the Web 2.0
 						</p>
-						<a href="#" class="image navigate-down">
-							<img width="178" height="238" src="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png" alt="Down arrow">
-						</a>
-					</section>
-					<section>
-						<h2>Basement Level 1</h2>
-						<p>Press down or up to navigate.</p>
-					</section>
-					<section>
-						<h2>Basement Level 2</h2>
-						<p>Cornify</p>
-						<a class="test" href="http://cornify.com">
-							<img width="280" height="326" src="https://s3.amazonaws.com/hakim-static/reveal-js/cornify.gif" alt="Unicorn">
-						</a>
-					</section>
-					<section>
-						<h2>Basement Level 3</h2>
-						<p>That's it, time to go back up.</p>
-						<a href="#/2" class="image">
-							<img width="178" height="238" src="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png" alt="Up arrow" style="-webkit-transform: rotate(180deg);">
-						</a>
-					</section>
+						<ul>
+						  <li>openstreet map</li>
+              <li>dbpedia (wikipedias semantic capability)</li>
+              <li>freebase</li>
+              <li>musicbrainz</li>
+              <li>...</li>
+						</ul>
+
+					<aside class="notes">
+						But I like to argue that these are still centralised pieces of information. For the here presented this might be for technical reason. And everyone has the possibility to download theses dataset. If we look at social networking sites, the informations are more locked in then ever,
+					</aside>
 				</section>
 
 				<section>
-					<h2>Slides</h2>
+					<h2>Reasons</h2>
 					<p>
-						Not a coder? No problem. There's a fully-featured visual editor for authoring these, try it out at <a href="http://slid.es" target="_blank">http://slid.es</a>.
+						Theses are all speculative
 					</p>
-				</section>
-
-				<section>
-					<h2>Point of View</h2>
-					<p>
-						Press <strong>ESC</strong> to enter the slide overview.
-					</p>
-					<p>
-						Hold down alt and click on any element to zoom in on it using <a href="http://lab.hakim.se/zoom-js">zoom.js</a>. Alt + click anywhere to zoom back out.
-					</p>
-				</section>
-
-				<section>
-					<h2>Works in Mobile Safari</h2>
-					<p>
-						Try it out! You can swipe through the slides and pinch your way to the overview.
-					</p>
-				</section>
-
-				<section>
-					<h2>Marvelous Unordered List</h2>
 					<ul>
-						<li>No order here</li>
-						<li>Or here</li>
-						<li>Or here</li>
-						<li>Or here</li>
+					  <li>ivory tower (from scientist for scientist, non inclusive)</li>
+            <li>no incentives (the people doing the work don't profit from their work)</li>
+            <li>technical difficulties</li>
+            <li>complexity</li>
+            <li>specialisation (languages, tools, queries, interfaces)</li>
+            <li>...</li>
 					</ul>
+					<aside class="notes">
+						These reasons are all highly interwoven and hard problems. There are a lot of specifications (that existed for a long time) but they often seemed more like a theoretical exercise than help. This is a hard problem, putting the ideas on a sound base vs talking to the end user about first order logic.
+						People don really have/had a reason to do all that metadata markup, as  not they were profiting from it but others. Possibly the reason why it is still hard to do mashups.
+						Some problems are just easier solved when done centralized like mapping.
+						All the ideas for the semantic web started from a clean slate. New formats, rdf, special tools to write them (that means not the browser), a custom query langue was created (sparql)
+						All problems could be overcome, but the problems together prevented to reach the necessary critical mass. This created a chicken and egg problem.
+					</aside>
+				</section>
+
+				<section>
+					<h2>Survey</h2>
+					<p>
+						about approaches to solve these problems
+					</p>
+					<ul>
+					  <li>microformats</li>
+            <li>microdata</li>
+            <li>RDFa lite</li>
+            <li>RDFa</li>
+					</ul>
+					<p>
+					Their common apporach is to use HTML as basis for the embedding extra data. They want to avoid using a special format. Their goal is on reusing existing tools.
+					</p>
+					<aside class="notes">
+						There were a lot of people who saw these problems and tried to solve the problems.
+						Reusing already existing methods for publishing and augmenting already exisiting data.
+						Differences is what they can embed and how.
+					</aside>
+				</section>
+
+				<section>
+					<h2>Microformats</h2>
+					<p>
+						They are the oldest approach to embed metadata in the HTML attributes
+					</p>
+					<p>
+						They are thaking existing formats and specifications and simplify them to be used in HTML attributes.
+					</p>
+					<p>
+						The central authority is the following website: http://microformats.org/
+					</p>
+				</section>
+
+				<section>
+					<h2>Microformats - Vocabularies</h2>
+					<ul>
+						<li>hCalendar - events</li>
+            <li>hCard - people, organizations, contacts</li>
+            <li>rel-license - licensed content</li>
+            <li><em>rel-nofollow</em> - links in untrusted 3rd party content</li>
+            <li>rel-tag - tag posts and pages by subject</li>
+            <li>...</li>
+					</ul>
+					<aside class="notes">
+						Vocabularies are the most general term for formats or specifications in this context so I will stick to it to not be to ambiguous.
+						
+						The rel-nofollow is probably still nowadays the most used markup form the microformats, we see it in a second in the examples.
+					</aside>
+				</section>
+				
+				<section>
+					<h2>Microformats - Design Patterns</h2>
+					<ul>
+						<li>hCalendar - events</li>
+            <li>hCard - people, organizations, contacts</li>
+            <li>rel-license - licensed content</li>
+            <li><em>rel-nofollow</em> - links in untrusted 3rd party content</li>
+            <li>rel-tag - tag posts and pages by subject</li>
+            <li>...</li>
+					</ul>
+					<aside class="notes">
+						Vocabularies are the most general term for formats or specifications in this context so I will stick to it to not be to ambiguous.
+						
+						The rel-nofollow is probably still nowadays the most used markup form the microformats, we see it in a second in the examples.
+					</aside>
 				</section>
 
 				<section>
