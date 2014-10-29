@@ -170,30 +170,37 @@
 				<section>
 					<h2>Microformats - Design Patterns</h2>
 					<ul>
-						<li>hCalendar - events</li>
-            <li>hCard - people, organizations, contacts</li>
-            <li>rel-license - licensed content</li>
-            <li><em>rel-nofollow</em> - links in untrusted 3rd party content</li>
-            <li>rel-tag - tag posts and pages by subject</li>
-            <li>...</li>
+            <li>abbr-design-pattern</li>
+            <li>class-design-pattern</li>
+            <li>date-design-pattern</li>
+            <li>datetime-design-pattern</li>
+            <li>include-pattern</li>
+            <li>value-class-pattern</li>
+            <li>rel-design-pattern</li>
 					</ul>
 					<aside class="notes">
-						Vocabularies are the most general term for formats or specifications in this context so I will stick to it to not be to ambiguous.
-						
-						The rel-nofollow is probably still nowadays the most used markup form the microformats, we see it in a second in the examples.
+
 					</aside>
 				</section>
 
 				<section>
-					<h2>Fantastic Ordered List</h2>
-					<ol>
-						<li>One is smaller than...</li>
-						<li>Two is smaller than...</li>
-						<li>Three!</li>
-					</ol>
+					<h2>Microformats - Examples</h2>
+					<h3>hcalendar</h3>
+					<pre>
+						<code class="hljs xml">
+
+							<span class="vevent">
+							 <span class="summary">The microformats.org site was launched</span>
+							 on <span class="dtstart">2005-06-20</span> 
+							 at the Supernova Conference 
+							 in <span class="location">San Francisco, CA, USA</span>.
+							</span>
+
+						</code>
+					</pre>
 				</section>
 
-				<section data-markdown>
+				<section>
 					<script type="text/template">
 						## Markdown support
 
