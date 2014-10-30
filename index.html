@@ -191,32 +191,77 @@
   <span class="fragment" data-fragment-index="1">&lt;span <span class="fragment" data-fragment-index="3">class=&quot;summary&quot;</span>&gt;</span>
     The microformats.org site was launched
   <span class="fragment" data-fragment-index="1">&lt;/span&gt;</span>
-  on <span class="fragment" data-fragment-index="1">&lt;span <span class="fragment" data-fragment-index="3">class=&quot;dtstart&quot;</span>&gt;</span>2005-06-20<span class="fragment" data-fragment-index="1">&lt;/span&gt;</span>
+  on <span class="fragment" data-fragment-index="1">&lt;span <span class="fragment" data-fragment-index="3">class=&quot;dtstart&quot;</span>&gt;</span><span class="fragment zoom-in highlight-current-green" data-fragment-index="4">2005-06-20</span><span class="fragment" data-fragment-index="1">&lt;/span&gt;</span>
   at the Supernova Conference
   in <span class="fragment" data-fragment-index="1">&lt;span <span class="fragment" data-fragment-index="3">class=&quot;location&quot;</span>&gt;</span>San Francisco, CA, USA<span class="fragment" data-fragment-index="1">&lt;/span&gt;</span>.
 &lt;/span&gt;
           </pre>
+					TODO find external link with an example an export it
           <aside class="notes">
-            One example is hcalendar, it is a modification of the vCalendar format which is an open, standard exchange format for calendar information. A lot of applications can read it like Thunderbird, Outlook,… but the details would be too much, but the main tzpe in that format is vevent.
+            One example is hcalendar, it is a modification of the vCalendar format which is an open, standard exchange format for calendar information. A lot of applications can read it like Thunderbird, Outlook,… but the details would be too much, but the main type in that format is vevent.
             So they took that format and simpliefied it to fit into HTML.
+						At the end we can also see an example of the date-design-pattern
 					</aside>
 				</section>
 
 				<section>
-					<script type="text/template">
-						## Markdown support
+					<h2>Microformats - Examples</h2>
+					<h3>hcard</h3>
+					<pre class="highlight xml">
+&lt;address <span class="fragment" data-fragment-index="1">class=&quot;vcard&quot;</span>&gt;
+ &lt;a <span class="fragment" data-fragment-index="1">class=&quot;<span class="fragment zoom-in highlight-current-green" data-fragment-index="2">fn</span> <span class="fragment zoom-in highlight-current-green" data-fragment-index="3">url</span>&quot;</span> href=&quot;<span class="fragment zoom-in highlight-current-green" data-fragment-index="3">http://tantek.com/</span>&quot;&gt;<span class="fragment zoom-in highlight-current-green" data-fragment-index="2">Tantek &Ccedil;elik</span>&lt;/a&gt;
+&lt;/address&gt;
 
-						For those of you who like that sort of thing. Instructions and a bit more info available [here](https://github.com/hakimel/reveal.js#markdown).
+          </pre>
+					TODO find external link with an example an export it
+          <aside class="notes">
+            For people and organizations.
 
-						```
-						<section data-markdown>
-						  ## Markdown support
+If address tag is available it should be used. No problem if not.
+					</aside>
+				</section>
 
-						  For those of you who like that sort of thing.
-						  Instructions and a bit more info available [here](https://github.com/hakimel/reveal.js#markdown).
-						</section>
-						```
-					</script>
+				<section>
+					<h2>Microformats - Examples</h2>
+					<h3>hcard - bigger</h3>
+					<pre class="highlight xml">
+&lt;div class=&quot;vcard&quot;&gt;
+  &lt;a class=&quot;fn org url&quot; href=&quot;http://www.commerce.net/&quot;&gt;CommerceNet&lt;/a&gt;
+  &lt;div class=&quot;adr&quot;&gt;
+    &lt;span class=&quot;type&quot;&gt;Work&lt;/span&gt;:
+    &lt;div class=&quot;street-address&quot;&gt;169 University Avenue&lt;/div&gt;
+    &lt;span class=&quot;locality&quot;&gt;Palo Alto&lt;/span&gt;,  
+    &lt;abbr class=&quot;region&quot; title=&quot;California&quot;&gt;CA&lt;/abbr&gt;&amp;nbsp;&amp;nbsp;
+    &lt;span class=&quot;postal-code&quot;&gt;94301&lt;/span&gt;
+    &lt;div class=&quot;country-name&quot;&gt;USA&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;tel&quot;&gt;
+   &lt;span class=&quot;type&quot;&gt;Work&lt;/span&gt; +1-650-289-4040
+  &lt;/div&gt;
+  &lt;div class=&quot;tel&quot;&gt;
+    &lt;span class=&quot;type&quot;&gt;Fax&lt;/span&gt; +1-650-289-4041
+  &lt;/div&gt;
+  &lt;div&gt;Email: 
+   &lt;span class=&quot;email&quot;&gt;info@commerce.net&lt;/span&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+          </pre>
+          <aside class="notes">
+            No problem if not.
+					</aside>
+				</section>
+
+				<section>
+					<h2>Microformats - Examples</h2>
+					<h3>rel - nofollow</h3>
+					<pre class="highlight xml">
+&lt;a <span class="fragment" data-fragment-index="1">rel=&quot;nofollow&quot;</span> href=&quot;http://badexample.org/&quot;&gt;badexample.org&lt;/a&gt;
+					</pre>
+          <aside class="notes">
+            Most famous for http://microformats.org/profile/rel-nofollow
+
+						used to link to websites that you don't wanto follow by search engines. When you don't want to endorse a bad site with your good ranking.
+					</aside>
 				</section>
 
 				<section id="transitions">
