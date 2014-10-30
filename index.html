@@ -445,7 +445,11 @@ function linkify( selector ) {
 					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
 					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
 					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					// changed the callback according to
+					// http://stackoverflow.com/questions/24151563/reveal-js-add-fragments-inside-code
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { [].forEach.call( document.querySelectorAll( '.highlight' ), function( v, i) {
+        hljs.highlightBlock(v);
+    }); } },
 					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
 					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
 				]
