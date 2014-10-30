@@ -186,18 +186,20 @@
 				<section>
 					<h2>Microformats - Examples</h2>
 					<h3>hcalendar</h3>
-					<pre>
-						<code class="hljs xml">
-
-							<span class="vevent">
-							 <span class="summary">The microformats.org site was launched</span>
-							 on <span class="dtstart">2005-06-20</span> 
-							 at the Supernova Conference 
-							 in <span class="location">San Francisco, CA, USA</span>.
-							</span>
-
-						</code>
-					</pre>
+					<pre class="highlight xml">
+&lt;span <span class="fragment" data-fragment-index="2">class=&quot;vevent&quot;</span>&gt;
+  <span class="fragment" data-fragment-index="1">&lt;span <span class="fragment" data-fragment-index="3">class=&quot;summary&quot;</span>&gt;</span>
+    The microformats.org site was launched
+  <span class="fragment" data-fragment-index="1">&lt;/span&gt;</span>
+  on <span class="fragment" data-fragment-index="1">&lt;span <span class="fragment" data-fragment-index="3">class=&quot;dtstart&quot;</span>&gt;</span>2005-06-20<span class="fragment" data-fragment-index="1">&lt;/span&gt;</span>
+  at the Supernova Conference
+  in <span class="fragment" data-fragment-index="1">&lt;span <span class="fragment" data-fragment-index="3">class=&quot;location&quot;</span>&gt;</span>San Francisco, CA, USA<span class="fragment" data-fragment-index="1">&lt;/span&gt;</span>.
+&lt;/span&gt;
+          </pre>
+          <aside class="notes">
+            One example is hcalendar, it is a modification of the vCalendar format which is an open, standard exchange format for calendar information. A lot of applications can read it like Thunderbird, Outlook,… but the details would be too much, but the main tzpe in that format is vevent.
+            So they took that format and simpliefied it to fit into HTML.
+					</aside>
 				</section>
 
 				<section>
