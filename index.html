@@ -316,91 +316,164 @@ If address tag is available it should be used. No problem if not.
 				</section>
 
 				<section>
-					<h2>Global State</h2>
-					<p>
-						Set <code>data-state="something"</code> on a slide and <code>"something"</code>
-						will be added as a class to the document element when the slide is open. This lets you
-						apply broader style changes, like switching the background.
-					</p>
-				</section>
+					<h2>Microdata</h2>
+					<ul>
+            <li>offical standard of <a href="http://www.w3.org/TR/microdata/">W3</a></li>
+            <li>collaboration of
+							<ul>
+				        <li>Google</a></li>
+				        <li>Yahoo of</li>
+				        <li>Microsoft</li>
+				        <li>Yandex</li>
+							</ul>
+						</li>
+            <li>lots of vocabularies at <a href="http://schema.org">schema.org</a></li>
+            <li>browser support for the dom api</li>
+						<li>designed for html5</li>
+					</ul>
+          <aside class="notes">
+          	Is an offical standard of W3 (http://www.w3.org/TR/microdata/), but the only implementation of profiles/ontologies is from schema.org.
 
-				<section data-state="customevent">
-					<h2>Custom Events</h2>
-					<p>
-						Additionally custom events can be triggered on a per slide basis by binding to the <code>data-state</code> name.
-					</p>
-					<pre><code data-trim contenteditable style="font-size: 18px; margin-top: 20px;">
-Reveal.addEventListener( 'customevent', function() {
-	console.log( '"customevent" has fired' );
-} );
-					</code></pre>
-				</section>
+						This (schema.org) is moslty a collaboration from Google, Yahoo!, Microsoft and Yandex. So it's to no surprise that it's mostly geared towards search engines. And microdata was the preferred way for Google's rich snippets (it is still supported).
 
-				<section>
-					<section data-background="#007777">
-						<h2>Slide Backgrounds</h2>
-						<p>
-							Set <code>data-background="#007777"</code> on a slide to change the full page background to the given color. All CSS color formats are supported.
-						</p>
-						<a href="#" class="image navigate-down">
-							<img width="178" height="238" src="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png" alt="Down arrow">
-						</a>
-					</section>
-					<section data-background="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png">
-						<h2>Image Backgrounds</h2>
-						<pre><code>&lt;section data-background="image.png"&gt;</code></pre>
-					</section>
-					<section data-background="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png" data-background-repeat="repeat" data-background-size="100px">
-						<h2>Repeated Image Backgrounds</h2>
-						<pre><code style="word-wrap: break-word;">&lt;section data-background="image.png" data-background-repeat="repeat" data-background-size="100px"&gt;</code></pre>
-					</section>
-				</section>
+						There is also some support in the browsers. But nowadays it looks like this support is removed again. Nevertheless there is JavaScript code which adds this interface again to the dom microdatajs.
 
-				<section data-transition="linear" data-background="#4d7e65" data-background-transition="slide">
-					<h2>Background Transitions</h2>
-					<p>
-						Pass reveal.js the <code>backgroundTransition: 'slide'</code> config argument to make backgrounds slide rather than fade.
-					</p>
-				</section>
-
-				<section data-transition="linear" data-background="#8c4738" data-background-transition="slide">
-					<h2>Background Transition Override</h2>
-					<p>
-						You can override background transitions per slide by using <code>data-background-transition="slide"</code>.
-					</p>
+designed for html5 (and only html5)
+					</aside>
 				</section>
 
 				<section>
-					<h2>Clever Quotes</h2>
-					<p>
-						These guys come in two forms, inline: <q cite="http://searchservervirtualization.techtarget.com/definition/Our-Favorite-Technology-Quotations">
-						&ldquo;The nice thing about standards is that there are so many to choose from&rdquo;</q> and block:
-					</p>
-					<blockquote cite="http://searchservervirtualization.techtarget.com/definition/Our-Favorite-Technology-Quotations">
-						&ldquo;For years there has been a theory that millions of monkeys typing at random on millions of typewriters would
-						reproduce the entire works of Shakespeare. The Internet has proven this theory to be untrue.&rdquo;
-					</blockquote>
+					<h2>Microdata - Examples</h2>
+					<h3>basic syntax</h3>
+					<pre class="highlight xml">
+&lt;div <span class="fragment" data-fragment-index="1"><span class="fragment highlight-current-green" data-fragment-index="2">itemscope</span></span>&gt;
+  &lt;h1 <span class="fragment" data-fragment-index="3"><span class="fragment highlight-current-green" data-fragment-index="4">itemprop=&quot;name&quot;</span></span>&gt;Avatar&lt;/h1&gt;
+  &lt;div <span class="fragment" data-fragment-index="3"><span class="fragment highlight-current-green" data-fragment-index="4">itemprop=&quot;director&quot;</span></span>&gt;
+    Director: James Cameron (born August 16, 1954)
+  &lt;/div&gt;
+  &lt;span <span class="fragment" data-fragment-index="3"><span class="fragment highlight-current-green" data-fragment-index="4">itemprop=&quot;genre&quot;</span></span>&gt;Science fiction&lt;/span&gt;
+  &lt;a href=&quot;/movies/avatar-theatrical-trailer.html&quot; <span class="fragment" data-fragment-index="3"><span class="fragment highlight-current-green" data-fragment-index="4">itemprop=&quot;trailer&quot;</span></span>&gt;
+    Trailer
+  &lt;/a&gt;
+&lt;/div&gt;
+          </pre>
+          <aside class="notes">
+            The basic elements are itemscope and itemprop
+					</aside>
 				</section>
 
 				<section>
-					<h2>Pretty Code</h2>
-					<pre><code data-trim contenteditable>
-function linkify( selector ) {
-  if( supports3DTransforms ) {
+					<h2>Microdata - Examples</h2>
+					<h3>vocabularies</h3>
+					<pre class="highlight xml">
+&lt;div itemscope <span class="fragment" data-fragment-index="1"><span class="fragment highlight-current-green" data-fragment-index="2">itemtype</span>=&quot;http://schema.org/Movie&quot;</span>&gt;
+  &lt;h1 itemprop=&quot;name&quot;&gt;Avatar&lt;/h1&gt;
+  &lt;div itemprop=&quot;director&quot;&gt;
+    Director: James Cameron (born August 16, 1954)
+  &lt;/div&gt;
+  &lt;span itemprop=&quot;genre&quot;&gt;Science fiction&lt;/span&gt;
+  &lt;a href=&quot;/movies/avatar-theatrical-trailer.html&quot; itemprop=&quot;trailer&quot;&gt;
+    Trailer
+  &lt;/a&gt;
+&lt;/div&gt;
+          </pre>
+TODO add google link for walter
+          <aside class="notes">
+            to give these metadata meaning there are predefined types on http://schema.org or http://getschema.org
+					</aside>
+				</section>
 
-    var nodes = document.querySelectorAll( selector );
+				<section>
+					<h2>Microdata - Examples</h2>
+					<h3>embedding</h3>
+					<pre class="highlight xml">
+&lt;div itemscope itemtype=&quot;http://schema.org/Movie&quot;&gt;
+  &lt;h1 itemprop=&quot;name&quot;&gt;Avatar&lt;/h1&gt;
+  &lt;div itemprop=&quot;director&quot; <span class="fragment" data-fragment-index="1"><span class="fragment highlight-current-green" data-fragment-index="2">itemscope itemtype</span>=&quot;http://schema.org/Person&quot;</span>&gt;
+  Director:
+    &lt;span <span class="fragment highlight-current-green" data-fragment-index="2">itemprop</span>=&quot;name&quot;&gt;James Cameron&lt;/span&gt;
+    (born &lt;span <span class="fragment highlight-current-green" data-fragment-index="2">itemprop</span>=&quot;birthDate&quot;&gt;<span class="fragment highlight-current-green" data-fragment-index="3">August 16, 1954</span>&lt;/span&gt;)
+  &lt;/div&gt;
+  &lt;span itemprop=&quot;genre&quot;&gt;Science fiction&lt;/span&gt;
+  &lt;a href=&quot;/movies/avatar-theatrical-trailer.html&quot; itemprop=&quot;trailer&quot;&gt;
+    Trailer
+  &lt;/a&gt;
+&lt;/div&gt;
+          </pre>
+					<a href="http://www.google.com/webmasters/tools/richsnippets">RichSnippet Tool</a>
+          <aside class="notes">
+            The basic elements are itemscope and itemprop
 
-    for( var i = 0, len = nodes.length; i &lt; len; i++ ) {
-      var node = nodes[i];
+						for date and time one can use the new html5 tags as show for microformats
+					</aside>
+				</section>
 
-      if( !node.className ) {
-        node.className += ' roll';
-      }
-    }
-  }
-}
-					</code></pre>
-					<p>Courtesy of <a href="http://softwaremaniacs.org/soft/highlight/en/description/">highlight.js</a>.</p>
+				<section>
+					<h2>Microdata - Tools</h2>
+					<h3>Client/Browser</h3>
+					<ul>
+						<li><a href="https://github.com/foolip/microdatajs">microdata.js</a></li>
+					</ul>
+					<h3>Server</h3>
+					<ul>
+						<li><a href="http://www.google.com/webmasters/tools/richsnippets">RichSnippet Tool</a></li>
+            <li><a href="http://foolip.org/microdatajs/live/">microdata.js live</a></li>
+						<li><a href="http://schema.rdfs.org/tools.html">rdfs tools</a></li>
+					</ul>
+					<aside class="notes">
+            microdata.js is a jquery plugin
+
+						rich snippet is a verification tool from google
+            resource for programming libraries and further verfication tools, not only for microdata
+					</aside>
+				</section>
+
+				<section>
+					<h2>Microdata - Resume</h2>
+					<h3>Pro</h3>
+					<ul>
+    				<li>html5, separtion machine/human readable</li>
+    				<li>nestable</li>
+    				<li>lots of simple ontologies</li>
+    				<li>data exportable as rdf and other formts via tools</li>
+					</ul>
+					<h3>Contra</h3>
+					<ul>
+    				<li>no offical mapping to rdf</li>
+    				<li>unncessary constructs in markup</li>
+					</ul>
+					<aside class="notes">
+						<ul>
+		  				<li>for html5</li>
+		  				<li>tahnks to html 5 seperation between machine readable and human readble</li>
+		  				<li>nestable</li>
+		  				<li>lots of simple ontologies also with hierarchie</li>
+		  				<li>data exportable as rdf and other formts via tools</li>
+						</ul>
+						<h3>Contra</h3>
+						<ul>
+		  				<li>no offical mapping to rdf</li>
+		  				<li>unncessary constructs in markup</li>
+						</ul>
+					</aside>
+				</section>
+
+				<section>
+					<h2>RDFa lite</h2>
+					<ul>
+            <li>offical standard of <a href="http://www.w3.org/TR/microdata/">W3</a></li>
+						<li>simpler than microdata</li>
+						<li>compatible to microdata vocabularies</li>
+						<li>subset of RDFa</li>
+            <li>supported by Google</li>
+            <li>lots of vocabularies at <a href="http://schema.org">schema.org</a></li>
+						<li>designed for html5</li>
+					</ul>
+          <aside class="notes">
+          	RDFa Lite consists of five simple attributes; vocab, typeof, property, resource, and prefix. RDFa 1.1 Lite is completely upwards compatible with the full set of RDFa 1.1 attributes. This means that if an author finds that RDFa Lite isn't powerful enough, transitioning to the full version of RDFa is just a matter of adding the more powerful RDFa attributes into the existing RDFa Lite markup.
+
+						Historically interwoven with RDFa, RDFa is older (like microformats but was only designed for xml/xhtml) that changed only very recently june 2012
+					</aside>
 				</section>
 
 				<section>
