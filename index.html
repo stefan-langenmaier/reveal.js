@@ -191,15 +191,16 @@
   <span class="fragment" data-fragment-index="1">&lt;span <span class="fragment" data-fragment-index="3">class=&quot;summary&quot;</span>&gt;</span>
     The microformats.org site was launched
   <span class="fragment" data-fragment-index="1">&lt;/span&gt;</span>
-  on <span class="fragment" data-fragment-index="1">&lt;span <span class="fragment" data-fragment-index="3">class=&quot;dtstart&quot;</span>&gt;</span><span class="fragment zoom-in highlight-current-green" data-fragment-index="4">2005-06-20</span><span class="fragment" data-fragment-index="1">&lt;/span&gt;</span>
+  on <span class="fragment fade-out" data-fragment-index="5"><span class="fragment" data-fragment-index="1">&lt;span <span class="fragment" data-fragment-index="3">class=&quot;dtstart&quot;</span>&gt;</span><span class="fragment zoom-in highlight-current-green" data-fragment-index="4">2005-06-20</span><span class="fragment" data-fragment-index="1">&lt;/span&gt;</span></span>
+  <span class="fragment" data-fragment-index="5">&lt;time class=&quot;dtstart&quot; datetime=&quot;2005-06-20&quot;&gt; May 20th, 2005 &lt;/time&gt;</span>
   at the Supernova Conference
   in <span class="fragment" data-fragment-index="1">&lt;span <span class="fragment" data-fragment-index="3">class=&quot;location&quot;</span>&gt;</span>San Francisco, CA, USA<span class="fragment" data-fragment-index="1">&lt;/span&gt;</span>.
 &lt;/span&gt;
           </pre>
-					TODO find external link with an example an export it
+					<p>In the wild: <a href="https://wiki.mozilla.org/Events">Mozilla Events</a> (actually already in the microformats2 version)</p>
           <aside class="notes">
             One example is hcalendar, it is a modification of the vCalendar format which is an open, standard exchange format for calendar information. A lot of applications can read it like Thunderbird, Outlook,… but the details would be too much, but the main type in that format is vevent.
-            So they took that format and simpliefied it to fit into HTML.
+            So they took that format and simplified it to fit into HTML.
 						At the end we can also see an example of the date-design-pattern
 					</aside>
 				</section>
@@ -212,8 +213,8 @@
  &lt;a <span class="fragment" data-fragment-index="1">class=&quot;<span class="fragment zoom-in highlight-current-green" data-fragment-index="2">fn</span> <span class="fragment zoom-in highlight-current-green" data-fragment-index="3">url</span>&quot;</span> href=&quot;<span class="fragment zoom-in highlight-current-green" data-fragment-index="3">http://tantek.com/</span>&quot;&gt;<span class="fragment zoom-in highlight-current-green" data-fragment-index="2">Tantek &Ccedil;elik</span>&lt;/a&gt;
 &lt;/address&gt;
 
-          </pre>
-					TODO find external link with an example an export it
+          </pre>http://indiewebcamp.com/
+					<p>In the wild: <a href="http://indiewebcamp.com/">IndieWebCamp</a> (actually already in the microformats2 version)</p>
           <aside class="notes">
             For people and organizations.
 
@@ -261,42 +262,57 @@ If address tag is available it should be used. No problem if not.
             Most famous for http://microformats.org/profile/rel-nofollow
 
 						used to link to websites that you don't wanto follow by search engines. When you don't want to endorse a bad site with your good ranking.
+						for example in comment sections where users can add link - comment spam
+						flickr http://www.flickr.com/photos/tantek/2344425887/
+						twitter
 					</aside>
 				</section>
 
-				<section id="transitions">
-					<h2>Transition Styles</h2>
-					<p>
-						You can select from different transitions, like: <br>
-						<a href="?transition=cube#/transitions">Cube</a> -
-						<a href="?transition=page#/transitions">Page</a> -
-						<a href="?transition=concave#/transitions">Concave</a> -
-						<a href="?transition=zoom#/transitions">Zoom</a> -
-						<a href="?transition=linear#/transitions">Linear</a> -
-						<a href="?transition=fade#/transitions">Fade</a> -
-						<a href="?transition=none#/transitions">None</a> -
-						<a href="?#/transitions">Default</a>
-					</p>
+				<section>
+					<h2>Microformats - Tools</h2>
+					<h3>Client/Browser</h3>
+					<ul>
+						<li><a href="https://addons.mozilla.org/en-US/firefox/addon/operator">Operator Addon</a></li>
+					</ul>
+					<h3>Server</h3>
+					<ul>
+						<li><a href="http://h2vx.com/vcf/">h2vx</a></li>
+            <li><a href="http://microformats.org/code/hcard/creator">hcard creator</a></li>
+					</ul>
+					<aside class="notes">
+            Operator was already used for the previous links
+            h2vx is a webservice that can do conversions on the fly
+					</aside>
 				</section>
 
-				<section id="themes">
-					<h2>Themes</h2>
-					<p>
-						Reveal.js comes with a few themes built in: <br>
-						<a href="?#/themes">Default</a> -
-						<a href="?theme=sky#/themes">Sky</a> -
-						<a href="?theme=beige#/themes">Beige</a> -
-						<a href="?theme=simple#/themes">Simple</a> -
-						<a href="?theme=serif#/themes">Serif</a> -
-						<a href="?theme=night#/themes">Night</a> <br>
-						<a href="?theme=moon#/themes">Moon</a> -
-						<a href="?theme=solarized#/themes">Solarized</a>
-					</p>
-					<p>
-						<small>
-							* Theme demos are loaded after the presentation which leads to flicker. In production you should load your theme in the <code>&lt;head&gt;</code> using a <code>&lt;link&gt;</code>.
-						</small>
-					</p>
+				<section>
+					<h2>Microformats - Resume</h2>
+					<h3>Pro</h3>
+					<ul>
+						<li>oldest approach</li>
+    				<li>"simplest" approach</li>
+    				<li>has comments on accesibility</li>
+					</ul>
+					<h3>Contra</h3>
+					<ul>
+						<li>reinventing the specs</li>
+    				<li>struggling with html5</li>
+    				<li>actual usage is dropping</li>
+					</ul>
+					<aside class="notes">
+					  <ul>
+						  <li>oldest approach (had for some times the biggest usage)</li>
+      				<li>"simplest" approach (reusing existing html attributes class could be used at the same time for styling)</li>
+      				<li>has comments on accesibility (text reader and which elements should be visible)</li>
+					  </ul>
+					  <h3>Contra</h3>
+					<ul>
+						<li>reinventing the specs, no formal way to see it in the bigger ecosystem of the semantic web</li>
+    				<li>struggling with html5 (no new specifications released, only drafts)</li>
+    				<li>actual usage is dropping relative to others</li>
+    				<li>there is microformats2 which is stable but all vocabularies are considered a draft</li>
+					</ul>
+					</aside>
 				</section>
 
 				<section>
