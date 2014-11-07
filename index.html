@@ -213,8 +213,8 @@
  &lt;a <span class="fragment" data-fragment-index="1">class=&quot;<span class="fragment zoom-in highlight-current-green" data-fragment-index="2">fn</span> <span class="fragment zoom-in highlight-current-green" data-fragment-index="3">url</span>&quot;</span> href=&quot;<span class="fragment zoom-in highlight-current-green" data-fragment-index="3">http://tantek.com/</span>&quot;&gt;<span class="fragment zoom-in highlight-current-green" data-fragment-index="2">Tantek &Ccedil;elik</span>&lt;/a&gt;
 &lt;/address&gt;
 
-          </pre>http://indiewebcamp.com/
-					<p>In the wild: <a href="http://indiewebcamp.com/">IndieWebCamp</a> (actually already in the microformats2 version)</p>
+          </pre>
+					<p>In the wild: <a href="http://en.wikipedia.org/wiki/Jean-Paul_Sartre">Wikipedia</a></p>
           <aside class="notes">
             For people and organizations.
 
@@ -400,7 +400,9 @@ TODO add google link for walter
   &lt;/a&gt;
 &lt;/div&gt;
           </pre>
-					<a href="http://www.google.com/webmasters/tools/richsnippets">RichSnippet Tool</a>
+					<a href="http://www.google.com/webmasters/tools/richsnippets">RichSnippet Tool with Walter.com Mini Surfox</a>
+					
+					<a href="http://linter.structured-data.org/?url=http%3A%2F%2Fwww.walter.com%2Fen_US%2Fproducts%2Fwelding%2Fweld-cleaning%2Fmini-surfox&commit=Submit&datafile=&content=">Structured-data.org with Walter.com Mini Surfox</a>
           <aside class="notes">
             The basic elements are itemscope and itemprop
 
@@ -475,50 +477,83 @@ TODO add google link for walter
 						Historically interwoven with RDFa, RDFa is older (like microformats but was only designed for xml/xhtml) that changed only very recently june 2012
 					</aside>
 				</section>
+				
+				
 
 				<section>
-					<h2>Intergalactic Interconnections</h2>
-					<p>
-						You can link between slides internally,
-						<a href="#/2/3">like this</a>.
-					</p>
+					<h2>RDFa lite - Examples</h2>
+					<pre class="highlight xml">
+&lt;p <span class="fragment" data-fragment-index="1"><span class="fragment highlight-current-green" data-fragment-index="2">vocab</span>=&quot;http://schema.org/&quot; <span class="fragment highlight-current-green" data-fragment-index="2">typeof</span>=&quot;Person&quot;</span>&gt;
+   My name is
+   <span class="fragment" data-fragment-index="1">&lt;span <span class="fragment highlight-current-green" data-fragment-index="3">property</span>=&quot;name&quot;&gt;</span>Manu Sporny<span class="fragment" data-fragment-index="1">&lt;/span&gt;</span>
+   and you can give me a ring via
+   <span class="fragment" data-fragment-index="1">&lt;span <span class="fragment highlight-current-green" data-fragment-index="3">property</span>=&quot;telephone&quot;&gt;</span>1-800-555-0199<span class="fragment" data-fragment-index="1">&lt;/span&gt;</span>.
+   &lt;img <span class="fragment" data-fragment-index="1"><span class="fragment highlight-current-green" data-fragment-index="3">property</span>=&quot;image&quot;</span> src=&quot;http://manu.sporny.org/images/manu.png&quot; /&gt;
+   My favorite animal is the Liger.
+&lt;/p&gt;
+          </pre>
+					
+					<a href="http://www.google.com/webmasters/tools/richsnippets?q=http%3A%2F%2Fhugo.soucy.cc%2F">Richsnippets for hugo.soucy.cc</a>
+          <aside class="notes">
+
+					</aside>
+				</section>
+				
+				<section>
+					<h2>RDFa lite - Examples</h2>
+					<pre class="highlight xml">
+&lt;p vocab=&quot;http://schema.org/&quot;
+  <span class="fragment" data-fragment-index="1"><span class="fragment highlight-current-green" data-fragment-index="2">prefix</span>=&quot;<span class="fragment highlight-current-green" data-fragment-index="3">ov</span>: http://open.vocab.org/terms/&quot; <span class="fragment highlight-current-green" data-fragment-index="4">resource</span>=&quot;#manu&quot;</span>
+  typeof=&quot;Person&quot;&gt;
+   My name is
+   &lt;span property=&quot;name&quot;&gt;Manu Sporny&lt;/span&gt;
+   and you can give me a ring via
+   &lt;span property=&quot;telephone&quot;&gt;1-800-555-0199&lt;/span&gt;.
+   &lt;img property=&quot;image&quot; src=&quot;http://manu.sporny.org/images/manu.png&quot; /&gt;
+   My favorite animal is the
+   <span class="fragment" data-fragment-index="1">&lt;span property=&quot;<span class="fragment highlight-current-green" data-fragment-index="3">ov</span>:preferredAnimal&quot;&gt;</span>Liger<span class="fragment" data-fragment-index="1">&lt;/span&gt;</span>.
+&lt;/p&gt;
+          </pre>
+					
+					<a href="http://www.google.com/webmasters/tools/richsnippets?q=http%3A%2F%2Fhugo.soucy.cc%2F">Richsnippets for hugo.soucy.cc</a>
+          <aside class="notes">
+
+					</aside>
 				</section>
 
 				<section>
-					<section id="fragments">
-						<h2>Fragmented Views</h2>
-						<p>Hit the next arrow...</p>
-						<p class="fragment">... to step through ...</p>
-						<ol>
-							<li class="fragment"><code>any type</code></li>
-							<li class="fragment"><em>of view</em></li>
-							<li class="fragment"><strong>fragments</strong></li>
-						</ol>
-
-						<aside class="notes">
-							This slide has fragments which are also stepped through in the notes window.
-						</aside>
-					</section>
-					<section>
-						<h2>Fragment Styles</h2>
-						<p>There's a few styles of fragments, like:</p>
-						<p class="fragment grow">grow</p>
-						<p class="fragment shrink">shrink</p>
-						<p class="fragment roll-in">roll-in</p>
-						<p class="fragment fade-out">fade-out</p>
-						<p class="fragment highlight-red">highlight-red</p>
-						<p class="fragment highlight-green">highlight-green</p>
-						<p class="fragment highlight-blue">highlight-blue</p>
-						<p class="fragment current-visible">current-visible</p>
-						<p class="fragment highlight-current-blue">highlight-current-blue</p>
-					</section>
+					<h2>RDFa lite - Tools</h2>
+					<p>…later as they are the same as for RDF</p>
+					<aside class="notes">
+            later with RDF
+					</aside>
 				</section>
 
 				<section>
-					<h2>Spectacular image!</h2>
-					<a class="image" href="http://lab.hakim.se/meny/" target="_blank">
-						<img width="320" height="299" src="http://s3.amazonaws.com/hakim-static/portfolio/images/meny.png" alt="Meny">
-					</a>
+					<h2>RDFa - Resume</h2>
+					<h3>Pro</h3>
+					<ul>
+    				<li>sparql endpoint</li>
+    				<li>mapping from microdata to RDFa lite</li>
+    				<li>subset of RDF</li>
+    				<li>not so dependant on schema.org as microdata</li>
+					</ul>
+					<h3>Contra</h3>
+					<ul>
+    				<li>exists since June 2012</li>
+					</ul>
+					<aside class="notes">
+						<ul>
+      				<li>it possible to transform it to a sparql endpoint TODO example</li>
+      				<li>there is a very simple mapping from microdate to rdfa lite</li>
+      				<li>it is subset of rdfa</li>
+      				<li>it is not so dependant on schema.org as microdata</li>
+					  </ul>
+					  <h3>Contra</h3>
+					  <ul>
+      				<li>exists since June 2012</li>
+					  </ul>
+					</aside>
 				</section>
 
 				<section>
@@ -548,8 +583,50 @@ TODO add google link for walter
 				</section>
 
 				<section>
-					<h1>THE END</h1>
-					<h3>BY Hakim El Hattab / hakim.se</h3>
+					<h1>Thanks</h1>
+					<h3>by Stefan Langenmaier</h3>
+				</section>
+				
+				<section>
+					<h1>Wall of links</h1>
+					<ul>
+						<li><a href="http://en.wikipedia.org/wiki/Microformat">http://en.wikipedia.org/wiki/Microformat</a></li>
+						<li><a href="http://en.wikipedia.org/wiki/Microdata_%28HTML%29">http://en.wikipedia.org/wiki/Microdata_%28HTML%29</a></li>
+						<li><a href="http://en.wikipedia.org/wiki/RDFa">http://en.wikipedia.org/wiki/RDFa</a></li>
+						<li><a href="http://de.wikipedia.org/wiki/RDFa">http://de.wikipedia.org/wiki/RDFa (stats)</a></li>
+						<li><a href="http://manu.sporny.org/2011/uber-comparison-rdfa-md-uf/">http://manu.sporny.org/2011/uber-comparison-rdfa-md-uf/</a></li>
+						<li><a href="http://www.w3.org/TR/xhtml-rdfa-primer/">http://www.w3.org/TR/xhtml-rdfa-primer/</a></li>
+						<li><a href="http://mikroformate.de/grundlagen/s5/">http://mikroformate.de/grundlagen/s5/</a></li>
+						<li><a href="http://www.w3.org/WAI/intro/aria.php">http://www.w3.org/WAI/intro/aria.php</a></li>
+						<li><a href="http://www.w3.org/TR/wai-aria-primer/">http://www.w3.org/TR/wai-aria-primer/</a></li>
+						<li><a href="http://www.w3.org/TR/microdata/">http://www.w3.org/TR/microdata/</a></li>
+						<li><a href="http://html5doctor.com/microdata/">http://html5doctor.com/microdata/</a></li>
+						<li><a href="http://www.w3.org/TR/rdf11-primer/">http://www.w3.org/TR/rdf11-primer/</a></li>
+						
+						<li><a href="http://manu.sporny.org/2013/microdata-downward-spiral/">http://manu.sporny.org/2013/microdata-downward-spiral/</a></li>
+						<li><a href="http://schema.org/">http://schema.org/</a></li>
+						<li><a href="http://www.w3.org/TR/rdfa-lite/">http://www.w3.org/TR/rdfa-lite/</a></li>
+						<li><a href="http://www.google.com/webmasters/tools/richsnippets">http://www.google.com/webmasters/tools/richsnippets</a></li>
+						<li><a href="http://validator.w3.org/nu/">http://validator.w3.org/nu/</a></li>
+						<li><a href="http://www.w3.org/2012/pyRdfa/Overview.html">http://www.w3.org/2012/pyRdfa/Overview.html</a></li>
+						<li><a href="http://rdf.greggkellogg.net/distiller">http://rdf.greggkellogg.net/distiller</a></li>
+						<li><a href="https://coffeecode.net/rdfa/codelab/">exercises https://coffeecode.net/rdfa/codelab/</a></li>
+						
+						<li><a href="http://www.w3.org/2001/sw/sweo/public/UseCases/BBC/">http://www.w3.org/2001/sw/sweo/public/UseCases/BBC/</a></li>
+						<li><a href="http://www.bbc.co.uk/ontologies">http://www.bbc.co.uk/ontologies</a></li>
+						<li><a href="http://rdfa.info/play/">Pour jouer avec RDFa http://rdfa.info/play/</a></li>
+						<li><a href="http://www.w3.org/2001/sw/wiki/RDFa">lots of tools http://www.w3.org/2001/sw/wiki/RDFa</a></li>
+						<li><a href="http://semanticweb.com/the-semantic-web-delivers-for-best-buy-so-why-not-for-your-business-too_b1093">http://semanticweb.com/the-semantic-web-delivers-for-best-buy-so-why-not-for-your-business-too_b1093</a></li>
+						<li><a href="http://manu.sporny.org/2012/mythical-differences/">http://manu.sporny.org/2012/mythical-differences/</a></li>
+						<li><a href="https://www.enov8.co.uk/web-design-blog/2014/03/17/structured-data-using-rdfa-lite/">https://www.enov8.co.uk/web-design-blog/2014/03/17/structured-data-using-rdfa-lite/</a></li>
+						<li><a href="http://rdfa.info/">http://rdfa.info/</a></li>
+						
+						<li><a href="https://news.ycombinator.com/item?id=8510401">https://news.ycombinator.com/item?id=8510401</a></li>
+						<li><a href="http://www.well.com/~doctorow/metacrap.htm">http://www.well.com/~doctorow/metacrap.htm</a></li>
+						<li><a href="http://en.wikipedia.org/wiki/ICalendar">http://en.wikipedia.org/wiki/ICalendar</a></li>
+						<li><a href="http://foaf-visualizer.gnu.org.ua/">http://foaf-visualizer.gnu.org.ua/</a></li>
+						<li><a href="http://ode.openlinksw.com/">http://ode.openlinksw.com/</a></li>
+					</ul>
 				</section>
 
 			</div>
