@@ -610,9 +610,82 @@ It contains all the things already discussed for RDFa lite.
 
 				<section>
 					<h2>RDFa - Tools</h2>
-					<p>…later as they are the same as for RDF</p>
+					<p>all the RDF tool as it can be converted (sparql and reasoner and triple stores)</p>
 					<aside class="notes">
-            later with RDF
+            to many to enumerate, but I will show sparql
+					</aside>
+				</section>
+				
+				<section>
+					<h2>RDFa - Extraction</h2>
+					<p>
+            <a href="http://rdf-translator.appspot.com/">rdf translator (Python)</a>
+          </p>
+					
+          <aside class="notes">
+						The data can be transformed into any other RDF foramt
+					</aside>
+				</section>
+				
+				<section>
+					<h2>RDFa - Sparql</h2>
+					<pre class="">
+SELECT *
+FROM &lt;http://rdf-translator.appspot.com/convert/detect/xml/http%3A%2F%2Fhugo.soucy.cc%2F&gt;
+WHERE {?s ?p ?o}
+          </pre>
+					
+          <aside class="notes">
+						looks a little bit like sql
+						the behaviour is a little bit different, variables start with a question mark
+						in this case i have only variables
+						so they will match me everything
+						that might be a lot, so I want to filter it
+					</aside>
+				</section>
+				
+				<section>
+					<h2>RDFa - Sparql</h2>
+					<pre class="">
+PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+SELECT *
+FROM &lt;http://rdf-translator.appspot.com/convert/detect/xml/http%3A%2F%2Fhugo.soucy.cc%2F&gt;
+WHERE {&lt;http://hugo.soucy.cc/#hs&gt; foaf:interest ?o}
+          </pre>
+					
+          <aside class="notes">
+						here I want to filter all interest of hs
+						
+						so this is already pretty cool
+						
+						lets state the difference to a database besides the behaviour,
+						
+						sparql is only the engine for collecting and filter the data here
+						the data itself, the records are webpages, the database records link to each other
+						the database is truely decentralized
+					</aside>
+				</section>
+				
+				<section>
+					<h2>RDFa - Sparql</h2>
+					<pre class="">
+SELECT *
+FROM &lt;http://rdf-translator.appspot.com/convert/detect/xml/http%3A%2F%2Fhugo.soucy.cc%2F&gt;
+WHERE {
+  ?s &lt;http://xmlns.com/foaf/0.1/interest&gt;  ?o .
+  
+  SERVICE &lt;http://dbpedia.org/sparql&gt; {
+    ?o &lt;http://dbpedia.org/ontology/abstract&gt; ?do .
+  }
+
+  FILTER(langMatches(lang(?do), "DE"))
+}
+          </pre>
+					
+          <aside class="notes">
+						but there is more, even the engines can be decentralized
+						here we as the sparql endpoint of dbpedia for a short abstract of the interest
+						but in another language
 					</aside>
 				</section>
 
@@ -698,9 +771,8 @@ It contains all the things already discussed for RDFa lite.
 		      				<li>CVs</li>
 								</ul>
     				<li>can we use this for clients ?</li>
-    				<li>to opt for microformats or rdfa?</li>
-
-    				<li>add to the conacts section/annuaire</li>
+    				
+    				<li>add to the contacts section/annuaire</li>
     				<li>footer for the license</li>
 					</ul>
           <aside class="notes">
