@@ -6,7 +6,7 @@
 
 		<title>Microformats/Microdata/RDFa(lite)</title>
 
-		<meta name="description" content="A survey on the current state of microformats, microdata and RDFa (lite)">
+		<meta name="description" content="Un aperçu sur l'état actuelle de microformats, microdata and RDFa (lite)">
 		<meta name="author" content="Stefan Langenmaier">
 
 		<meta name="apple-mobile-web-app-capable" content="yes" />
@@ -40,13 +40,12 @@
 
 		<div class="reveal">
 
-			<!-- Any section element inside of this container is displayed as a slide -->
 			<div class="slides">
 				<section>
-					<h1>Microformats / Microdata / RDFa (lite) - a survey</h1>
-					<h3>This must be the worst title in the history of slides</h3>
+					<h1>Microformats / Microdata / RDFa (lite) - un aperçu</h1>
+					<h3>Il faut que ce soit le titre le pire possible</h3>
 					<p>
-						<small>Created by <a href="https://github.com/stefan-langenmaier/reveal.js">Stefan Langenmaier</a></small>
+						<small>Créer par <a href="https://github.com/stefan-langenmaier/reveal.js">Stefan Langenmaier</a></small>
 					</p>
 				</section>
 
@@ -58,11 +57,26 @@
 						  <li>folksonomies</li>
 						  <li>metadata markup/semantic web</li>
 						  <li>social</li>
+						  <li>distributed</li>
 						  <li>...</li>
 						</ul>
 					</p>
 
 					<aside class="notes">
+						Au début de buzz au tour le mot clé "Web 2.0", les mots suivants avaient environ la même importance
+						
+						et on a expecté d'améliorer tous les points.
+						
+						Je voudrais commencer avec le point social. Ici le monde a réussi. Maintenant ma mère et capable d'envoyer un smilie quand elle veux de n'importe ou.
+						
+						Les mash-ups par exemples étaient très populaire pour un temps court, mais à cause de plusiers problem (interoperabilité, licenses, technologies) c'est plus une niche pour des data scientist scientist spécialisé. Il semble que c'est un nouvelle profession.
+						
+						Et si on regarde le point distributed on a aggraver la situation. Ajourd'hui on a des silos immense. Ici je parle des silos mechant/férme, mais aussi de silo ouvert comme wikipedia.
+						
+						Qu'est-ce que le semantic web?
+						
+						Un web qui est enrichi avec des metadonné pour permettre les machine à comprendre le web. Ça veux dire les metadonnés sont des information supplementaires spécifier par les humaines pour aider les ordinateurs/logiciel avec la comprehension.
+						
 						In the beginning of the buzzword time for Web 2.0 the following terms were of equal importance
 						* mash-ups
 						* folksonmies
@@ -75,11 +89,10 @@
 					</aside>
 				</section>
 
-				<!-- Example of nested vertical slides -->
 				<section>
-						<h2>Where are we?</h2>
+						<h2>On est ou?</h2>
 						<p>
-							A lot has improved since the beginning of the Web 2.0
+							Beaucoup a changé et amélioré depuis le début de Web 2.0
 						</p>
 						<ul>
 						  <li>openstreet map</li>
@@ -90,24 +103,45 @@
 						</ul>
 
 					<aside class="notes">
+						C'est sont le vraiment bon sites. Ils veulent libérer et structurer les information pour tout le monde. Mais ils sont encore très centraliser.
+						
+						Ces sites ne sont pas les problèmes au contraire ils fournissent beaucoup des passerelles ouvert. Mais pourquoi c'est nécessaire d'avoir un grand site et pas plusieurs petit ? Pour ces sites ça a surement beaucup de raison technique.
+						
+						Si on regarde l'état des réseaux sociaux le monde est plus triste.
+						
 						But I like to argue that these are still centralised pieces of information. For the here presented this might be for technical reason. And everyone has the possibility to download theses dataset. If we look at social networking sites, the informations are more locked in then ever,
 					</aside>
 				</section>
 
 				<section>
-					<h2>Reasons</h2>
+					<h2>Raison</h2>
 					<p>
-						Theses are all speculative
+						Avertissement : tous les raisons sont speculatives
 					</p>
 					<ul>
-					  <li>ivory tower (from scientist for scientist, non inclusive)</li>
-            <li>no incentives (the people doing the work don't profit from their work)</li>
-            <li>technical difficulties</li>
-            <li>complexity</li>
-            <li>specialisation (languages, tools, queries, interfaces)</li>
-            <li>...</li>
+					  <li>pas de motivation</li>
+            <li>technical difficulties/complexity</li>
+            <li>ivory tower</li>
+            <li>specialisation</li>
 					</ul>
 					<aside class="notes">
+						Pourquoi on n'a pas fait le même progrès pour le web semantique comme pour le web sociaux
+						
+						Tous les raisons sont speculatives et la source est mon avis et la source de motivation pour la présentation
+						
+						Raison pour travailler pour publier de metadonné sur un service
+						<ul>
+							<li>les gens qui fait le travail ne peux pas profiter de ce travail. ça a changer un peux avec l'inclusion de quelques metadonnés dans les engines de recherche</li>
+		          <li>peut-être quelques problèmes sont plus facile à resoudre dans une facon centraliser</li>
+		          <li>la communauté au tour. c'était fait par les scientist pour les scientist. il semble qu'on voulais inclurer seulement les machines, mais les donnés sont encore créer par les humains. en general non inclusive. souvent le problème semble comme des excercise theoretique. C'est un problème dur, on veut un base soldie (theoretique) et on veux permettere facilement la création à tout le monde.</li>
+		          <li>la seule base commune au début était xml et url. il faut on apprennes de nouvelle langage (pour la description et pour les rêquetes), des outils, et des passerelles</li>
+		          <li>...</li>
+						</ul>
+						
+						On autre problème est que tous ces problèmes sont entrelacé.
+						
+						L'ensemble a créer comme un problème de la poulet et l'oeuf. Il n'était pas possible encore de joindre la masse critique
+						
 						These reasons are all highly interwoven and hard problems. There are a lot of specifications (that existed for a long time) but they often seemed more like a theoretical exercise than help. This is a hard problem, putting the ideas on a sound base vs talking to the end user about first order logic.
 						People don really have/had a reason to do all that metadata markup, as  not they were profiting from it but others. Possibly the reason why it is still hard to do mashups.
 						Some problems are just easier solved when done centralized like mapping.
@@ -117,9 +151,9 @@
 				</section>
 
 				<section>
-					<h2>Survey</h2>
+					<h2>Aperçu</h2>
 					<p>
-						about approaches to solve these problems
+						Les approaches differentes pour resoudres les problèmes
 					</p>
 					<ul>
 					  <li>microformats</li>
@@ -128,9 +162,16 @@
             <li>RDFa</li>
 					</ul>
 					<p>
-					Their common apporach is to use HTML as basis for the embedding extra data. They want to avoid using a special format. Their goal is on reusing existing tools.
+						Tous les approche présenter utilise HTML comme base
 					</p>
 					<aside class="notes">
+						Ils veulent eviter d'utiliser un deuxieme format. Le but est de rutiliser les outils existants. Les outils pour créer, publier et stocker les information. Au même temps les informations sont à côté les informations humain.
+						
+						Les differences entre les approches c'est quoi est possible à embedder et comment c'est fait.
+						
+						L'ordre de point est un peu l'ordre historique et c'est aussi l'ordre dans quelle on va les regarder.
+					
+						Their common apporach is to use HTML as basis for the embedding extra data. They want to avoid using a special format. Their goal is on reusing existing tools.
 						There were a lot of people who saw these problems and tried to solve the problems.
 						Reusing already existing methods for publishing and augmenting already exisiting data.
 						Differences is what they can embed and how.
@@ -139,30 +180,52 @@
 
 				<section>
 					<h2>Microformats</h2>
+					<ul>
+					  <li>l'approche le plus vieux</li>
+            <li>rutiliser attribus HTML</li>
+            <li>adapter les specification existant</li>
+					</ul>
 					<p>
-						They are the oldest approach to embed metadata in the HTML attributes
+						L'autorité central est sur : http://microformats.org/
 					</p>
-					<p>
-						They are thaking existing formats and specifications and simplify them to be used in HTML attributes.
-					</p>
-					<p>
-						The central authority is the following website: http://microformats.org/
-					</p>
+
+					<aside class="notes">
+						<p>
+							C'est l'approche le plus vieux. Il rutilisent les attribut standard dans le balise HTML et donne les un semantique speciale.
+							Pour les formats ils rutilisent les specification existants.
+							
+							L'autorité central est sur : http://microformats.org/
+						</p>
+						
+						<p>
+							They are the oldest approach to embed metadata in the HTML attributes
+							They are taking existing formats and specifications and simplify them to be used in HTML attributes.
+							The central authority is the following website: http://microformats.org/
+						</p>
+						
+						Suivant les nom des specifications pour un format de metadonné va être vocabulaires.
+						Il y a plusieurs et dans la lingo de microformat c'est "profile", mais pour être consistent on va utiliser vocabulaire
+					</aside>
 				</section>
 
 				<section>
-					<h2>Microformats - Vocabularies</h2>
+					<h2>Microformats - vocabulaires</h2>
 					<ul>
-						<li>hCalendar - events</li>
-            <li>hCard - people, organizations, contacts</li>
-            <li>rel-license - licensed content</li>
-            <li><em>rel-nofollow</em> - links in untrusted 3rd party content</li>
-            <li>rel-tag - tag posts and pages by subject</li>
+						<li>hCalendar - évenements</li>
+            <li>hCard - contacts</li>
+            <li>rel-license - licenses</li>
+            <li><em>rel-nofollow</em> - liens vers les contenus externe</li>
+            <li>rel-tag - des tag pour les posts et les pages</li>
             <li>...</li>
 					</ul>
 					<aside class="notes">
-						Vocabularies are the most general term for formats or specifications in this context so I will stick to it to not be to ambiguous.
+						Il y a quelques plus sur le site
 						
+						Le vocabulaires pour hCalendar est basé sur ics et hCard sur vCard.
+						
+						The rel-nofollow est encore très populaire ajourd'hui.
+						
+						Vocabularies are the most general term for formats or specifications in this context so I will stick to it to not be to ambiguous.
 						The rel-nofollow is probably still nowadays the most used markup form the microformats, we see it in a second in the examples.
 					</aside>
 				</section>
@@ -179,12 +242,12 @@
             <li>rel-design-pattern</li>
 					</ul>
 					<aside class="notes">
-
+						Parce il utilise seulement le attribus html les microformats on dessiner aussi de Design Pattern pour eviter quelques problèms avec de vieux standard de HTML
 					</aside>
 				</section>
 
 				<section>
-					<h2>Microformats - Examples</h2>
+					<h2>Microformats - exemples</h2>
 					<h3>hcalendar</h3>
 					<pre class="highlight xml">
 &lt;span <span class="fragment" data-fragment-index="2">class=&quot;vevent&quot;</span>&gt;
@@ -197,8 +260,19 @@
   in <span class="fragment" data-fragment-index="1">&lt;span <span class="fragment" data-fragment-index="3">class=&quot;location&quot;</span>&gt;</span>San Francisco, CA, USA<span class="fragment" data-fragment-index="1">&lt;/span&gt;</span>.
 &lt;/span&gt;
           </pre>
-					<p>In the wild: <a href="https://wiki.mozilla.org/Events">Mozilla Events</a> (actually already in the microformats2 version)</p>
+					<p>In the wild: <a href="https://wiki.mozilla.org/Events">Mozilla Events</a> (déjà dans la version microformats2)</p>
           <aside class="notes">
+          	Comme déjà dit hCalendar est basé sur iCalendar. Beaucoup des applications sont capable de lire ce format (Thunderbird, Outlook, Evolution). C'est un standard.
+          	
+          	Ils ont simplifie le format pour être capable d'expresser dans les attribus HTML.
+          	
+          	Au début on peut voir HTML normale. Peut-être avec un peu trop de white-space, mais l'affichage est claire/comprehensible pour un humaine.
+          	
+          	Maintenant on veux ajouter des metadonnées. On fait des balise extra autour les section on veux specifier plus en details. On ajout l'attribut class avec les valeurs predefini par le vocabulaire. L'organisation est hierarchique.
+          	Ça donne un evenement avec un sommaire, un début et un location.
+          	          	
+          	À la fin on peut voir aussi un exemple pour le date-design-pattern avec HTML5.
+          
             One example is hcalendar, it is a modification of the vCalendar format which is an open, standard exchange format for calendar information. A lot of applications can read it like Thunderbird, Outlook,… but the details would be too much, but the main type in that format is vevent.
             So they took that format and simplified it to fit into HTML.
 						At the end we can also see an example of the date-design-pattern
@@ -206,8 +280,8 @@
 				</section>
 
 				<section>
-					<h2>Microformats - Examples</h2>
-					<h3>hcard</h3>
+					<h2>Microformats - exemples</h2>
+					<h3>hCard</h3>
 					<pre class="highlight xml">
 &lt;address <span class="fragment" data-fragment-index="1">class=&quot;vcard&quot;</span>&gt;
  &lt;a <span class="fragment" data-fragment-index="1">class=&quot;<span class="fragment zoom-in highlight-current-green" data-fragment-index="2">fn</span> <span class="fragment zoom-in highlight-current-green" data-fragment-index="3">url</span>&quot;</span> href=&quot;<span class="fragment zoom-in highlight-current-green" data-fragment-index="3">http://tantek.com/</span>&quot;&gt;<span class="fragment zoom-in highlight-current-green" data-fragment-index="2">Tantek &Ccedil;elik</span>&lt;/a&gt;
@@ -216,6 +290,12 @@
           </pre>
 					<p>In the wild: <a href="http://en.wikipedia.org/wiki/Jean-Paul_Sartre">Wikipedia</a></p>
           <aside class="notes">
+          	hCard est pour des personne et des organisation
+          	
+          	on utilise la balise addresse autour, mais ce n'est pas important, les valeurs dans les attribus sont important
+          	
+          	dans ce cas là on peut mettre deux. un pour l'url un pour le nom.
+          	
             For people and organizations.
 
 If address tag is available it should be used. No problem if not.
@@ -223,8 +303,8 @@ If address tag is available it should be used. No problem if not.
 				</section>
 
 				<section>
-					<h2>Microformats - Examples</h2>
-					<h3>hcard - bigger</h3>
+					<h2>Microformats - exemples</h2>
+					<h3>hCard - plus grand</h3>
 					<pre class="highlight xml">
 &lt;div class=&quot;vcard&quot;&gt;
   &lt;a class=&quot;fn org url&quot; href=&quot;http://www.commerce.net/&quot;&gt;CommerceNet&lt;/a&gt;
@@ -248,17 +328,23 @@ If address tag is available it should be used. No problem if not.
 &lt;/div&gt;
           </pre>
           <aside class="notes">
-            No problem if not.
+            et bien sur on peut faire cela plus complexe
 					</aside>
 				</section>
 
 				<section>
-					<h2>Microformats - Examples</h2>
+					<h2>Microformats - exemples</h2>
 					<h3>rel - nofollow</h3>
 					<pre class="highlight xml">
 &lt;a <span class="fragment" data-fragment-index="1">rel=&quot;nofollow&quot;</span> href=&quot;http://badexample.org/&quot;&gt;badexample.org&lt;/a&gt;
 					</pre>
           <aside class="notes">
+          	Peut-être le "Microformat" est plus connu pour le rel nofollow dans le url. Parce que c'est respecté par les engine de recherche.
+          	
+          	On utilise le markup si on ne veux pas aider une page avec son ranking ou si on veux justement distancer d'une autre page.
+          	
+          	C'est par exemple utiliser sur flicker et Twitter pour les liens externes.
+          	
             Most famous for http://microformats.org/profile/rel-nofollow
 
 						used to link to websites that you don't wanto follow by search engines. When you don't want to endorse a bad site with your good ranking.
@@ -269,57 +355,75 @@ If address tag is available it should be used. No problem if not.
 				</section>
 
 				<section>
-					<h2>Microformats - Tools</h2>
-					<h3>Client/Browser</h3>
+					<h2>Microformats - outils</h2>
+					<h3>Client/Navigateur</h3>
 					<ul>
 						<li><a href="https://addons.mozilla.org/en-US/firefox/addon/operator">Operator Addon</a></li>
 					</ul>
-					<h3>Server</h3>
+					<h3>Serveur</h3>
 					<ul>
 						<li><a href="http://h2vx.com/vcf/">h2vx</a></li>
             <li><a href="http://microformats.org/code/hcard/creator">hcard creator</a></li>
 					</ul>
 					<aside class="notes">
+						On a déjà vu operator dans les liens exemplaire.
+						
+						Les deux autres sont de services web pour télécharger et créer des contenu.
+						
             Operator was already used for the previous links
             h2vx is a webservice that can do conversions on the fly
 					</aside>
 				</section>
 
 				<section>
-					<h2>Microformats - Resume</h2>
+					<h2>Microformats - résumé</h2>
 					<h3>Pro</h3>
 					<ul>
-						<li>oldest approach</li>
-    				<li>"simplest" approach</li>
-    				<li>has comments on accesibility</li>
+						<li>l'approche le plus vieux</li>
+    				<li>le plus simple</li>
+    				<li>commentaires sur l'accesibilité</li>
 					</ul>
-					<h3>Contra</h3>
+					<h3>Contre</h3>
 					<ul>
-						<li>reinventing the specs</li>
-    				<li>struggling with html5</li>
-    				<li>actual usage is dropping</li>
+						<li>reinventation de vocabulaire</li>
+    				<li>lent avec HTML5</li>
+    				<li>l'usage est diminué</li>
 					</ul>
 					<aside class="notes">
+						<h3>Pro</h3>
+					  <ul>
+						  <li>C'est l'approche le plus vieux, et il a eu l'usage plus grand pour quelques temps. Et </li>
+      				<li>le simple dans le sense que les possibilité déjà existant sont exploiter</li>
+      				<li>il y a des commentaire sur l'accesibilité dans la specification (pour de text reader et quelle elements doivent être visible)</li>
+					  </ul>
+					  <h3>Contre</h3>
+						<ul>
+							<li>Ils reinventent les vocabulaire. il n y a aucun facon de integrer l'ecosystème plus grand de la semantic web</li>
+		  				<li>Ils sont lent avec l'adoption html5. Il y a seulement de drafts pour le vocabulaires. Peut-être c'est seulement prudent.</li>
+		  				<li>Effectivement l'usage est diminué</li>
+						</ul>
+						
+						<h3>Pro</h3>
 					  <ul>
 						  <li>oldest approach (had for some times the biggest usage)</li>
       				<li>"simplest" approach (reusing existing html attributes class could be used at the same time for styling)</li>
       				<li>has comments on accesibility (text reader and which elements should be visible)</li>
 					  </ul>
 					  <h3>Contra</h3>
-					<ul>
-						<li>reinventing the specs, no formal way to see it in the bigger ecosystem of the semantic web</li>
-    				<li>struggling with html5 (no new specifications released, only drafts)</li>
-    				<li>actual usage is dropping relative to others</li>
-    				<li>there is microformats2 which is stable but all vocabularies are considered a draft</li>
-					</ul>
+						<ul>
+							<li>reinventing the specs, no formal way to see it in the bigger ecosystem of the semantic web</li>
+		  				<li>struggling with html5 (no new specifications released, only drafts)</li>
+		  				<li>actual usage is dropping relative to others</li>
+		  				<li>there is microformats2 which is stable but all vocabularies are considered a draft</li>
+						</ul>
 					</aside>
 				</section>
 
 				<section>
 					<h2>Microdata</h2>
 					<ul>
-            <li>offical standard of <a href="http://www.w3.org/TR/microdata/">W3</a></li>
-            <li>collaboration of
+            <li>standard officielle de <a href="http://www.w3.org/TR/microdata/">W3</a></li>
+            <li>une collaboration de
 							<ul>
 				        <li>Google</a></li>
 				        <li>Yahoo of</li>
@@ -327,11 +431,19 @@ If address tag is available it should be used. No problem if not.
 				        <li>Yandex</li>
 							</ul>
 						</li>
-            <li>lots of vocabularies at <a href="http://schema.org">schema.org</a></li>
-            <li>browser support for the dom api</li>
-						<li>designed for html5</li>
+            <li>beaucoup de vocabularies sous <a href="http://schema.org">schema.org</a></li>
+            <li>support pour l'api de dom de navigateur</li>
+						<li>dessiner pour html5</li>
 					</ul>
           <aside class="notes">
+          	C'est un standard officielle de W3, mais les seules vocabulaires viennent de schema.org
+          	
+          	Le schema.org est principalement und collaboration de ces organisation. Donc, aucun surprise que c'est dessiner pour les engines de recherche. Microdata était la façon préférée pour le RichSnippt dans les resultat de Google. Et c'est encore supporté.
+          	
+          	Il y a/ avait du support directement dans le navigateurs, mais il semble que ça va changer. Mais il y a déjà de code JavaScript qui peut replacer cet fonctionnalité.
+          	
+          	C'est dessiner pour HTML5, mais aussi seulement HTML5.
+          
           	Is an offical standard of W3 (http://www.w3.org/TR/microdata/), but the only implementation of profiles/ontologies is from schema.org.
 
 						This (schema.org) is moslty a collaboration from Google, Yahoo!, Microsoft and Yandex. So it's to no surprise that it's mostly geared towards search engines. And microdata was the preferred way for Google's rich snippets (it is still supported).
@@ -343,7 +455,7 @@ designed for html5 (and only html5)
 				</section>
 
 				<section>
-					<h2>Microdata - Examples</h2>
+					<h2>Microdata - exemples</h2>
 					<h3>basic syntax</h3>
 					<pre class="highlight xml">
 &lt;div <span class="fragment" data-fragment-index="1"><span class="fragment highlight-current-green" data-fragment-index="2">itemscope</span></span>&gt;
@@ -358,12 +470,19 @@ designed for html5 (and only html5)
 &lt;/div&gt;
           </pre>
           <aside class="notes">
+          	Ici on a la description d'une film et on veux enrichi les information pour les engine de recherche.
+          	
+          	Il y a deux attribus principalement, itemscope, ça va initilisier une section avec les metadonnées.
+          	Pour les valeurs on mettre un balise avec l'attribut itemprop autour.
+          	
+          	C'est une exemple à la base, pour mettre ça dans un contexte il y a une troisième attribut.
+          	
             The basic elements are itemscope and itemprop
 					</aside>
 				</section>
 
 				<section>
-					<h2>Microdata - Examples</h2>
+					<h2>Microdata - exemples</h2>
 					<h3>vocabularies</h3>
 					<pre class="highlight xml">
 &lt;div itemscope <span class="fragment" data-fragment-index="1"><span class="fragment highlight-current-green" data-fragment-index="2">itemtype</span>=&quot;http://schema.org/Movie&quot;</span>&gt;
@@ -377,14 +496,13 @@ designed for html5 (and only html5)
   &lt;/a&gt;
 &lt;/div&gt;
           </pre>
-TODO add google link for walter
           <aside class="notes">
-            to give these metadata meaning there are predefined types on http://schema.org or http://getschema.org
+            Avec l'attribut itemtype et une url on peut utlisier de vocabulaires differentes.
 					</aside>
 				</section>
 
 				<section>
-					<h2>Microdata - Examples</h2>
+					<h2>Microdata - exemples</h2>
 					<h3>embedding</h3>
 					<pre class="highlight xml">
 &lt;div itemscope itemtype=&quot;http://schema.org/Movie&quot;&gt;
@@ -392,7 +510,8 @@ TODO add google link for walter
   &lt;div itemprop=&quot;director&quot; <span class="fragment" data-fragment-index="1"><span class="fragment highlight-current-green" data-fragment-index="2">itemscope itemtype</span>=&quot;http://schema.org/Person&quot;</span>&gt;
   Director:
     &lt;span <span class="fragment highlight-current-green" data-fragment-index="2">itemprop</span>=&quot;name&quot;&gt;James Cameron&lt;/span&gt;
-    (born &lt;span <span class="fragment highlight-current-green" data-fragment-index="2">itemprop</span>=&quot;birthDate&quot;&gt;<span class="fragment highlight-current-green" data-fragment-index="3">August 16, 1954</span>&lt;/span&gt;)
+    (born &lt;time datetime="1954-08-16"
+        <span class="fragment highlight-current-green" data-fragment-index="2">itemprop</span>=&quot;birthDate&quot;&gt;<span class="fragment highlight-current-green" data-fragment-index="3">August 16, 1954</span>&lt;/time&gt;)
   &lt;/div&gt;
   &lt;span itemprop=&quot;genre&quot;&gt;Science fiction&lt;/span&gt;
   &lt;a href=&quot;/movies/avatar-theatrical-trailer.html&quot; itemprop=&quot;trailer&quot;&gt;
@@ -400,10 +519,19 @@ TODO add google link for walter
   &lt;/a&gt;
 &lt;/div&gt;
           </pre>
-					<a href="http://www.google.com/webmasters/tools/richsnippets">RichSnippet Tool with Walter.com Mini Surfox</a>
-					
-					<a href="http://linter.structured-data.org/?url=http%3A%2F%2Fwww.walter.com%2Fen_US%2Fproducts%2Fwelding%2Fweld-cleaning%2Fmini-surfox&commit=Submit&datafile=&content=">Structured-data.org with Walter.com Mini Surfox</a>
+					<p>
+          	On a utlisé Microdata pour le projet <a href="http://www.google.com/webmasters/tools/richsnippets">Walter.com</a>
+          </p>
+          <p>
+          	Autre service	<a href="http://linter.structured-data.org/?url=http%3A%2F%2Fwww.walter.com%2Fen_US%2Fproducts%2Fwelding%2Fweld-cleaning%2Fmini-surfox&commit=Submit&datafile=&content=">structured-data.org</a>
+					</p>
           <aside class="notes">
+          	On peut nicher des autres types metadonneé. Et parce que c'est seulement disponible pour HTML5 on peut toujour utliser les bonnes balises, comme address ou time.
+          	
+          	Comme exemple, j'ai fait l'analyse avec un outil de Google pour un projet qu'on a fini recemment Walter.com.
+            
+            On a decrit les produit avec des metadonnés et maintenant Google et capable de trouver facilement des informations supplementaires.
+
             The basic elements are itemscope and itemprop
 
 						for date and time one can use the new html5 tags as show for microformats
@@ -411,16 +539,16 @@ TODO add google link for walter
 				</section>
 
 				<section>
-					<h2>Microdata - Tools</h2>
-					<h3>Client/Browser</h3>
+					<h2>Microdata - outils</h2>
+					<h3>Client/Navigateur</h3>
 					<ul>
 						<li><a href="https://github.com/foolip/microdatajs">microdata.js</a></li>
 					</ul>
-					<h3>Server</h3>
+					<h3>Serveur</h3>
 					<ul>
 						<li><a href="http://www.google.com/webmasters/tools/richsnippets">RichSnippet Tool</a></li>
             <li><a href="http://foolip.org/microdatajs/live/">microdata.js live</a></li>
-						<li><a href="http://schema.rdfs.org/tools.html">rdfs tools</a></li>
+						<li><a href="http://linter.structured-data.org">structured-data.org</a></li>
 					</ul>
 					<aside class="notes">
             microdata.js is a jquery plugin
@@ -612,6 +740,7 @@ It contains all the things already discussed for RDFa lite.
 					<h2>RDFa - Tools</h2>
 					<p>all the RDF tool as it can be converted (sparql and reasoner and triple stores)</p>
 					<aside class="notes">
+					<li><a href="http://schema.rdfs.org/tools.html">rdfs tools</a></li>
             to many to enumerate, but I will show sparql
 					</aside>
 				</section>
