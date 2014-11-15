@@ -551,6 +551,12 @@ designed for html5 (and only html5)
 						<li><a href="http://linter.structured-data.org">structured-data.org</a></li>
 					</ul>
 					<aside class="notes">
+						microdata.js est un plugin pour jquery, qui permet d'access au l'api dom. Mais il ja aussi un webservice qui ermettre de afficher le données dans les page avec microdata
+						
+						rich snippet tool est fait par Google pour la vérification des données
+						
+						structured-data.org est un autre service web
+						
             microdata.js is a jquery plugin
 
 						rich snippet is a verification tool from google
@@ -562,17 +568,31 @@ designed for html5 (and only html5)
 					<h2>Microdata - Resume</h2>
 					<h3>Pro</h3>
 					<ul>
-    				<li>html5, separtion machine/human readable</li>
-    				<li>nestable</li>
-    				<li>lots of simple ontologies</li>
-    				<li>data exportable as rdf and other formts via tools</li>
+    				<li>HTML5</li>
+    				<li>possible de nicher</li>
+    				<li>ontologies simple</li>
+    				<li>export vers RDF</li>
 					</ul>
-					<h3>Contra</h3>
+					<h3>Contre</h3>
 					<ul>
-    				<li>no offical mapping to rdf</li>
-    				<li>unncessary constructs in markup</li>
+    				<li>aucun relation officielle entre RDF</li>
+    				<li>markup unecessaire</li>
 					</ul>
 					<aside class="notes">
+						<h3>Pro</h3>
+						<ul>
+		  				<li>pour html5 et avec il y a automatiquement une seperation entre les valeurs pour les machines et les humaines</li>
+		  				<li>c'est facilement à nicher</li>
+		  				<li>déjà beaucoup des ontologies simple et prefait</li>
+		  				<li>Une transformation vers RDFa lite est possible dans une façon automatisé</li>
+						</ul>
+						<h3>Contre</h3>
+						<ul>
+		  				<li>il n'y a aucun relation entre RDF, c'est seulement une direction</li>
+		  				<li>il y a des construction dans le markup qui ne sont pas necessaires</li>
+						</ul>
+						
+						<h3>Pro</h3>
 						<ul>
 		  				<li>for html5</li>
 		  				<li>tahnks to html 5 seperation between machine readable and human readble</li>
@@ -591,18 +611,33 @@ designed for html5 (and only html5)
 				<section>
 					<h2>RDFa lite</h2>
 					<ul>
-            <li>offical standard of <a href="http://www.w3.org/TR/rdfa-lite/">W3</a></li>
-						<li>simpler than microdata</li>
-						<li>compatible to microdata vocabularies</li>
-						<li>subset of RDFa</li>
-            <li>supported by Google</li>
-            <li>lots of vocabularies at <a href="http://schema.org">schema.org</a></li>
-						<li>designed for html5</li>
+						<li>sous-ensemble de RDFa</li>
+            <li>standard officiel de <a href="http://www.w3.org/TR/rdfa-lite/">W3</a></li>
+						<li>plus simple que le Microdata</li>
+						<li>supporter par Google</li>
+						<li>compatible avec les vocabularies</li>
+            <li>beaucoup de autres vocabularies</li>
+						<li>dessiner pour html5</li>
 					</ul>
           <aside class="notes">
-          	RDFa Lite consists of five simple attributes; vocab, typeof, property, resource, and prefix. RDFa 1.1 Lite is completely upwards compatible with the full set of RDFa 1.1 attributes. This means that if an author finds that RDFa Lite isn't powerful enough, transitioning to the full version of RDFa is just a matter of adding the more powerful RDFa attributes into the existing RDFa Lite markup.
-
-						Historically interwoven with RDFa, RDFa is older (like microformats but was only designed for xml/xhtml) that changed only very recently june 2012
+          	Pour la prochaine section je vais commencer par RDFa lite, parce que c'est un vrai sous-ensemble de RDFa
+          	
+          	Donc, c'est quoi. C'est aussi un standard de W3.
+          	
+          	C'est un peu plus claire comme le Microdata, la recherche de Google soutien aussi RDFa lite, tous le vocabulaires de schema.org sont compatible, mais il y a aussi beaucoup des autres vocabulaires déjà fait pour RDF.
+          	
+          	Et c'est aussi dessiner pour HTML5, c'est la raison pourquoi ça existes seulement depuis 2012.
+          	
+          	RDFa lite cotien cinq attributs
+          	* vocab
+          	* typeof
+          	* property
+          	* resource 
+          	* prefix
+          	
+          	On va les regarder dans les examples suivants.
+          	
+          	RDFa Lite consists of five simple attributes; vocab, typeof, property, resource, and prefix. 
 					</aside>
 				</section>
 
@@ -619,9 +654,11 @@ designed for html5 (and only html5)
 &lt;/p&gt;
           </pre>
 					
-					<a href="http://www.google.com/webmasters/tools/richsnippets?q=http%3A%2F%2Fhugo.soucy.cc%2F">Richsnippets for hugo.soucy.cc</a>
+					
           <aside class="notes">
-
+						Ici on peut voir l'information concernant une personne. On veut ajouter les metadonnées. Les premiers deux choses ses sont les attributs pour le context. vocab ça define le default pour la base de type suivant et le type est une personne. on pourrais mettre aussi l'url absolu dans le type.
+						
+						Pour les valeurs, ça fonctionne avec le même principe comme pour le microdata. il y a des properties differents.
 					</aside>
 				</section>
 				
@@ -641,25 +678,30 @@ designed for html5 (and only html5)
 &lt;/p&gt;
           </pre>
 					
-					<a href="http://www.google.com/webmasters/tools/richsnippets?q=http%3A%2F%2Fhugo.soucy.cc%2F">Richsnippets for hugo.soucy.cc</a>
+					<a href="http://www.google.com/webmasters/tools/richsnippets?q=http%3A%2F%2Fhugo.soucy.cc%2F">Richsnippets</a> for <a href="http://hugo.soucy.cc/">hugo.soucy.cc</a>
           <aside class="notes">
-
+						Mais dans cette exemple on aussi une information laquelle n'est pas possible exprimer dans le schema de Person. Et avec RDFa lite, ce pas seulement possible de nicher des information mais aussi de melanger.
+						Pour ça on peut ajouter des autres vocabulaires, non-default, qui sont préfixé.
+						
+						Dans ce cas là c'est la open vocab avec le properties preferredAnimal.
+						
+						Et pour completer j'ai ajouter la cinquième attribut resource. Avec ça on peut nommer une section de metadonné. C'est comme id pour les balise HTML. 
 					</aside>
 				</section>
 
 				<section>
-					<h2>RDFa lite - Tools</h2>
-					<p>…later as they are the same as for RDF</p>
+					<h2>RDFa lite - outils</h2>
+					<p>…plus tard parce qu'on peut utiliser le même comme pour RDF </p>
 					<aside class="notes">
-            later with RDF
+            On va faire ça­...
 					</aside>
 				</section>
 
+<!--
 				<section>
-					<h2>RDFa lite - Resume</h2>
+					<h2>RDFa lite - résumé</h2>
 					<h3>Pro</h3>
 					<ul>
-    				<li>sparql endpoint</li>
     				<li>mapping from microdata to RDFa lite</li>
     				<li>subset of RDF</li>
     				<li>not so dependant on schema.org as microdata</li>
@@ -681,15 +723,27 @@ designed for html5 (and only html5)
 					  </ul>
 					</aside>
 				</section>
+-->
 
 				<section>
 					<h2>RDFa</h2>
 					<ul>
-            <li>offical standard of <a href="http://www.w3.org/TR/rdfa-primer/">W3</a></li>
-						<li>contains RDFa lite</li>
-						<li>was formerly only available for XHTML</li>
+            <li>standard officiel de <a href="http://www.w3.org/TR/rdfa-primer/">W3</a></li>
+						<li>contient RDFa lite</li>
+						<li>au début seulement disponible pour XHTML</li>
 					</ul>
           <aside class="notes">
+          	On va continuer directement avec RDFa
+          	
+          	C'est aussi un standard officiel de W3 et c'est complètement compatible avec RDFa lite. Ça veut dire que chaque markup de RDFa lite est automaitqument RDFa.
+          	
+          	Si on utilise des attributs pour RDFa le markup devient automatiquement RDFa. Ça veux dire c'est aussi facile a chager entre les deux.
+          	
+          	La difference le plus grande est dans l'histoire. Au début de RDFa c'était seulement disponible pour XHTML ou en general les language XML comme par exemple SVG. Ça fonctionne encore aujourd'hui mais avec la dernière specification c'est aussi defini pour HTML5.
+          	
+          	RDFa 1.1 Lite is completely upwards compatible with the full set of RDFa 1.1 attributes. This means that if an author finds that RDFa Lite isn't powerful enough, transitioning to the full version of RDFa is just a matter of adding the more powerful RDFa attributes into the existing RDFa Lite markup.
+
+						Historically interwoven with RDFa, RDFa is older (like microformats but was only designed for xml/xhtml) that changed only very recently june 2012
           	Already existed for a longer time but back then only for XML and with the XHTML. Now with RDFa 1.1 June 2012 it is also specified for HTML5.
 
 It contains all the things already discussed for RDFa lite.
@@ -697,26 +751,42 @@ It contains all the things already discussed for RDFa lite.
 				</section>
 
 				<section>
-					<h2>RDFa - Examples</h2>
+					<h2>RDFa - exemples</h2>
 					<pre class="highlight xml">
-&lt;p&gt;Date: &lt;span property=&quot;http://purl.org/dc/terms/created&quot; <span class="fragment highlight-current-green" data-fragment-index="1">content</span>=&quot;2011-09-10&quot;&gt;10th of September, 2011&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Date:
+	&lt;span property=&quot;http://purl.org/dc/terms/created&quot;
+		<span class="fragment highlight-current-green" data-fragment-index="1">content</span>=&quot;2011-09-10&quot;&gt;
+		10th of September, 2011
+	&lt;/span&gt;
+&lt;/p&gt;
           </pre>
 					
           <aside class="notes">
+          	Ici on peut voir l'attribut content. Normalement ce n'est pas necessaire parce que il y a des balise dans HTML5 qui sont pour ça.
+          	
 						This is normally not necessary as html5 is required for RDFa
 					</aside>
 				</section>
 
 				<section>
-					<h2>RDFa - Examples</h2>
+					<h2>RDFa - exemples</h2>
 					<pre class="highlight xml">
 &lt;p&gt;All content on this site is licensed under
-   &lt;a property=&quot;http://creativecommons.org/ns#license&quot; href=&quot;http://creativecommons.org/licenses/by/3.0/&quot;&gt;
-     a Creative Commons License&lt;/a&gt;. ©&lt;span property=&quot;dc:date&quot; <span class="fragment highlight-current-green" data-fragment-index="2">datatype</span>=&quot;xsd:gYear&quot;&gt;2011&lt;/span&gt; Alice Birpemswick.&lt;/p&gt;
+  &lt;a property=&quot;http://creativecommons.org/ns#license&quot;
+    href=&quot;http://creativecommons.org/licenses/by/3.0/&quot;&gt;
+    a Creative Commons License
+  &lt;/a&gt;.
+  ©&lt;span property=&quot;dc:date&quot; <span class="fragment highlight-current-green" data-fragment-index="2">datatype</span>=&quot;xsd:gYear&quot;&gt;
+    2011
+  &lt;/span&gt;
+  Alice Birpemswick.
+&lt;/p&gt;
 
           </pre>
 					
           <aside class="notes">
+          	Ici on peut voir plusieurs chose un property absolu, sans type et vocab. On peut voir l'attribut datatype ou on peut mettre les type explicit pour une information. Et on peut voir un prefix implicit. Il y a quelques prefix qui sont prédefini, sauf il sont défini explicitement.
+          	
 						The datatype can be explicitly described
 					</aside>
 				</section>
@@ -729,6 +799,7 @@ It contains all the things already discussed for RDFa lite.
           </ul>
 					
           <aside class="notes">
+          	Il y a encore des autres attributs pour RDFa, mais je ne vais pas les spécifier plus en details.
 						<ul>
 							­­<li>rel, can specify the relation to other documents</li>
 							<li>about, can reference already define metadata</li>
@@ -740,18 +811,26 @@ It contains all the things already discussed for RDFa lite.
 					<h2>RDFa - Tools</h2>
 					<p>all the RDF tool as it can be converted (sparql and reasoner and triple stores)</p>
 					<aside class="notes">
+						Il y a vraiment beaucoup des outils pour RDF en general, mais parce qu'on a RDFa comme sujet je vais montrer quelques choses qu'est on peut faire si les données sont en ligne avec un truc qui s'appele sparql.
+						
 					<li><a href="http://schema.rdfs.org/tools.html">rdfs tools</a></li>
             to many to enumerate, but I will show sparql
 					</aside>
 				</section>
 				
 				<section>
-					<h2>RDFa - Extraction</h2>
+					<h2>RDFa - extraction</h2>
 					<p>
-            <a href="http://rdf-translator.appspot.com/">rdf translator (Python)</a>
+            <a href="http://rdf-translator.appspot.com/">rdf translator</a>
           </p>
 					
           <aside class="notes">
+          	Au début il faut qu'on extraie les données d'une page web. Il y a déjà un service web pour ça.
+          	
+          	C'est le rdf-translator. Il fait exactement ça il est capable de transformer dans les format different de RDF.
+          	
+          	Comme données de réference on va utiliser la page de Hugo.
+          	
 						The data can be transformed into any other RDF foramt
 					</aside>
 				</section>
@@ -765,6 +844,16 @@ WHERE {?s ?p ?o}
           </pre>
 					
           <aside class="notes">
+          	Maintenant on peut utiliser sparql. La language a l'air un peu comme sql et ça a aussi la même fonctionnalité à la base.
+          	
+          	Pour l'explication, tous les variables dans SPARQL commence avec un point d'interogation. Et les information sont stocker dans un forme qui s'appelle tripel. Et les element d'un tipel s'appelent subjet, predicat, objet.
+          	
+          	Parce on a seulement des variables et pas de connditions ça va matcher tous les donners.
+          	
+          	La résult va avoir l'air un peu chaotic mais on peut dejà voir quelques informations interessant comme les interets.
+          	
+          	On peut filtre pour ceux.
+          	 
 						looks a little bit like sql
 						the behaviour is a little bit different, variables start with a question mark
 						in this case i have only variables
@@ -783,6 +872,14 @@ WHERE {&lt;http://hugo.soucy.cc/#hs&gt; foaf:interest ?o}
           </pre>
 					
           <aside class="notes">
+          	On peut lire ça maintenant preques comme une phrase.
+          	
+          	Les objets ou #hs est interessé.
+          	
+          	C'est déjà très cool, mais le point interessant ici c'est que sparql est seulement l'engine de recherche, mais la BD c'est une site web. Et les records de cette BD sont les element sur les pages.
+          	
+          	C'est un BD qui est vraiement decentraliser.
+          	
 						here I want to filter all interest of hs
 						
 						so this is already pretty cool
@@ -812,6 +909,10 @@ WHERE {
           </pre>
 					
           <aside class="notes">
+          	Mais il y a plus. Un truc qui s'appele federation. On faire aussi des requetes à les autres serveur sparql.
+          	
+          	Suivant on va utiliser le sparql de la dbpedia, parce que je voudrais savoir plus de ses interet. Et je demande un petit sommaire de chauqe interet mains dans une autre langue. Allemand.
+          	
 						but there is more, even the engines can be decentralized
 						here we as the sparql endpoint of dbpedia for a short abstract of the interest
 						but in another language
@@ -819,22 +920,31 @@ WHERE {
 				</section>
 
 				<section>
-					<h2>RDFa - Resume</h2>
+					<h2>RDFa - résume</h2>
 					<h3>Pro</h3>
 					<ul>
-    				<li>
-    				<li>use it in other xml documents (.svg)</li>
-    				<li>it's been around for a long time</li>
-    				<li>highest expressiveness</li>
-    				<li>own vocabulaires</li>
-    				<li>combine with other rdf vocabularies</li>
-
+    				<li>possible dans les autre document (.svg)</li>
+    				<li>existe pour longtemps</li>
+    				<li>haute expressivité</li>
+    				<li>combinaison avec des autre vocabularies</li>
 					</ul>
 					<h3>Contra</h3>
 					<ul>
-    				<li>too many features?</li>
+    				<li>trop de possibilités ?</li>
 					</ul>
 					<aside class="notes">
+						<h3>Pro</h3>
+						<ul>
+		  				<li>C'est possible de nicher dans les autre document (.svg)</li>
+		  				<li>RDF et RDfa existe déjà pour longtemps</li>
+		  				<li>Ça a expressivité les plus haut presenter ici</li>
+		  				<li>ses propre vocabulaires</li>
+		  				<li>C'est possible de faire les combinaison avec des autre vocabularies</li>
+						</ul>
+						<h3>Contra</h3>
+						<ul>
+		  				<li>trop de possibilités ?</li>
+						</ul>
 						<h3>Pro</h3>
 						<ul>
 		  				<li>
@@ -853,13 +963,13 @@ WHERE {
 				</section>
 
 				<section>
-					<h2>Statistics</h2>
+					<h2>Statistiques</h2>
 					<p>
 						<table>
 							<tbody>
 								<tr>
-									<td>Format </td>
-									<td>Enthalten in URLs</td>
+									<td>Formats</td>
+									<td>Contenant dans les URLs</td>
 								</tr>
 								<tr>
 									<td>RDFa </td>
@@ -870,11 +980,11 @@ WHERE {
 									<td>47,17 %</td>
 								</tr>
 								<tr>
-									<td>Microformate </td>
+									<td>Microformats </td>
 									<td>26,44 %</td>
 								</tr>
 								<tr>
-									<td>in 585 Mio. URLs mit Microdaten (Nov 2013)</td>
+									<td>dans 585 Mio URLs avec des donnés (Nov 2013)</td>
 								</tr>
 							</tbody>
 						</table>
@@ -884,27 +994,41 @@ WHERE {
 
 				<section>
 					<h1>Thanks</h1>
-					<h3>by Stefan Langenmaier</h3>
 				</section>
 
 				<section>
-					<h2>(my) questions</h2>
+					<h2>(mes) questions</h2>
 					<ul>
-						<li>can we use this as away to come to the semantic web</li>
-						<li>jsonld - why</li>    				
-    				<li>how is this related to accessibility ?</li>
-						<li>is this related to "big data"/machine learning?</li>
-    				<li>why/where is this used for sfl ?</li>
+						<li>bonne façon pour améliorer le semantic web ?</li>
+						<li>jsonld - pourquoi ?</li>
+    				<li>améliorer accessibility ?</li>
+						<li>"big data"/machine learning?</li>
+    				<li>comment utiliser pour SFL ?</li>
 								<ul>
 		      				<li>blogs</li>
 		      				<li>CVs</li>
 								</ul>
-    				<li>can we use this for clients ?</li>
-    				
-    				<li>add to the contacts section/annuaire</li>
-    				<li>footer for the license</li>
+    				<li>comment utiliser pour les clients ?</li>
+    					<ul>
+								<li>add to the contacts section/annuaire</li>
+								<li>footer for the license</li>
+		  				</ul>
 					</ul>
           <aside class="notes">
+          	Je voudrais faire les contraire pour la section de questions.
+          	
+						Je ne suis pas un expert sur cette sujet, donc j'ai eu mes propres question pendant ou avant la présentation.
+						
+						Est-ce on peut utiliser ça pour améliorer le semantic web.
+						
+						Il y a aussi de formats RDF pour JSON. Pourquoi?
+						
+						Est-ce on peut utliser pour améliorer l'accesibilité ?
+						
+						Comment est-ce que c'est lié avec "big data" et "machine learning". Est-ce que le semantic web est mort. Et il y a seulement le web statistique ?
+						
+						Comment on peut utliser ce technologie pour SFL et nos clients ?
+						
           	more data is coming this if for sure
 
 can we use this as away to come to the semantic web
@@ -956,6 +1080,21 @@ json-ld, what is the appeal of it
 						<li><a href="http://en.wikipedia.org/wiki/ICalendar">http://en.wikipedia.org/wiki/ICalendar</a></li>
 						<li><a href="http://foaf-visualizer.gnu.org.ua/">http://foaf-visualizer.gnu.org.ua/</a></li>
 						<li><a href="http://ode.openlinksw.com/">http://ode.openlinksw.com/</a></li>
+						
+						<li><a href="http://kmi-web01.open.ac.uk:8080/openrdf-workbench">http://kmi-web01.open.ac.uk:8080/openrdf-workbench</a></li>
+						<li><a href="http://km.aifb.kit.edu/sites/spark/">http://km.aifb.kit.edu/sites/spark/</a></li>
+						<li><a href="https://github.com/semsol/arc2/wiki">https://github.com/semsol/arc2/wiki</a></li>
+						<li><a href="http://www.stalsoft.com/publications/rdf-translator-TR.pdf">http://www.stalsoft.com/publications/rdf-translator-TR.pdf</a></li>
+						<li><a href="http://rdf-translator.appspot.com/">http://rdf-translator.appspot.com/</a></li>
+						<li><a href="http://www.easyrdf.org/converter">http://www.easyrdf.org/converter</a></li>
+						<li><a href="http://stackoverflow.com/questions/13897712/where-do-i-test-my-queries-for-my-rdf-written-in-sparql">http://stackoverflow.com/questions/13897712/where-do-i-test-my-queries-for-my-rdf-written-in-sparql</a></li>
+						<li><a href="http://jena.apache.org">http://jena.apache.org</a></li>
+						<li><a href="http://www.w3.org/2009/Talks/0615-qbe/">http://www.w3.org/2009/Talks/0615-qbe/</a></li>
+						<li><a href="https://code.google.com/p/backplanejs/wiki/RdfaModule">https://code.google.com/p/backplanejs/wiki/RdfaModule</a></li>
+						<li><a href="http://www.snee.com/bobdc.blog/2012/04/simple-federated-queries-with.html">http://www.snee.com/bobdc.blog/2012/04/simple-federated-queries-with.html</a></li>
+						<li><a href="http://www.w3.org/wiki/SparqlImplementations">http://www.w3.org/wiki/SparqlImplementations</a></li>
+						<li><a href="https://wiki.creativecommons.org/RDFa">https://wiki.creativecommons.org/RDFa</a></li>
+
 					</ul>
 				</section>
 
