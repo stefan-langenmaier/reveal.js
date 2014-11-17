@@ -4,7 +4,7 @@
 	<head>
 		<meta charset="utf-8">
 
-		<title>Microformats/Microdata/RDFa(lite)</title>
+		<title>Microformats / Microdata / RDFa (lite)</title>
 
 		<meta name="description" content="Un aperçu sur l'état actuelle de microformats, microdata and RDFa (lite)">
 		<meta name="author" content="Stefan Langenmaier">
@@ -47,6 +47,21 @@
 					<p>
 						<small>Créer par <a href="https://github.com/stefan-langenmaier/reveal.js">Stefan Langenmaier</a></small>
 					</p>
+					
+					<aside class="notes">
+						Bonjour et bienvenu à la présentation de
+						* Microformats
+						* Microdata
+						* RDFa (lite)
+						
+						Pardon pour le titres
+						
+						Mais on va avoir un apérçu sur tous ces formate avec avec, le web semantique et des exemples pour tous les sujets
+						
+						D'abord je voudrais commencer avec le web semantique en general et le term de Web 2.0
+						
+						Je pense le terme est utilisé dans une façon differente
+					</aside>
 				</section>
 
 				<section>
@@ -69,13 +84,13 @@
 						
 						Je voudrais commencer avec le point social. Ici le monde a réussi. Maintenant ma mère et capable d'envoyer un smilie quand elle veux de n'importe ou.
 						
-						Les mash-ups par exemples étaient très populaire pour un temps court, mais à cause de plusiers problem (interoperabilité, licenses, technologies) c'est plus une niche pour des data scientist scientist spécialisé. Il semble que c'est un nouvelle profession.
+						Les mash-ups par exemples étaient très populaire pour un temps court, mais à cause de plusiers problem (interoperabilité, licenses, technologies) c'est plus une niche pour des scientifique de données (data scientist) spécialisé. Il semble que c'est un nouvelle profession.
 						
 						Et si on regarde le point distributed on a aggraver la situation. Ajourd'hui on a des silos immense. Ici je parle des silos mechant/férme, mais aussi de silo ouvert comme wikipedia.
 						
-						Qu'est-ce que le semantic web?
+						Qu'est-ce que le semantic web et qu'est-ce que s'est passé avec le web semantique?
 						
-						Un web qui est enrichi avec des metadonné pour permettre les machine à comprendre le web. Ça veux dire les metadonnés sont des information supplementaires spécifier par les humaines pour aider les ordinateurs/logiciel avec la comprehension.
+						Un web qui est enrichi avec des metadonnées pour permettre les machines à comprendre le web. Ça veux dire les metadonnés sont des information supplementaires spécifier par les humaines pour aider les ordinateurs/logiciel avec la comprehension.
 						
 						In the beginning of the buzzword time for Web 2.0 the following terms were of equal importance
 						* mash-ups
@@ -96,18 +111,20 @@
 						</p>
 						<ul>
 						  <li>openstreet map</li>
-              <li>dbpedia (wikipedias semantic capability)</li>
+              <li>dbpedia</li>
               <li>freebase</li>
               <li>musicbrainz</li>
               <li>...</li>
+              <li>BBC</li>
+              <li>gouvernement anglais</li>
 						</ul>
 
 					<aside class="notes">
-						C'est sont le vraiment bon sites. Ils veulent libérer et structurer les information pour tout le monde. Mais ils sont encore très centraliser.
+						C'est sont les sites qui veulent libérer et structurer les information pour tout le monde.
 						
-						Ces sites ne sont pas les problèmes au contraire ils fournissent beaucoup des passerelles ouvert. Mais pourquoi c'est nécessaire d'avoir un grand site et pas plusieurs petit ? Pour ces sites ça a surement beaucup de raison technique.
+						Ils fournissent beaucoup des passerelles ouvert. Néanmoins si on regarde la liste, la liste est très court.
 						
-						Si on regarde l'état des réseaux sociaux le monde est plus triste.
+						Surement  il y a aussi des autre exemples mais si on regarde l'état des réseaux sociaux le monde est plus triste.
 						
 						But I like to argue that these are still centralised pieces of information. For the here presented this might be for technical reason. And everyone has the possibility to download theses dataset. If we look at social networking sites, the informations are more locked in then ever,
 					</aside>
@@ -120,27 +137,27 @@
 					</p>
 					<ul>
 					  <li>pas de motivation</li>
-            <li>technical difficulties/complexity</li>
+            <li>difficulé technique / complexité</li>
             <li>ivory tower</li>
-            <li>specialisation</li>
+            <li>spécialisation</li>
 					</ul>
 					<aside class="notes">
-						Pourquoi on n'a pas fait le même progrès pour le web semantique comme pour le web sociaux
+						Pourquoi on n'a pas fait le même progrès pour le web semantique comme pour le web sociaux ?
+						Où pourquoi il n y a pas de site sociaux avec une bonne passerelle pour le web semantique.
 						
 						Tous les raisons sont speculatives et la source est mon avis et la source de motivation pour la présentation
 						
-						Raison pour travailler pour publier de metadonné sur un service
 						<ul>
 							<li>les gens qui fait le travail ne peux pas profiter de ce travail. ça a changer un peux avec l'inclusion de quelques metadonnés dans les engines de recherche</li>
 		          <li>peut-être quelques problèmes sont plus facile à resoudre dans une facon centraliser</li>
-		          <li>la communauté au tour. c'était fait par les scientist pour les scientist. il semble qu'on voulais inclurer seulement les machines, mais les donnés sont encore créer par les humains. en general non inclusive. souvent le problème semble comme des excercise theoretique. C'est un problème dur, on veut un base soldie (theoretique) et on veux permettere facilement la création à tout le monde.</li>
-		          <li>la seule base commune au début était xml et url. il faut on apprennes de nouvelle langage (pour la description et pour les rêquetes), des outils, et des passerelles</li>
+		          <li>la communauté au tour. c'était fait par les scientifique pour les scientifique. il semble qu'on voulais inclurer seulement les machines, mais les donnés sont encore créer par les humains. en general non inclusive. souvent le problème semble comme des excercises theoretique. C'est un problème dur, on veut un base soldie (theoretique) et on veux permettere facilement la création à tout le monde.</li>
+		          <li>la seule base commune au début était xml et url. il faut qu'on apprenne un nouveaux langage (pour la description et pour les rêquetes), des outils, et des passerelles</li>
 		          <li>...</li>
 						</ul>
 						
 						On autre problème est que tous ces problèmes sont entrelacé.
 						
-						L'ensemble a créer comme un problème de la poulet et l'oeuf. Il n'était pas possible encore de joindre la masse critique
+						L'ensemble a cré un problème de la poule et l'oeuf. Il n'était pas possible encore de joindre la masse critique
 						
 						These reasons are all highly interwoven and hard problems. There are a lot of specifications (that existed for a long time) but they often seemed more like a theoretical exercise than help. This is a hard problem, putting the ideas on a sound base vs talking to the end user about first order logic.
 						People don really have/had a reason to do all that metadata markup, as  not they were profiting from it but others. Possibly the reason why it is still hard to do mashups.
