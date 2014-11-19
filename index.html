@@ -561,13 +561,13 @@
           <aside class="notes">
           	Pour la prochaine section je vais commencer par RDFa lite, parce que c'est un vrai sous-ensemble de RDFa
           	
-          	Donc, c'est quoi. C'est aussi un standard de W3.
+          	C'est aussi un standard de W3.
           	
           	C'est un peu plus claire comme le Microdata, la recherche de Google soutien aussi RDFa lite, tous le vocabulaires de schema.org sont compatible, mais il y a aussi beaucoup des autres vocabulaires déjà fait pour RDF.
           	
-          	Et c'est aussi dessiner pour HTML5, c'est la raison pourquoi ça existes seulement depuis 2012.
+          	Et c'est aussi dessiné pour HTML5, c'est la raison pourquoi ça existes seulement depuis 2012.
           	
-          	RDFa lite contient cinq attributs
+          	RDFa lite contient cinq nouveaux attributs
           	* vocab
           	* typeof
           	* property
@@ -740,10 +740,8 @@
 					<p>
 						Il y a beaucoup d'outils pour RDF (SPARQL, raisonneur, triple stores). On va voir quelques exemples dans les diaporamas suivantes.</p>
 					<aside class="notes">
-						Il y a vraiment beaucoup des outils pour RDF en général, mais parce qu'on a RDFa comme sujet je vais montrer quelques choses qu'est on peut faire si les données sont en ligne avec un truc qui s'appele sparql.
+						Il y a vraiment beaucoup des outils pour RDF en général, mais parce qu'on a RDFa comme sujet je vais montrer quelques choses qu'est on peut faire si les données sont en ligne avec un truc qui s'appelle sparql.
 						
-					<li><a href="http://schema.rdfs.org/tools.html">rdfs tools</a></li>
-            to many to enumerate, but I will show sparql
 					</aside>
 				</section>
 				
@@ -754,7 +752,7 @@
           </p>
 					
           <aside class="notes">
-          	Au début il faut qu'on extraie les données d'une page web. Il y a déjà un service web pour ça.
+          	Au début il faut qu'on extraie les données d'une page web. Il y a déjà un service web pour ça, mais c'est aussi disponible comme logiciel libre.
           	
           	C'est le rdf-translator. Il fait exactement ça il est capable de transformer dans les formats différents de RDF.
           	
@@ -769,11 +767,14 @@ SELECT *
 FROM &lt;http://rdf-translator.appspot.com/convert/detect/xml/http%3A%2F%2Fhugo.soucy.cc%2F&gt;
 WHERE {?s ?p ?o}
           </pre>
+          <p>
+          	<a href="http://localhost:3030/sparql.html">Demo</a>
+          </p>
 					
           <aside class="notes">
           	Maintenant on peut utiliser SPARQL. La langage a l'air un peu comme SQL et ça a aussi la même fonctionnalité à la base.
           	
-          	Pour l'explication, tous les variables dans SPARQL commence avec un point d'interrogation. Et les information sont stocker dans un forme qui s'appelle tripel. Et les élément d'un tipel s'appellent sujet, prédicat, objet.
+          	Pour l'explication, tous les variables dans SPARQL commence avec un point d'interrogation. Et les information sont stocker dans un forme qui s'appelle tripel. Et les élément d'un tripel s'appellent sujet, prédicat, objet.
           	
           	Parce on a seulement des variables et pas de conditions ça va matcher tous les donnés.
           	
@@ -791,25 +792,29 @@ SELECT *
 FROM &lt;http://rdf-translator.appspot.com/convert/detect/xml/http%3A%2F%2Fhugo.soucy.cc%2F&gt;
 WHERE {&lt;http://hugo.soucy.cc/#hs&gt; foaf:interest ?o}
           </pre>
+          <p>
+          	<a href="http://localhost:3030/sparql.html">Demo</a>
+          </p>
 					
           <aside class="notes">
           	On peut lire ça maintenant presque comme une phrase.
           	
-          	Les objets avec #hs sont intéressant.
+          	Les objets auxquelles #hs ont des intérêts..
           	
-          	C'est déjà très cool, mais le point intéressant ici c'est que SPARQL est seulement l'engin de recherche, mais la BD c'est une site web. Et les records de cette BD sont les éléments sur les pages.
+          	C'est déjà très cool, mais le point intéressant ici c'est que SPARQL est seulement le moteur de recherche, mais la BD c'est une site web. Et les records de cette BD sont les éléments sur les pages.
           	
-          	C'est un BD qui est vraiment décentraliser.
+          	C'est un BD qui est vraiment décentraliser. Il faut qu'on se conscientise la différence.
 					</aside>
 				</section>
 				
 				<section>
 					<h2>RDFa - SPARQL</h2>
 					<pre class="">
+PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
 SELECT *
 FROM &lt;http://rdf-translator.appspot.com/convert/detect/xml/http%3A%2F%2Fhugo.soucy.cc%2F&gt;
 WHERE {
-  ?s &lt;http://xmlns.com/foaf/0.1/interest&gt;  ?o .
+  &lt;http://hugo.soucy.cc/#hs&gt; foaf:interest  ?o .
   
   SERVICE &lt;http://dbpedia.org/sparql&gt; {
     ?o &lt;http://dbpedia.org/ontology/abstract&gt; ?do .
@@ -818,11 +823,22 @@ WHERE {
   FILTER(langMatches(lang(?do), "DE"))
 }
           </pre>
+          <p>
+          	<a href="http://localhost:3030/sparql.html">Demo</a>
+          </p>
 					
           <aside class="notes">
-          	Mais il y a plus. Un truc qui s'appelle fédération. On faire aussi des requêtes à les autres serveur SPARQL.
+          	Mais il y a plus. Un truc qui s'appelle fédération. On peut faire aussi des requêtes à les autres serveur SPARQL dans une rêquete.
           	
-          	Suivant on va utiliser le SPARQL de la dbpedia, parce que je voudrais savoir plus de ses intérêt. Et je demande un petit sommaire de chaque intérêt mains dans une autre langue. Allemand.
+          	Suivant on va utiliser le SPARQL de la dbpedia, parce que je voudrais savoir plus de ses intérêts.
+          	
+          	On commence avec le même code pour trouver les interêts, mais la variable est utilisé encore une fois comme sujet dans une demande au point SPARQL de dpedia.
+          	
+          	Et on veux avoir tous les objets dans la variable ?do.
+          	
+          	Enfin on filtre ces résultat pour une langue spécifier.
+          	
+          	Ça nous donne un petit sommaire de chaque intérêt mains dans une autre langue. Allemand.
 					</aside>
 				</section>
 
@@ -848,9 +864,9 @@ WHERE {
 		  				<li>ses propre vocabulaires</li>
 		  				<li>C'est possible de faire les combinaison avec des autre vocabulaires</li>
 						</ul>
-						<h3>Contra</h3>
+						<h3>Contre</h3>
 						<ul>
-		  				<li>trop de possibilités?</li>
+		  				<li>je n'ai pas vraiment des choses contre RDFa</li>
 						</ul>
 					</aside>
 				</section>
@@ -882,11 +898,22 @@ WHERE {
 							</tbody>
 						</table>
 					</p>
-
+					<aside class="notes">
+						La statistique la plus récente laquelle j'ai trouvé date de la fin de 2013
+						
+						et RDFa était déjà implémenté dans la moitie des URL qui contiennent de métadonnée
+						
+						je trouve que c'est un signal claire
+					</aside>
 				</section>
 
 				<section>
 					<h1>Merci</h1>
+					<aside class="notes">
+						Je voudrais fermer avec cette statistique.
+						
+						Merci pour votre attention
+					</aside>
 				</section>
 
 				<section>
@@ -910,7 +937,7 @@ WHERE {
           <aside class="notes">
           	Je voudrais faire les contraire pour la section de questions.
           	
-						Je ne suis pas un expert sur cette sujet, donc j'ai eu mes propres question pendant ou avant la présentation.
+						Je ne suis pas un expert sur cette sujet, donc j'ai eu mes propres questions pendant ou avant la présentation.
 						
 						Est-ce on peut utiliser ça pour améliorer le web sémantique.
 						
