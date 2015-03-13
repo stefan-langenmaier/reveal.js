@@ -38,7 +38,6 @@
 
 		<div class="reveal">
 
-			<!-- Any section element inside of this container is displayed as a slide -->
 			<div class="slides">
 				<section>
 					<h1>Docker</h1>
@@ -72,6 +71,10 @@
 					<p>
 						What are the differences?
 						Why do they exist?
+
+						lxc
+						lmctfy
+						rocket
 					</p>
 				</section>
 
@@ -85,7 +88,7 @@
 				<section>
 					<h2>The problem I want to talk about here</h2>
 					<p>
-						Experimenting with a container - developpment
+						Experimenting with a container - developpment and especially testing
 						=> Changing components on multiple levels
 						
 					</p>
@@ -96,11 +99,77 @@
 						<li>Or here</li>
 					</ul>
 				</section>
+				
+				<section>
+					<h2>Example problem</h2>
+					<table>
+						<thead>
+							<th>
+								<td></td>
+								<td>Webserver</td>
+								<td>Interface</td>
+								<td>Ruby</td>
+								<td>DB</td>
+								<td>Redmine</td>
+								<td>Sum</td>							
+							</th>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Combinations</td>
+								<td>3</td>
+								<td>2</td>
+								<td>3</td>
+								<td>2</td>
+								<td>5</td>
+								<td>180</td>
+							</tr>
+							<tr>
+								<td>Combinations - Docker (*)</td>
+								<td>3</td>
+								<td>6</td>
+								<td>18</td>
+								<td>36</td>
+								<td>180</td>
+								<td>180+36=216</td>
+							</tr>
+							<tr>
+								<td>Combinations - Composable (+)</td>
+								<td>3</td>
+								<td>5</td>
+								<td>8</td>
+								<td>10</td>
+								<td>15</td>
+								<td>180+15=195</td>
+							</tr>
+						</tbody>
+					</table>
+					<p>
+						Curse of dimensions
+						
+						the non composable build system has about 10% more combinations
+					</p>
+				</section>
 
 				<section>
-					<h2>Take a Moment</h2>
+					<h2>You can ignore this problem</h2>
 					<p>
-						Press B or . on your keyboard to pause the presentation. This is helpful when you're on stage and want to take distracting slides off the screen.
+						if you like monocultures
+						if you like vendor-lockin
+					</p>
+				</section>
+				
+				<section>
+					<h2>Solutions to this are good package managers</h2>
+					<p>
+						they are around for a while and alreay pretty stable
+					</p>
+				</section>
+				
+				<section>
+					<h2>Example - Gentoo</h2>
+					<p>
+						creating a minimal Redmine installation
 					</p>
 				</section>
 
