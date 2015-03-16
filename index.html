@@ -196,17 +196,8 @@
 				
 				<section>
 					<h2>Let's visualize it</h2>
-					<style>
-					    #graph-container {
-					      top: 0;
-					      width: auto;
-					      left: 0;
-					      height: 200px;
-					      position: relative;
-					      background-color: red;
-					    }
-					</style>
-					<div id="graph-container">CONTENT</div>
+					<div id="stackednetwork" style="height: 100%; width=100%;"></div>
+                    
 				</section>
 				
 				
@@ -281,7 +272,7 @@
 
 		<script src="lib/js/head.min.js"></script>
 		<script src="js/reveal.js"></script>
-		
+		<script src="js/vis.min.js"></script>
 		<script>
 
 			// Full list of configuration options available at:
@@ -306,6 +297,56 @@
 			});
 
 		</script>
+		
+		<script type="text/javascript">
+		    var levels = [3, 2, 3, 2, 5];
+		    var nodeIdCounter = 0;
+		    function generateGraph(levels, data, level, nodeId) {
+		        var nodes = data['nodes'];
+   		        var edges = data['edges'];
+		        for (var i = 0; i < levels[level]; i++) {
+                    nodes.push({
+                        id: nodeIdCounter,
+                        label: "*",
+                        level: level+1
+                    });
+                    edges.push({
+                        from: nodeId,
+                        to: nodeIdCounter
+                    });
+                    nodeIdCounter++;
+                    if (level<=levels.length) {
+                        data = generateGraph(levels, data, level+1, nodeIdCounter-1);
+                    }
+                }
+                
+		        return data;
+		    }
+		    
+            var nodes = [
+                {id: nodeIdCounter++, label: 'LDB', level: 0}
+            ];
+            var edges = [];
+            var data = {
+                nodes: nodes,
+                edges: edges
+            };
+            
+            data = generateGraph(levels, data, 0, nodeIdCounter-1);
+            
+            // create a network
+            var container = document.getElementById('stackednetwork');
+            
+            var options = {
+                stabilize: false,
+                smoothCurves: false,
+                hierarchicalLayout: {
+                    direction: "UD"
+                }
+            };
+
+            var network = new vis.Network(container, data, options);
+        </script>
 
 	</body>
 </html>
