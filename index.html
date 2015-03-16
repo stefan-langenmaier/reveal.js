@@ -41,22 +41,33 @@
 			<div class="slides">
 				<section>
 					<h1>Docker</h1>
-					<h3>and its (compasability) issues</h3>
+					<h3>and its (composability) issues</h3>
 					<p>
 						<small>Created by <a href="https://github.com/stefan-langenmaier">Stefan Langenmaier</a></small>
 					</p>
+					
+					<aside class="notes">
+						I want to talk about some specific problems that I exists in my opinion specifically for the Docker system
+						
+						I won't talk about all the known problems, but I will give some sources :)
+					</aside>
 				</section>
 
 				<section>
 					<h2>What is docker</h2>
 					<p>
-						The company behind docker
+						The company behind docker : Docker, Inc.
 						dockerhub
 						dockerfiles
 						container
 						images
 						docker architecture (and api)
 					</p>
+					
+					<aside class="notes">
+						To clarify the vocabulary let's talk about some terms
+						
+					</aside>
 				</section>
 
 				<section>
@@ -66,26 +77,54 @@
 						
 						Running a different kernel with maybe a different configuration? Wider or narrower: my SYSVIPC problem for exemple with full disk-encryption LUKS and apache
 						
-						might be better to isolate different kernels
+						might be better to isolate different images together with their kernels to have _more_ reproduciable containers
 					</p>
+					
+					<aside class="notes">
+						Full virtualised systems all run on their on kernels. Moderen hardware has support for it.
+						Paravirtualised systems run on their on kernel, but the kernel knows its running virtualised and is optimized for that.
+						
+						Containerized systems run all on the same kernel. So this kernel has a global ressource control and can do a global optimzation of the resources.
+						Possibly big performance gains now and in the future. Competing environments can "talk" to each other.
+						
+						So generally a good idea to use containers? Well it depends, as you exclude your kernel from the image your behaviour can change in the future when you update your kernel or when you change your distribution.
+					</aside>
 				</section>
 
 				<section>
-					<h2>Containerisation differences/alternatives</h2>
+					<h2>Containerization differences/alternatives</h2>
 					<p>
 						What are the differences?
 						Why do they exist?
 
+						OpenVZ
+						Linux VServer
+						they are only available via patches not part of the official kernel
+						
+						docker
+						lxd
 						lxc
 						lmctfy
 						rocket
+						systemd-nsspawn
+						they are all based on cgroups, which is in the vanilla kernel. so easy upgrades in the future very important point, as all your containers depend on that kernel
+						
+						jails
+						zones
+						similair things for other oses
 					</p>
 				</section>
 
 				<section>
 					<h2>Known problems of Docker</h2>
 					<p>
-						check out the links
+						check out the links at the end
+						
+						different people say different things
+						be it the network is not properly implemented
+						be it the whole infrastructure is not secure (no signed images)
+						
+						you can have a look into the links at the end
 					</p>
 				</section>
 
@@ -95,13 +134,9 @@
 						Experimenting with a container - developpment and especially testing
 						=> Changing components on multiple levels
 						
+						and then create a minimal production container at the end
+						
 					</p>
-					<ul>
-						<li>No order here</li>
-						<li>Or here</li>
-						<li>Or here</li>
-						<li>Or here</li>
-					</ul>
 				</section>
 				
 				<section>
@@ -151,9 +186,30 @@
 					<p>
 						Curse of dimensions
 						
-						the non composable build system has about 10% more combinations
+						the non-composable build system has about 10% more combinations
+						
+						this does not seem much but with more components/levels this is increasing exponentially
+						
+						especially sad because the matrix will only be sparsely populated
 					</p>
 				</section>
+				
+				<section>
+					<h2>Let's visualize it</h2>
+					<style>
+					    #graph-container {
+					      top: 0;
+					      width: auto;
+					      left: 0;
+					      height: 200px;
+					      position: relative;
+					      background-color: red;
+					    }
+					</style>
+					<div id="graph-container">CONTENT</div>
+				</section>
+				
+				
 
 				<section>
 					<h2>You can ignore this problem</h2>
@@ -162,6 +218,24 @@
 						if you like vendor-lockin
 						
 						but if you like variety in your experimenting and really minimal systems in production you're screwed
+					</p>
+				</section>
+				
+				<section>
+					<h2>Half-Solutions</h2>
+					<p>
+						use squash in between if you have found a good base
+						
+						but the problem is there is no undo you can not revert a previous commit and change it
+					</p>
+				</section>
+				
+				<section>
+					<h2>Half-Solutions</h2>
+					<p>
+						use packer a tool to build images without Dockerfiles
+						
+						honestly I don't get it, this sounds even worse as it has even less features than the already feature deprived Dockerfiles
 					</p>
 				</section>
 				
@@ -195,6 +269,9 @@
 					<h1>Links/References</h1>
 					<ul>
 						<li><a href="http://www.boycottdocker.org/">boycott docker</a></li>
+						http://thenewstack.io/coreos-calls-docker-fundamentally-flawed-releases-prototype-alternative/
+						http://en.wikipedia.org/wiki/Operating-system-level_virtualization
+						https://www.packer.io/docs/builders/docker.html
 					</ul>
 				</section>
 
@@ -204,7 +281,7 @@
 
 		<script src="lib/js/head.min.js"></script>
 		<script src="js/reveal.js"></script>
-
+		
 		<script>
 
 			// Full list of configuration options available at:
