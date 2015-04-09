@@ -188,15 +188,23 @@
 						
 						the non-composable build system has about 10% more combinations
 						
-						this does not seem much but with more components/levels this is increasing exponentially
+						this is NOT the problem
 						
-						especially sad because the matrix will only be sparsely populated
+						it is sad because the matrix will only be sparsely populated
+						
+						we will NEVER try all possible combinations
 					</p>
 				</section>
 				
 				<section>
 					<h2>Let's visualize it</h2>
-					<div id="stackednetwork" style="height: 100%; width=100%;"></div>
+					<div id="stackednetwork" style="height: 50vh; width: 100%;"></div>
+                    
+				</section>
+				
+				<section>
+					<h2>Let's visualize it</h2>
+					<div id="composednetwork" style="height: 50vh; width: 100%;"></div>
                     
 				</section>
 				
@@ -336,6 +344,62 @@
             
             // create a network
             var container = document.getElementById('stackednetwork');
+            
+            var options = {
+                stabilize: false,
+                smoothCurves: false,
+                hierarchicalLayout: {
+                    direction: "UD"
+                }
+            };
+
+            var network = new vis.Network(container, data, options);
+        </script>
+        
+        <script type="text/javascript">
+		    var levels = [3, 2, 3, 2, 5];
+		    var nodeIdCounter = 0;
+		    function generateGraph(levels, data, level, nodeId) {
+		        var nodes = data['nodes'];
+   		        var edges = data['edges'];
+		        for (var i = 0; i < levels[level]; i++) {
+                    nodes.push({
+                        id: nodeIdCounter,
+                        label: "*",
+                        level: level+1
+                    });
+                    for (var k = 0; k < nodes.length; k++) {
+                        var n = nodes[k];
+                        if (n['level'] === level) {
+                            edges.push({
+                                from: n['id'],
+                                to: nodeIdCounter
+                            });
+                        }
+                    }
+                    nodeIdCounter++;
+
+                }
+                if (level<=levels.length) {
+                    data = generateGraph(levels, data, level+1, nodeIdCounter-1);
+                }
+                
+		        return data;
+		    }
+		    
+            var nodes = [
+                {id: nodeIdCounter++, label: 'LDB', level: 0}
+            ];
+            var edges = [];
+            var data = {
+                nodes: nodes,
+                edges: edges
+            };
+            
+            data = generateGraph(levels, data, 0, nodeIdCounter-1);
+            
+            // create a network
+            var container = document.getElementById('composednetwork');
             
             var options = {
                 stabilize: false,
