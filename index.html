@@ -47,7 +47,7 @@
 					</p>
 					
 					<aside class="notes">
-						I want to talk about some specific problems that I exists in my opinion specifically for the Docker system
+						I want to talk about some specific problems that exists in my opinion specifically for the Docker system
 						
 						I won't talk about all the known problems, but I will give some sources :)
 					</aside>
@@ -56,12 +56,14 @@
 				<section>
 					<h2>What is docker</h2>
 					<p>
-						The company behind docker : Docker, Inc.
-						dockerhub
-						dockerfiles
-						container
-						images
-						docker architecture (and api)
+						good question?
+						
+						it's a company,
+						a tool to manage (create, run, deploy, delete) containers and images on different platforms (linux, mac, win),
+						a host for these images (where you can have an account, think app store)
+						a library to interface the linux kernel container infrastructure
+						
+						it's a lot of different things (one of the reasons a "competitor" started it's own library rkt)
 					</p>
 					
 					<aside class="notes">
@@ -87,7 +89,7 @@
 						Containerized systems run all on the same kernel. So this kernel has a global ressource control and can do a global optimzation of the resources.
 						Possibly big performance gains now and in the future. Competing environments can "talk" to each other.
 						
-						So generally a good idea to use containers? Well it depends, as you exclude your kernel from the image your behaviour can change in the future when you update your kernel or when you change your distribution.
+						So generally a good idea to use containers? Well it depends, as you exclude your kernel from the image your behaviour can change in the future when you update your kernel or when you change your distribution. The promise of reproduceable is overrated.
 					</aside>
 				</section>
 
@@ -97,6 +99,7 @@
 						What are the differences?
 						Why do they exist?
 
+						uml
 						OpenVZ
 						Linux VServer
 						they are only available via patches not part of the official kernel
@@ -135,6 +138,8 @@
 						=> Changing components on multiple levels
 						
 						and then create a minimal production container at the end
+						
+						These are two different task but they are normally related to each other
 						
 					</p>
 				</section>
@@ -188,22 +193,32 @@
 						
 						the non-composable build system has about 10% more combinations
 						
-						this is NOT the problem
+						this is NOT the problem, they will always be of the same magnitude
+						
+						the problem is between the 15 and the 36
+						with 15 packages prepared you can create any combination you want
+						with 36 base images prepared you can create any last image you want, you still have to create it manually and adapted to each though
 						
 						it is sad because the matrix will only be sparsely populated
 						
-						we will NEVER try all possible combinations
+						we will NEVER try all possible combinations only the ones that seem interesting and this is not always known in advance
+						
+						but if the work to change/experiment/try is to high we are in a kind of vendor lock-in, the base where you are starting from decides on your tools
 					</p>
 				</section>
 				
 				<section>
-					<h2>Let's visualize it</h2>
+					<h2>Let's visualize it (stacked)</h2>
 					<div id="stackednetwork" style="height: 50vh; width: 100%;"></div>
+					
+					<p>
+					Now imagine you want to change a lower level package/setting
+					then you have to recreate all images, that are based on this one.
                     
 				</section>
 				
 				<section>
-					<h2>Let's visualize it</h2>
+					<h2>Let's visualize it (composed)</h2>
 					<div id="composednetwork" style="height: 50vh; width: 100%;"></div>
                     
 				</section>
@@ -252,6 +267,80 @@
 					<h2>Example - Gentoo</h2>
 					<p>
 						creating a minimal Redmine installation
+						
+						this uses just lxc
+						two containers, both are running Gentoo but the host can be whatever distribution you like
+						
+						one container runs the package manager
+						the second one is not even a real Gentoo as there is not even a package manager installed in the end
+						
+						both a running openrc as init system (this could be changed to systemd or even none)
+						the passenger people recommend to run it with an init system, but they are using something strange called my_init
+					</p>
+				</section>
+				
+				<section>
+					<h2>Base Installation</h2>
+					<p>
+						container init
+						
+						with template stuff
+						
+						lxc-create -n redmine-runtime -t gentoo-runtime -- --template /home/stefan/git/lxc-gentoo-build-tools/redmine-runtime-template
+						
+						nano config
+						
+						emerge baselayout -av
+						
+						emerge openrc shadow util-linux bash coreutils -av
+						
+						emerge grep net-tools procps findutils dhcpcd nano sed -av
+						
+						ln -s net.eth0 net.lo
+						rc-update add net.eth0 default
+						
+						
+						
+					</p>
+				</section>
+				
+				<section>
+					<h2>Redmine Installation</h2>
+					<p>
+						live package
+						
+						emerge redmine -av
+						
+						configuration
+						
+						cd /build/lxc/redmine-runtime/rootfs//var/lib/redmine
+						cp config/database.yml.example config/database.yml
+						${EDITOR} config/database.yml
+						chown 1000:1000 config/database.yml
+						emerge --config "=www-apps/redmine-9999"
+						 
+						chown 1000:1000 db/ db/*.sqlite3
+						groupadd apache
+						useradd -g apache apache
+
+						/etc/init.d/apache2 restart
+
+					</p>
+				</section>
+				
+				<section>
+					<h2>Installation cleanup</h2>
+					<p>
+						to reduce the size
+						
+						emerge gcc portage perl python glibc -C -av
+					</p>
+				</section>
+				
+				<section>
+					<h2>Change of webserver</h2>
+					<p>
+						install nginx
 					</p>
 				</section>
 
