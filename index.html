@@ -295,11 +295,7 @@
 						emerge openrc shadow util-linux bash coreutils -av
 						
 						emerge grep net-tools procps findutils dhcpcd nano sed -av
-						
-						ln -s net.eth0 net.lo
-						rc-update add net.eth0 default
-						
-						
+
 						
 					</p>
 				</section>
@@ -333,7 +329,7 @@
 					<p>
 						to reduce the size
 						
-						emerge gcc portage perl python glibc -C -av
+						emerge gcc portage perl python -C -av
 					</p>
 				</section>
 				
@@ -341,6 +337,10 @@
 					<h2>Change of webserver</h2>
 					<p>
 						install nginx
+						
+						emerge nginx
+						
+						/etc/init.d/nginx start
 					</p>
 				</section>
 
