@@ -41,7 +41,8 @@
 			<div class="slides">
 				<section>
 					<h1>Docker</h1>
-					<h3>and its (composability) issues</h3>
+					<h2>and its (composability) issues</h2>
+					<h3>and how a good package manager can solve them</h3>
 					<p>
 						<small>Created by <a href="https://github.com/stefan-langenmaier">Stefan Langenmaier</a></small>
 					</p>
@@ -54,21 +55,20 @@
 				</section>
 
 				<section>
-					<h2>What is docker</h2>
+					<h2>What is docker?</h2>
 					<p>
-						good question?
-						
-						it's a company,
-						a tool to manage (create, run, deploy, delete) containers and images on different platforms (linux, mac, win),
-						a host for these images (where you can have an account, think app store)
-						a library to interface the linux kernel container infrastructure
-						
-						it's a lot of different things (one of the reasons a "competitor" started it's own library rkt)
+						Good question!
 					</p>
 					
 					<aside class="notes">
-						To clarify the vocabulary let's talk about some terms
+						<ul>						
+						    <li>it's a company,</li>
+						    <li>a tool to manage (create, run, deploy, delete) containers and images on different platforms (linux, mac, win),</li>
+						    <li>a host for these images (where you can have an account, think app store)</li>
+						    <li>a library to interface the linux kernel container infrastructure</li>
+						</ul>
 						
+						it's a lot of different things (one of the reasons a "competitor" started it's own library rkt)
 					</aside>
 				</section>
 
@@ -77,50 +77,83 @@
 					<p>
 						What is the difference?
 						
-						Running a different kernel with maybe a different configuration? Wider or narrower: my SYSVIPC problem for exemple with full disk-encryption LUKS and apache
-						
-						might be better to isolate different images together with their kernels to have _more_ reproduciable containers
+
 					</p>
 					
 					<aside class="notes">
-						Full virtualised systems all run on their on kernels. Moderen hardware has support for it.
-						Paravirtualised systems run on their on kernel, but the kernel knows its running virtualised and is optimized for that.
+						<ul>						
+						    <li>Full virtualised systems all run on their on kernels. Modern hardware has support for it.</li>
+						    <li>Paravirtualised systems run on their on kernel, but the kernel knows its running virtualised and is optimized for that.</li>
 						
-						Containerized systems run all on the same kernel. So this kernel has a global ressource control and can do a global optimzation of the resources.
-						Possibly big performance gains now and in the future. Competing environments can "talk" to each other.
+						    <li>Containerized systems run all on the same kernel. So this kernel has a global ressource control and can do a global optimzation of the resources.
+						Possibly big performance gains now and in the future. Competing environments can "talk" to each other.</li>
+						</ul>
 						
-						So generally a good idea to use containers? Well it depends, as you exclude your kernel from the image your behaviour can change in the future when you update your kernel or when you change your distribution. The promise of reproduceable is overrated.
+						
+						<p>So generally a good idea to use containers? Well it depends. :)
+						They all promise "create once - deploy everywhere", but as you exclude your kernel from the image your behaviour can change in the future when you update your kernel or when you change your distribution. The promise of reproduceable behaviour is overrated. It would be easier/more reliable with vrtualisation.</p>
 					</aside>
 				</section>
 
 				<section>
 					<h2>Containerization differences/alternatives</h2>
-					<p>
-						What are the differences?
+					
+					<ul>
+						<li>uml</li>
+						<li>OpenVZ</li>
+						<li>Linux VServer</li>
+					</ul>
+					
+					<ul>
+						<li>docker</li>
+						<li>lxd</li>
+						<li>lxc</li>
+						<li>lmctfy</li>
+						<li>rocket</li>
+						<li>systemd-nsspawn</li>
+					</ul>
+						
+					<ul>
+						<li>jails</li>
+						<li>zones</li>
+					</ul>
+					
+					<aside class="notes">
+					    What are the differences?
 						Why do they exist?
-
-						uml
-						OpenVZ
-						Linux VServer
-						they are only available via patches not part of the official kernel
+						<ul>
+						    <li>uml</li>
+						    <li>OpenVZ</li>
+						    <li>Linux VServer</li>
+						    they are only available via patches not part of the official kernel
+					    </ul>
+					    
+					    <ul>
+						    <li>docker</li>
+						    <li>lxd</li>
+						    <li>lxc</li>
+						    <li>lmctfy</li>
+						    <li>rocket</li>
+						    <li>systemd-nsspawn</li>
+					    </ul>
+						    they are all based on cgroups, which is in the vanilla kernel. so easy upgrades in the future very important point, as all your containers depend on that kernel
 						
-						docker
-						lxd
-						lxc
-						lmctfy
-						rocket
-						systemd-nsspawn
-						they are all based on cgroups, which is in the vanilla kernel. so easy upgrades in the future very important point, as all your containers depend on that kernel
+						<ul>
+						    <li>jails</li>
+						    <li>zones</li>
+					    </ul>
+						    similair things for other oses
 						
-						jails
-						zones
-						similair things for other oses
-					</p>
+					</aside>
 				</section>
 
 				<section>
 					<h2>Known problems of Docker</h2>
 					<p>
+					    I don't want to go there.
+					</p>
+					
+					<aside class="notes">
 						check out the links at the end
 						
 						different people say different things
@@ -128,12 +161,18 @@
 						be it the whole infrastructure is not secure (no signed images)
 						
 						you can have a look into the links at the end
-					</p>
+					</aside>
 				</section>
 
 				<section>
 					<h2>The problem I want to talk about here</h2>
-					<p>
+					
+					<ul>
+					    <li>Developping with a container</li>
+					    <li>Creating a production system from a container</li>
+				    </ul>
+					    
+					<aside class="notes">
 						Experimenting with a container - developpment and especially testing
 						=> Changing components on multiple levels
 						
@@ -141,7 +180,7 @@
 						
 						These are two different task but they are normally related to each other
 						
-					</p>
+					</aside>
 				</section>
 				
 				<section>
@@ -188,7 +227,7 @@
 							</tr>
 						</tbody>
 					</table>
-					<p>
+					<aside class="notes">
 						Curse of dimensions
 						
 						the non-composable build system has about 10% more combinations
@@ -204,7 +243,7 @@
 						we will NEVER try all possible combinations only the ones that seem interesting and this is not always known in advance
 						
 						but if the work to change/experiment/try is to high we are in a kind of vendor lock-in, the base where you are starting from decides on your tools
-					</p>
+					</aside>
 				</section>
 				
 				<section>
@@ -227,14 +266,17 @@
 
 				<section>
 					<h2>You can ignore this problem</h2>
-					<p>
-						if you like monocultures
-						if you like vendor-lockin
+					<ul>
+						<li>if you like monocultures</li>
+						<li>if you like vendor-lockin</li>
 						
+					</ul>
+					<aside class="notes">
 						but if you like variety in your experimenting and really minimal systems in production you're screwed
-					</p>
+					</aside>
 				</section>
-				
+<!--
+I dont know anything about theses tools 			
 				<section>
 					<h2>Half-Solutions</h2>
 					<p>
@@ -252,20 +294,33 @@
 						honestly I don't get it, this sounds even worse as it has even less features than the already feature deprived Dockerfiles
 					</p>
 				</section>
-				
+-->
 				<section>
-					<h2>Solutions to this are good package managers</h2>
-					<p>
-						they are around for a while and alreay pretty stable
+					<h2>Solutions to this</h2>
+					<p>good package managers</p>
+					<ul>
+						<li>stable</li>
+						<li>support/upstream</li>
+						<li>best-practices</li>
+						<li>documentation</li>
+					</ul>
+					<aside class="notes">
+						they are around for a while and already pretty stable
 						
 						if your package manager really cannot do there is still bash available
 						this is basically what a Dockerfile is doing but without obstructing you
-					</p>
+						
+						but everytime you are installing an application without a package manager in means you know more about that application than all the developers of your favorite distro (probably not true)
+					</aside>
 				</section>
 				
 				<section>
 					<h2>Example - Gentoo</h2>
 					<p>
+						Creating a minimal Redmine installation with lxc and portage a package manger for Gentoo.
+
+					</p>
+					<aside class="notes">
 						creating a minimal Redmine installation
 						
 						this uses just lxc
@@ -276,81 +331,71 @@
 						
 						both a running openrc as init system (this could be changed to systemd or even none)
 						the passenger people recommend to run it with an init system, but they are using something strange called my_init
-					</p>
+					</aside>
 				</section>
 				
 				<section>
 					<h2>Base Installation</h2>
-					<p>
-						container init
+					<ol>
+						<li>lxc-create -n redmine-runtime -t gentoo-runtime -- --template /home/stefan/git/lxc-gentoo-build-tools/redmine-runtime-template</li>
 						
-						with template stuff
+						<li>nano config</li>
 						
-						lxc-create -n redmine-runtime -t gentoo-runtime -- --template /home/stefan/git/lxc-gentoo-build-tools/redmine-runtime-template
+						<li>emerge baselayout -av</li>
 						
-						nano config
+						<li>emerge openrc shadow util-linux bash coreutils -av</li>
 						
-						emerge baselayout -av
+						<li>emerge grep net-tools procps findutils nano sed -av</li>
 						
-						emerge openrc shadow util-linux bash coreutils -av
-						
-						emerge grep net-tools procps findutils dhcpcd nano sed -av
-
-						
-					</p>
+					</ol>
 				</section>
 				
 				<section>
 					<h2>Redmine Installation</h2>
-					<p>
-						live package
-						
-						emerge redmine -av
-						
-						configuration
-						
-						cd /build/lxc/redmine-runtime/rootfs//var/lib/redmine
-						cp config/database.yml.example config/database.yml
-						${EDITOR} config/database.yml
-						chown 1000:1000 config/database.yml
-						emerge --config "=www-apps/redmine-9999"
+					<ol>
+						<li>emerge redmine -av</li>
+					</ol>
+
+				</section>
+				
+				<section>
+					<h2>Redmine Configuration</h2>
+
+					<ol>
+						<li>cd /build/lxc/redmine-runtime/rootfs//var/lib/redmine</li>
+						<li>cp config/database.yml.example config/database.yml</li>
+						<li>${EDITOR} config/database.yml</li>
+						<li>chown 1000:1000 config/database.yml</li>
+						<li>emerge --config "=www-apps/redmine-9999"</li>
 						 
-						chown 1000:1000 db/ db/*.sqlite3
-						groupadd apache
-						useradd -g apache apache
+						<li>chown 1000:1000 db/ db/*.sqlite3</li>
+						<li>groupadd apache</li>
+						<li>useradd -g apache apache</li>
 
-						/etc/init.d/apache2 restart
+						<li>/etc/init.d/apache2 start</li>
 
-					</p>
+					</ol>
 				</section>
 				
 				<section>
 					<h2>Installation cleanup</h2>
-					<p>
-						to reduce the size
-						
-						emerge gcc portage perl python -C -av
-					</p>
+					<ol>
+						<li>emerge gcc portage perl python -C -av</li>
+					</ol>
 				</section>
 				
 				<section>
 					<h2>Change of webserver</h2>
-					<p>
-						install nginx
-						
-						emerge nginx
-						
-						/etc/init.d/nginx start
-					</p>
+
+					<ol>
+						<li>emerge nginx</li>
+						<li>/etc/init.d/apache2 stop</li>
+						<li>/etc/init.d/nginx start</li>
+					</ol>
 				</section>
 
 				<section>
-					<h2>Thanks - My Q/A</h2>
-					<ul>
-						<li>What are the alternatives?</li>
-						<li>What is the good what can we keep?</li>
-						<li>Are these temporary issues or will there be a vendor-lockin?</li>
-					</ul>
+					<h2>Thanks - Q/A</h2>
 				</section>
 
 				<section>
