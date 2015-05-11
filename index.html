@@ -184,10 +184,40 @@
 				</section>
 				
 				<section>
+					<h2>Example Dockerfile</h2>
+					<pre><code data-trim>
+FROM phusion/baseimage:0.9.16
+MAINTAINER Phusion &lt;info@phusion.nl&gt;
+
+ENV HOME /root
+ADD . /pd_build
+RUN /pd_build/install.sh
+CMD ["/sbin/my_init"]
+EXPOSE 80 443
+					</code></pre>
+					
+					<aside class="notes">
+						Phusion baseimage is now our distribution, unclear what distribution it is based on and if we can even do updated on it
+						
+						
+						why is root the home directory, well secuiryt does not to be so important, better read the references at the end
+						
+						we import a whole directory of bash scripts
+						
+						and execute them, no idea what they are doing
+						
+						we run a custom init system, because docker systems don't need one, but this distributions says its better to uses one
+						so we are in the worst of all worlds
+						
+						the only reasonale line, this will be a web server so we'll open the ports
+					</aside>
+				</section>
+				
+				<section>
 					<h2>Example problem</h2>
-					<table>
+					<table style="margin-left: -30px;">
 						<thead>
-							<th>
+							<tr>
 								<td></td>
 								<td>Webserver</td>
 								<td>Interface</td>
@@ -195,7 +225,7 @@
 								<td>DB</td>
 								<td>Redmine</td>
 								<td>Sum</td>							
-							</th>
+							</tr>
 						</thead>
 						<tbody>
 							<tr>
@@ -208,7 +238,7 @@
 								<td>180</td>
 							</tr>
 							<tr>
-								<td>Combinations - Docker (*)</td>
+								<td style="white-space: nowrap;">Docker (*)</td>
 								<td>3</td>
 								<td>6</td>
 								<td>18</td>
@@ -217,7 +247,7 @@
 								<td>180+36=216</td>
 							</tr>
 							<tr>
-								<td>Combinations - Composable (+)</td>
+								<td style="white-space: nowrap;">Composable (+)</td>
 								<td>3</td>
 								<td>5</td>
 								<td>8</td>
