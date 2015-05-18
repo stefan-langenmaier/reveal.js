@@ -48,11 +48,13 @@
 					</p>
 					
 					<aside class="notes">
-						I want to talk about some specific problems that exists in my opinion specifically for the Docker system
+						Bienvenue a la présentation Docker, ses issues "composability" et comment un bon gestionnaire de paquets peut les résoudre.
 						
-						I won't talk about all the known problems, but I will give some sources :)
+						Je ne veux par parler de tous les problèmes Docker, mais je vais donner de references. :)
 						
-						You can pose questions at anytime, but we'll have some waiting time during the installation of packages, so it would be a good idea to pose the questions during that time.
+						La présentation a deux parties. Dans la première je vais essayer de illustrer le problème. La deuxième va être une demonstration.
+						
+						Dans la deuxième on va avoir du pause ou on attends l'installation, ça serait un bonne idée de poser des questions pendant cette phase.
 					</aside>
 				</section>
 
@@ -64,13 +66,13 @@
 					
 					<aside class="notes">
 						<ul>						
-						    <li>it's a company,</li>
-						    <li>a tool to manage (create, run, deploy, delete) containers and images on different platforms (linux, mac, win),</li>
-						    <li>a host for these images (where you can have an account, think app store)</li>
-						    <li>a library to interface the linux kernel container infrastructure</li>
+						    <li>c'est une compagnie</li>
+						    <li>un outil pour (créer, rouler, deployer, supprimer) gérér les containers et  les images sur des différents platforms (linux, mac, win),</li>
+						    <li>un hôte pour les images (on peut avoir un compte, penser à un appstore)</li>
+						    <li>une libraire et interface dans l'infrastructue de conteneur du kernel</li>
 						</ul>
 						
-						it's a lot of different things (one of the reasons a "competitor" started it's own library rkt)
+						Docker est beaucoup de différents choses. C'est une de raison pourquoi un competiteur à créer son propre outil (rkt).
 					</aside>
 				</section>
 
@@ -81,18 +83,17 @@
 					</p>
 					
 					<aside class="notes">
-						I talked about containers? What are these and why are they new?
+						J'ai  déjà parlé de conteneurs, mais c'est quoi et pourquoi est-ce que c'est nouveau.
 						<ul>						
-						    <li>Full virtualised systems all run on their on kernels. Modern hardware has support for it.</li>
-						    <li>Paravirtualised systems run on their on kernel, but the kernel knows its running virtualised and is optimized for that.</li>
+						    <li>Full virtualised systems: chaque système roule sur son propre kernel. Sur hardware moderne il y a support d'execution. La reduction de performance est negligible.</li>
+						    <li>Paravirtualised systems: chaque système roule sur son propre kernel. mais le kernel sais qu'il est virtualisé et il est optimisé pour ça.</li>
 						
-						    <li>Containerized systems run all on the same kernel. So this kernel has a global ressource control and can do a global optimzation of the resources.
-						Possibly big performance gains now and in the future. Competing environments can "talk" to each other.</li>
+						    <li>Containerized systems: tous les systèmes roulent sur le même kernel. Ce kernel a le contrôle global de ressource. Probablement les systèmes competitive peuvent parler. Ça peut améliorer la performance. Le temps de démarrage est pratiquement instantané.</li>
 						</ul>
 						
 						
-						<p>So generally a good idea to use containers? Well it depends. :)
-						They all promise "create once - deploy everywhere", but as you exclude your kernel from the image your behaviour can change in the future when you update your kernel or when you change your distribution. The promise of reproduceable behaviour is overrated. It would be easier/more reliable with vrtualisation.</p>
+						<p>C'est claire que la performance va être la meilleure avec les système containeriser. Génerelement une bonne idéeÉ Ça depends. :)
+						Les conteneurs promessent "create once - deploy everywhere", mais si on exclude le kernel dans l'image le comportement peut changer dans le futur si on metrre-à-jour le kernel ou si on change la distribution. La promesse de comportment reproduisible est exageré. La vrai virtualisation peut être plus stable dans cette domaine.</p>
 					</aside>
 				</section>
 
@@ -120,12 +121,12 @@
 					</ul>
 					
 					<aside class="notes">
-					    What are the differences?
-						Why do they exist?
+						C'est un peu l'histoire de conteneurs.  
 						<ul>
 						    <li>uml</li>
 						    <li>OpenVZ</li>
 						    <li>Linux VServer</li>
+						    Ces solutions ont existé avant. Elles n'étaint pas inclus dans le kernel. Ou elles étaient propriétaires.
 						    they are only available via patches not part of the official kernel
 						</ul>
 					    
@@ -137,13 +138,13 @@
 						    <li>rocket</li>
 						    <li>systemd-nsspawn</li>
 						</ul>
-						    they are all based on cgroups, which is in the vanilla kernel. so easy upgrades in the future very important point, as all your containers depend on that kernel
+						Les façon actuelles, elles sont implémente avec cgroups dans le kernel. Donc le mis-à-jour vont être facile dans le futur.
 						
 						<ul>
 						    <li>jails</li>
 						    <li>zones</li>
 						</ul>
-						    similar things for other OSes
+						Les choses similaire pour les OS différents (BSD et Solaris)
 						
 					</aside>
 				</section>
@@ -155,13 +156,12 @@
 					</p>
 					
 					<aside class="notes">
-						check out the links at the end
+						J'ai ajouté des liens à la fin pour les interessé
 						
-						different people say different things
-						be it the network is not properly implemented
-						be it the whole infrastructure is not secure (no signed images)
+						Il y a des avis différents:
 						
-						you can have a look into the links at the end
+						les reseau n'est pas bien implémenté.
+						Il n'y a pas d'infrastructure de sécurité. (signed images)
 					</aside>
 				</section>
 
@@ -174,13 +174,12 @@
 					</ul>
 					    
 					<aside class="notes">
-						Experimenting with a container - development and especially testing
-						=> Changing components on multiple levels
+						Je veux parler de deux choses
+						l'experimnetation avec un conteneur, ça veux dire le développement et les test. Ça inclue les changements sur plusieurs niveau.
 						
-						and then create a minimal production container at the end
+						et la deuxième chose c'est la création d'un conteneur minimal pour la production
 						
-						These are two different tasks but they are normally related to each other
-						
+						Ce sont deux tâches différents, mais elles sont liées.
 					</aside>
 				</section>
 				
@@ -198,23 +197,26 @@ EXPOSE 80 443
 					</code></pre>
 					
 					<aside class="notes">
-						A Dockerfile is script/configuration that describes how an image is built
+						Un Dockerfile c'est un fichier de configuration qui décris comme une image est batti.
 						
-						At first sight this looks very clear and understandable
+						Suivant on a un exemple, qui vient de phusion qui produit l'appi passenger. C'est une application qui interface ruby et le webserver.
 						
-						Phusion baseimage is now our distribution, unclear what distribution it is based on and if we can even do updated on it
+						À la première vue il semble très claire et comprehensible.
 						
+						Mais à la deuxième fois?
 						
-						why is root the home directory, well security does not to be so important, better read the references at the end
+						phusion/baseimage est maintenant la distribution, mais ce n'est pas claire comment la distribution fonctionnne et plus important comment on peut garder la distribution -à-jour
 						
-						we import a whole directory of bash scripts
+						et pourquoi est le dossier root le home. il semble que la sécurité n'est pas important.
 						
-						and execute them, no idea what they are doing
+						après le script import un dossier au complèt (pas de commentaire, rien, aucune idée qu'est-ce que dans le dossier)
+						et après un fichier de ce dossier est executé (il semble qu le script va installer qc)
 						
-						we run a custom init system, because docker systems don't need one, but this distributions says its better to uses one
-						so we are in the worst of all worlds
+						la CMD specifie la commande qui roule au début du serveur
+						normalement avec Docker un système d'init n'est pas necessaire, mais les gens de phusion dit oui c'est necessaire mais ils utilisent un système fait à la main
+						avec ça on est dans le pire du monde. on va laisser tomber l'infra/le support d'une "vrai" distro
 						
-						the only reasonable line, this will be a web server so we'll open the ports
+						la dernière ligne est la seule raissonable. elle spécifie les port ouvert pour le webserver
 					</aside>
 				</section>
 				
@@ -263,21 +265,16 @@ EXPOSE 80 443
 						</tbody>
 					</table>
 					<aside class="notes">
-						Curse of dimensions
+						Dans l'exemple suivant je veux utiliser ce cas. On vas installer l'application Redmine à partir de rien et on va être capable de choisir tous les composantes.
+						Ici on peut voir un liste de haute niveau de composantes et on peut voir déjà un problème
 						
-						the non-composable build system has about 10% more combinations
+						Le totale de combinaison est toujours le même, mais le totale d'éléments qui doivent être préparé monte plus rapide (exponentielle vers linear)
 						
-						this is NOT the problem, they will always be of the same magnitude
+						On peut voir pour Docker ça serait 36 images à prepareé et pour les paquets classique ça serait 15 à preparé. Si on imagine qu'on veux ajouter un autre chouche avec seulement deux option, ça serait 72 images pour Docker et 17 pour les paquets.
 						
-						the problem is between the 15 and the 36
-						with 15 packages prepared you can create any combination you want
-						with 36 base images prepared you can create any last image you want, you still have to create it manually and adapted to each though
+						ça s'appelle curse of dimensions si qqn veux google cela.
 						
-						it is sad because the matrix will only be sparsely populated
-						
-						we will NEVER try all possible combinations only the ones that seem interesting and this is not always known in advance
-						
-						but if the work to change/experiment/try is to high we are in a kind of vendor lock-in, the base where you are starting from decides on your tools
+						On ne va jamais essayer toutes les combinaison, mais peut-être on ne sait pas au début quelle combinaison est la bonne.
 					</aside>
 				</section>
 				
@@ -285,16 +282,18 @@ EXPOSE 80 443
 					<h2>Let's visualize it (stacked)</h2>
 					<div id="stackednetwork" style="height: 50vh; width: 100%;"></div>
 					
-					<p>
-					Now imagine you want to change a lower level package/setting
-					then you have to recreate all images, that are based on this one.
-                    
+					<aside class="notes">
+						Pour rendre cela plus compréhensible j'ai essayé de visualiser le comportement. Si on veux changer un paquet au niveau bas on doit modifier toutes les images dessus.
+                    			</aside>
 				</section>
 				
 				<section>
 					<h2>Let's visualize it (composed)</h2>
 					<div id="composednetwork" style="height: 50vh; width: 100%;"></div>
-                    
+                    			
+                    			<aside class="notes">
+                    				Les paquets ici sont plus complexe, mais ils peuvent fonctionner avec plusieurs versions
+                    			</aside>
 				</section>
 				
 				
@@ -307,7 +306,8 @@ EXPOSE 80 443
 						
 					</ul>
 					<aside class="notes">
-						but if you like variety in your experimenting and really minimal systems in production you're screwed
+						on peut ignore ce problème
+						si le travail pour experimenter est trop haut on a crée une sorte de vendor lock-in et on empecher des nouvelles approches.
 					</aside>
 				</section>
 
@@ -321,12 +321,11 @@ EXPOSE 80 443
 						<li>documentation</li>
 					</ul>
 					<aside class="notes">
-						they are around for a while and already pretty stable
+						les gestionnaires de paquets déjà existe pour longtemps est ils sont très stable
+						on a une communication qui est établi avec upstream (parce que docker est plus comme un silo)
+						il y a une bonne documentation avec les meillure-pratique
 						
-						if your package manager really cannot do it, there is still bash available
-						this is basically what a Dockerfile is doing but without obstructing you
-						
-						but every time you are installing an application without a package manager it means you know more about that application than all the developers of your favorite distro (probably not true)
+						chaque fois on install une application sans gestionnaire de paquets, on dit qu'on connais l'application mieux qu tous les developpeurs de vos distro favori
 					</aside>
 				</section>
 				
@@ -337,16 +336,13 @@ EXPOSE 80 443
 
 					</p>
 					<aside class="notes">
-						creating a minimal Redmine installation
+						Discloser: Si ce n'est pas connu, j'aime utiliser Gentoo
 						
-						this uses just lxc
-						two containers, both are running Gentoo but the host can be whatever distribution you like
+						On va utiliser Gentoo pour installer Redmine
+						Gentoo va fournir portage, c'est le gestionnaire de paquets et l'installation lxc laquelle on utilise pour rouler les conteneur. Mais c'est aussi possible avec d'autres distro et gestionnaire de paquets.
 						
-						one container runs the package manager
-						the second one is not even a real Gentoo as there is not even a package manager installed in the end
-						
-						both a running openrc as init system (this could be changed to systemd or even none)
-						the passenger people recommend to run it with an init system, but they are using something strange called my_init
+						On va voir deux système. Une runtime qui contenir Redmine à la fin avec toutes les dépendendances nécessaire.
+						Un sytème qui va bootstraper l'installation parce qu'on commence à zero.
 					</aside>
 				</section>
 				
@@ -357,13 +353,21 @@ EXPOSE 80 443
 						
 						<li>nano config</li>
 						
-						<li>emerge baselayout -av</li>
-						
-						<li>emerge openrc shadow util-linux bash coreutils -av -j4</li>
+						<li>emerge baselayout openrc shadow util-linux bash coreutils -av -j4</li>
 						
 						<li>emerge grep net-tools procps gcc findutils nano sed -av -j4</li>
 						
 					</ol>
+					
+					<aside class="notes">
+						Le dossier de template contient seulement les fichiers de configuration. Aucune executable.
+						
+						Le gentoo-runtime a créé la configuration.
+						
+						La première commande install les outils nécessaire pour le système openrc, on pourrait choisir aussi systemd, la deuxième fais une installation à la base.
+						
+						Une système de base de Gentoo est prêt
+					</aside>
 				</section>
 				
 				<section>
@@ -371,7 +375,10 @@ EXPOSE 80 443
 					<ol>
 						<li>emerge redmine -av -j4</li>
 					</ol>
-
+					
+					<aside class="notes">
+						L'installation de Redmine est facile.
+					</aside>
 				</section>
 				
 				<section>
@@ -389,6 +396,12 @@ EXPOSE 80 443
 						<li>/etc/init.d/apache2 start</li>
 
 					</ol>
+					
+					<aside class="notes">
+						Il faut qu'on fasse la configuration. Ça peut prendre un peu du temps. On n'a pas installé tous les dépendences avec Gentoo (c'est aussi possible), mais parce qu'on utilise le code qui vient directement du git, on utilse bundler pour fournir les dépendences de Ruby.
+						
+						Après il faut qu'on ajoute les permission et ça devrait être tous.
+					</aside>
 				</section>
 				
 				<section>
@@ -399,6 +412,10 @@ EXPOSE 80 443
 						<li>/etc/init.d/apache2 stop</li>
 						<li>/etc/init.d/nginx start</li>
 					</ol>
+					
+					<aside class="notes">
+						Un exemple comment on peut changer les composantes. On va installer nginx comme serveur web.
+					</aside>
 				</section>
 				
 				<section>
