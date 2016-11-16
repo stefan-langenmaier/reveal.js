@@ -4,7 +4,10 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>reveal.js</title>
+		<title>Testing</title>
+
+		<meta name="description" content="Discussion concernant la bonne aproche de tests dans une application web">
+		<meta name="author" content="Stefan Langenmaier">
 
 		<link rel="stylesheet" href="css/reveal.css">
 		<link rel="stylesheet" href="css/theme/black.css">
@@ -24,8 +27,97 @@
 	<body>
 		<div class="reveal">
 			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
+				<section>
+					<section>
+						<h2>Testing</h2>
+	goals
+	===== to create a
+	common nomenclature (on n'a pas réussi de nommer nos tests selenium la dernière fois)
+	common understanding of good tests with examples
+	common understanding of tests
+	common understanding how to continue
+	
+						OUI ou NON
+					</section>
+					<section>
+						<h2>Justification</h2>
+							* je ne suis pas contre les unit tests, mais je suis contre la quantité proposé à cause de leurs ineffecicacité du temps investi
+							* je ne suis pas contre les system tests, au contraire je voudrais avoir plus
+							* je ne suis pas contre une presentation à Fabrice/Eric/Francois, au contraire mais je voudrais avoir avant un plan de l'estimation parce que c'est à l'équipe de estimer le gain et le temps nécessaire
+					<section>
+				</section>
+			
+				<section>
+					<h2>Nomenclature</h2>
+unit test: même dans la literature toujours ce n'est pas clairement distingué, un system/ un module sont aussi des unités, mais si on parle de tests unitaire on parle de test au niveau de classe pour les méthodes invdivuelle OUI ou NON?
+				</section>
+				
+				<section>
+				PO says how much time we can spend on something (increase quality for x hours), to find the most efficient way to do this is part of the team.
+
+We talked a lot about the monde ideal, but I think there is no state when you have written all the test there is always some more you can test, so the point is to have the greatest coverage with the minimal time invested. until here i think every one is d'accord.
+now please dont stop reading after the next sentence. i think unit tests are a waste for most of the time.
+
+this reference to all methods that only have less than 4 lines or no "if"s for example
+
+we said integration test take longer to write and are harder to maintain. i like to argument the contrary. integration or functionality tests are less prone to changes due to refactoring but at the same time they allow refactoring. they take more time to write but they are also covering more executed lines. this means one test tests actually a lot more, especially when we don't use mocks.
+
+
+je ne suis pas contre les unit tests, mais je suis contre la quantité proposé à cause de leurs ineffecicacité du temps investi
+je ne suis pas contre les system tests, au contraire je voudrais avoir plus
+je ne suis pas contre une presentation à Fabrice/Eric/Francois, au contraire mais je voudrais avoir avant un plan de l'estimation parce que c'est à l'équipe de estimer le gain et le temps nécessaire
+				</section>
+
+				<section>
+					<h2>question unit test</h2>
+						* est-ce qu'on test les méthodes privées? beaucoup de méthodes étaient changé à public (WIKI:TDD:Code visibility)
+						* Est-ce qu'on doit tester enums? (example)
+unit test pour security par exemple était important
+
+						* unit test qui a testé la mauvaise methode
+
+il y avait déjà des problème avec les tests mocké surtout power mock (avec le reference en string) (PremiumSelectionIT)
+on a encore des instabilités (comme SessionListPage)
+				</section>
+				
+				<section>
+				cout d'un test
+==============
+ecrire temps
+maintenir temps
+executer temps, argent
+----------------------
+les temps vaut differement
+				</section>
+				
+				<section>
+				valeur d'un test
+==============
+ecrire temps
+maintenir temps
+executer temps, argent
+----------------------
+tous les tests on valeur!
+				</section>
+				
+				<section>
+				Even 100% code coverage is far from complete testing, when all lines are executed the code still hasn't reached all possible states.
+				
+				</section>
+				
+				<section>
+					<h2>Maximiser la valeur</h2>
+					max f(tests, temps)
+				</section>
+
+				<section>
+					<h2>References</h2>
+http://rbcs-us.com/documents/Why-Most-Unit-Testing-is-Waste.pdf
+http://googletesting.blogspot.ca/2013/05/testing-on-toilet-dont-overuse-mocks.html
+http://www.javaworld.com/article/2892225/testing-debugging/how-just-about-everyone-gets-unit-testing-wrong.html
+http://adoriasoft.com/tdd-vs-bdd-or-why-bdd-is-the-new-black/
+http://www.codesimplicity.com/post/the-philosophy-of-testing/
+				</section>
 			</div>
 		</div>
 
