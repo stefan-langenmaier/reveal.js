@@ -141,6 +141,7 @@
 					<quote class="stretch">
 						Eclipse is an integrated development environment (IDE)
 					</quote>
+					
 				</section>
 				
 				<section>
@@ -149,7 +150,7 @@
 					<quote class="stretch">
 						Eclipse is a platform that has been designed from the ground up for building <em>integrated web and application development tooling</em>.
 					</quote>
-
+					
 				</section>
 				
 				<section>
@@ -158,7 +159,7 @@
 					<quote class="stretch">
 						At the core of Eclipse is an architecture for <em>dynamic discovery, loading, and running of plug-ins</em>. The platform handles the logistics of finding and running the right code. The platform UI provides a standard user navigation model.  Each plug-in can then focus on doing a small number of tasks well. What kinds of tasks? Defining, testing, animating, publishing, compiling, debugging, diagramming...<em>the only limit is your imagination.</em>
 					</quote>
-
+					
 				</section>
 				
 				<section>
@@ -227,7 +228,7 @@
 					<h2>NeoScada</h2>
 				
 					<ul>
-						<li>controlleur industrielle standard</li>
+						<li>contrôleur industrielle standard</li>
 						<li>supervision</li>
 						<li>collection de données</li>
 					</ul>
@@ -247,7 +248,7 @@
 					
 					<aside class="notes">
 						<p>http://projects.eclipse.org/projects/iot.risev2g</p>
-						implémentation de reference de standard, encore embarqué mais une envergure plus grande
+						implémentation de référence de standard, encore embarqué mais une envergure plus grande
 						aussi dans la standardisation de smarthome
 					</aside>
 				</section>
@@ -260,17 +261,17 @@
     				<section>
     				    <h2>egit</h2>
     				    
-    				    <p>bibliotheque pour interagir avec le dépôt git</p>
+    				    <p>bibliothèque pour interagir avec le dépôt git</p>
     				</section>
     				<section>
     				    <h2>eclipselink</h2>
     				    
-    				    <p>JPA implementation</p>
+    				    <p>JPA implémentation</p>
     				</section>
     				<section>
     				    <h2>equinox</h2>
     				    
-    				    <p>OSGi implementation</p>
+    				    <p>OSGi implémentation</p>
     				</section>
     				<section>
     				    <h2>swt</h2>
@@ -282,7 +283,27 @@
     				    
     				    <p>remote application platform</p>
     				    <aside class="notes">
-					        https://en.wikipedia.org/wiki/Remote_Application_Platform
+					        comme swt mais pour plusieurs platforms
+    					</aside>
+    				</section>
+    				<section>
+    				    <h2>jetty</h2>
+    				    
+    				    <p>webserver</p>
+    				    <aside class="notes">
+					        souvent utilisé embedded, c'est un peu le sqlite de webserver
+    					</aside>
+    				</section>
+    				<section>
+    				    <h2>vert.x</h2>
+    				    
+    				    <p>node.js on a jvm platform</p>
+    				    <aside class="notes">
+					        http://vertx.io/
+					        
+					        node.js/twisted mais plusieurs langues supportés
+					        
+					        Vert.x devait initialement s'appeler Node.x,
     					</aside>
     				</section>
 					<section>
@@ -291,15 +312,21 @@
     				    <p>parser generator and AST generator</p>
     				    
     				    <aside class="notes">
-					        https://en.wikipedia.org/wiki/Xtext
+					        une interface pour le design de langages et de formats de fichier
+					        
+					        tout le monde qui a déjà utilisé yacc, bison ou antlr va être content
     					</aside>
     				</section>
 				</section>
 				<section>
-					Technology
+					<h2>Technology</h2>
 					
-					aspect-oriented programming
-					https://en.wikipedia.org/wiki/AspectJ
+					AspectJ
+					
+					<aside class="notes">
+					    aspect-oriented programming, c'est intéressant pour tous les amis de programmation fonctionnelle. la langage est excellent pour le cross-cuting concerns. comme logging ou authentification, qui sont difficile dans une langue sans side effects.
+					    
+					</aside>
 				</section>
 				
 				<section>
@@ -312,7 +339,7 @@
 					</ul>
 					
 					<section>
-    				    <h2>Eierlegenede Wollmilchsau</h2>
+    				    <h2>Eierlegende Wollmilchsau</h2>
     				    
     				    <img src="wollmilchsau.jpeg" />
     				</section>
@@ -327,15 +354,9 @@
     				    <h2>Showtime</h2>
     				    
     				</section>
-    				
-    				<section>
-    				    <h2>Inception</h2>
-    				    
-    				</section>
-
 					
 					<aside class="notes">
-					    Eierlegenede Wollmilchsau comme les orignaux
+					    Eierlegende Wollmilchsau comme les orignaux
 					    
 					    
 					    Si les technologies sont combinés on peut entre autres créer un éditeur. On va faire maintenant ça. On utilise l'éditeur pour configure l'éditeur après on utilise l'éditeur pour builder l'éditeur pour éditer les sources. Inception.
@@ -352,28 +373,48 @@
 				    <h2>Eclipse SDK distribution</h2>
 				    
 				    <section>
-				        <li>php</li>
-				        <li>python</li>
-				        <li>rust</li>
-				        <li>javascript</li>
+				        <ul>
+				            <li>php</li>
+				            <li>python</li>
+				            <li>rust</li>
+				            <li>javascript</li>
+				            <li>ruby</li>
+				            <li>c/c++</li>
+				            <li>...</li>
+				        </ul>
+				        
+				        <aside class="notes">
+					        Je pense que ici je ne raconte pas de nouvelle choses.
+					    </aside>
 				    </section>
 				    
 				    <section>
-				        <li>Apache Directory Studio (ldap)</li>
-				        <li>SoapUI (rest, soap)</li>
-				        <li>rssowl newsreader (RSS)</li>
+				        <ul>
+				            <li>DBeaver</li>
+				            <li>Apache Directory Studio (ldap)</li>
+				            <li>SoapUI (rest, soap)</li>
+				            <li>rssowl newsreader (RSS)</li>
+				        </ul>
+				        <img src="dbeaver.png" />
+				        <img src="apache-directory-studio.png" />
 				    </section>
 				    
 				    <section>
-				        <li>BIRT</li>
-				        <li>talend</li>
-				        <li>ugis</li>
-				        <li>scientific interfaces (bio, chemistry)</li>
+				        <ul>
+				            <li>BIRT</li>
+				            <li>Talend</li>
+				            <li>uDig/ArcGis</li>
+				            <li>scientific interfaces (bio, chemistry)</li>
+				        </ul>
+				        <img src="udig.jpeg" />
 				    </section>
 				    
 				    <section>
-				        <li>wireframes (Wireframesketcher)</li>
-				        <li>phaser HTML5 2D video games</li>
+				        <ul>
+				            <li>wireframes (Wireframesketcher)</li>
+				            <li>phaser HTML5 2D video games</li>
+				        </ul>
+				        <img src="wireframesketcher.png" />
 				    </section>
 				    
 				    <section>
@@ -441,7 +482,9 @@
 					</ul>   
                 </section>
                 
-				<section>Speed</section>
+				<section>Speed
+				https://www.techempower.com/benchmarks
+				</section>
 				<section>Memory</section>
 				<section>Languages - used by</section>
 				<section>Languages - supported by</section>
@@ -482,6 +525,11 @@
 					https://www.eclipse.org/projects/handbook/#ip-iplog
 					IPzilla - https://dev.eclipse.org/ipzilla/
 					https://waynebeaton.wordpress.com/2017/01/16/eclipse-infrastructure-support-for-ip-due-due-diligence-type/
+					http://www.redmine.org/projects/redmine/wiki/HowTo_Mylyn
+					http://dbeaver.jkiss.org/
+					https://en.wikipedia.org/wiki/AspectJ
+					https://en.wikipedia.org/wiki/Remote_Application_Platform
+					https://en.wikipedia.org/wiki/Xtext
 					</ul>
 				</section>
 			</div>
