@@ -221,7 +221,7 @@
 					    </ul>
 					
 					    <aside class="notes">
-						    <p>http://projects.eclipse.org/projects/iot.tinydtls</p>
+						    <p>C'est pour les gens qui pense qu'Eclipse est "bloated". Une bibliothèque pour les ordinateur vraiment embarque. (Avec de kilo-octets de mémoire vive). Implémentation nécessaire pour le standard CoAP. Cette sorte de processeur est encore produit, mais est souvent juste une partie dans système plus grande.</p>
 					    </aside>
 				    </section>
 				
@@ -235,8 +235,12 @@
 					    </ul>
 					
 					    <aside class="notes">
+					        <p>Un système de contrôle et d'acquisition de données, avec lequel on peut gérer en temps réel beaucoup de machine.</p>
+					        <p>Le terme SCADA est peut-être connu du Stuxnet. Stuxnet était un rootkit développé par les États-Unis/Isreal pour saboter le plant nucléaire de l'Iran.</p>
+						    <p>J'ai mentionné ce projet comme support industrielle, mais Eclipse offert aussi des alternatives dans cette domaine, paho, Leshan, wakaama qui viennent d'une communauté plus ouvert.</p>
+						    
+						    <p>Eclipse est aussi le sponsor pour quelques competitions.</p>
 						    <p>http://projects.eclipse.org/projects/technology.eclipsescada</p>
-						    mais offert aussi des alternative dans cette domaine, paho, Leshan, wakaama
 					    </aside>
 				    </section>
 				
@@ -248,9 +252,9 @@
 					    </ul>
 					
 					    <aside class="notes">
+						    <p>implémentation de référence de standard, encore embarqué mais une envergure plus grande</p>
+						    <p>C'est aussi juste un exmaple, Eclipse est aussi dans la standardisation de smarthome</p>
 						    <p>http://projects.eclipse.org/projects/iot.risev2g</p>
-						    implémentation de référence de standard, encore embarqué mais une envergure plus grande
-						    aussi dans la standardisation de smarthome
 					    </aside>
 				    </section>
 				
@@ -444,8 +448,8 @@
 				        <ul>
 				            <li>Vuze</li>
 				            <li>BIRT</li>
-				            <li>Talend</li>
-				            <li>scientific interfaces (bio, chemistry)</li>
+				            <li>Talend (ETL)</li>
+				            <li>interfaces scientifique (bio, chimie)</li>
 				            <li>SoapUI (rest, soap)</li>
 				            <li>rssowl newsreader (RSS)</li>
 				        </ul>
@@ -455,12 +459,21 @@
 				        <ul>
 				            <li>modelling</li>
 				        </ul>
+				        
+				        <aside class="notes">
+					        <p>C'est la domaine peut-être la plus vaste. Le sujet qui connecte tous les developpement dans Eclipse.</p>
+					        <p>Avec Polarsys pour la modeller des outils embarqués. La gestion de workflow. Avec xtext pour la création de langages. Ou juste modeler les tâches.</p>
+					    </aside>
 				    </section>
 				    
 				    <section>
 				        <ul>
 				            <li>mylyn</li>
 				        </ul>
+				        
+				        <aside class="notes">
+					        <p>Transformation d'Eclipse à une interface orienté aux tâches.</p>
+					    </aside>
 				    </section>
 				</section>
 				
@@ -471,42 +484,52 @@
 				        <ul>
 				            <li>vrapper</li>
 				        </ul>
+				        
+				        <aside class="notes">
+					        <p>Intégration de style vim. C'est cool, mais ce n'est pas la vraie chose.</p>
+					    </aside>
 				    </section>
 				    
 				    <section>
 				        <ul>
 				            <li>eclim</li>
 				        </ul>
+				        
+				        <aside class="notes">
+					        <p>Donc il y a aussi la vraie chose!</p>
+					    </aside>
 				    </section>
 				    
 				    <section>
 				        <ul>
 				            <li>eclim-remote</li>
 				        </ul>
+				        
+				        <aside class="notes">
+					        <p>Mais si ça fonctionne à l’intérieur, ça devrait fonctionner aussi ailleurs.</p>
+					    </aside>
 				    </section>
 				    
 				    <section>
 				        <ul>
-				            <li>autres editeurs</li>
+				            <li>autres éditeurs</li>
 				        </ul>
+				        
+				        <aside class="notes">
+					        <p>Ça fonctionne parce que c'est une serveur web d'Eclipse en arrière. Mais si c'est ouvert d'autre éditeur fonctionne aussi.</p>
+					    </aside>
 				    </section>
 				    
 				    <section>
 				        <ul>
-				            <li>web scale</li>
+				            <li>web scale (Che)</li>
 				        </ul>
+				        <aside class="notes">
+					        <p>En fait on peut pousser ça plus loin et rendre ça web-scale. :) Dommage si Nicolas n'est pas là.</p>
+        				    docker run -v /var/run/docker.sock:/var/run/docker.sock -v /home/slangenmaier/che/:/data -e CHE_PORT=8888 eclipse/che start
+					    </aside>
 				    </section>
 				    
-				</section>
-				
-				<section>
-				    <h2>che</h2>
-				    
-				    <p>web-scale</p>
-				    
-				    <aside class="notes">
-    				    docker run -v /var/run/docker.sock:/var/run/docker.sock -v /home/slangenmaier/che/:/data -e CHE_PORT=8888 eclipse/che start
-					</aside>
 				</section>
 				
 				<section>
@@ -561,6 +584,8 @@
 						<li>https://en.wikipedia.org/wiki/AspectJ</li>
 						<li>https://en.wikipedia.org/wiki/Remote_Application_Platform</li>
 						<li>https://en.wikipedia.org/wiki/Xtext</li>
+						<li>http://projects.eclipse.org/projects/iot.tinydtls</li>
+						<li>https://www.slideshare.net/nashjain/eclipse-open-iot</li>
 					</ul>
 				</section>
 			</div>
