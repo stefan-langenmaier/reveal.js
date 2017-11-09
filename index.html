@@ -2,9 +2,14 @@
 <html>
 	<head>
 		<meta charset="utf-8">
+		<meta name="description" content="JVM/GC introduction and configuration for Solr">
+		<meta name="author" content="Stefan Langenmaier">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>reveal.js</title>
+		<title>JVM/GC introduction and configuration for Solr</title>
 
 		<link rel="stylesheet" href="css/reveal.css">
 		<link rel="stylesheet" href="css/theme/black.css">
@@ -24,8 +29,463 @@
 	<body>
 		<div class="reveal">
 			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
+				<section>
+					<h2>JVM/GC Einführung und Konfiguration für Solr</h2>
+					
+					<aside class="notes">
+						<p>
+							Das Verhalten des GC mit besonderem Bezug auf Solr
+							GC ist ein entscheidender Faktor für die Leistung und Stabilität eines Systems
+						</p>
+					</aside>
+				</section>
+				
+				<section>
+					<h2>Geschichte der JVM</h2>
+					
+					<ul>
+						<li>abstract computing machine</li>
+						<li>specification, implementation, and instance</li>
+						<li>entwickelt für Java, aber andere Sprachen möglich</li>
+					</ul>
+					
+					<aside class="notes">
+						<p>
+							Java virtual machine (JVM) is an abstract computing machine
+							three notions of the JVM: specification, implementation, and instance
+							
+							designed for java the J, but abstract so other languages are possible, later
+							
+							first specification of the vm
+						</p>
+					</aside>
+				</section>
+				
+				<section>
+					<h2>JVM Spezifikation</h2>
+					
+					<ul>
+						<li>32-bit</li>
+						<li>hybrid mit einem  Stack and register–register oder load/store Ansatz</li>
+						<li>class loader</li>
+					</ul>
+					
+					<aside class="notes">
+						<p>
+							die vm hat laut spezifikation 32-bit, heute sind ja viele desktop rechner 64-bit
+
+							also das interne speichermodell weiterhin 32-bit, daher z.b. das problem mit 32gb jvm instancen 4Mrd zeiger, mit byteweisem zugriff macht 32GB
+							
+							der typ der vm ist hybrid mit einem  Stack and register–register oder load/store Ansatz, daher gibt es neben outofmemory fehler auch stackoverflow fehler, das heißt der speicher der vm ist in heap und stack aufgeteilt
+							
+							es gibt eine spezifikation damit es möglich ist verschiedene implementierungen den gleichen code ausführen können, war bei der entwicklung in 90ern auch das ziel von SUN, das ein programm nur einmal erzeugt werden muss und dann auf verschiedener hardware ausgeführt werden kann, davor musste es für jede archtitekur kompiliert werden oder konnte mit niedriger performanz nur interpretiert werden und jeweils im programm die os spezifischen unterschiede behandelt werden
+							
+							die spezifikation schreibt z.b. vor welche ausführbaren daten sog. klassen geladen werden müssen bzw. wie das format dieser daten zu sein hat
+							
+							es sind aber nicht alle themen in der spezifikation behandelt, z.b. ob es einer garbage collection gibt und wie diese arbeiten soll, das ist teil einer konkreten implementierung
+							
+							
+							Process virtual machines are designed to execute computer programs in a platform-independent environment.
+							
+							drei schlüssel aufgaben
+							
+							
+							    Loading: finds and imports the binary data for a type
+							    Linking: performs verification, preparation, and (optionally) resolution
+							        Verification: ensures the correctness of the imported type
+							        Preparation: allocates memory for class variables and initializing the memory to default values
+							        Resolution: transforms symbolic references from the type into direct references.
+							    Initialization: invokes Java code that initializes class variables to their proper starting values.
+
+						</p>
+					</aside>
+				</section>
+				
+				<section>
+					<h2>Existierende JVM Implementierungen</h2>
+					
+					<p>Es existieren <a href="https://en.wikipedia.org/wiki/List_of_Java_virtual_machines">über 40 verschiedene JVM Projekte</a>.</p>
+					
+					<ul>
+						<li><a href="https://en.wikipedia.org/wiki/HotSpot">HotSpot</a>
+							<ul>
+								<li>seit 1999</li>
+								<li>seit 13 November 2006 unter GPLv2</li>
+								<li>seit Oracle, wird JRockit mit HotSpot gemerget</li>
+							</ul>
+						</li>
+						<li><a href="https://en.wikipedia.org/wiki/OpenJ9">OpenJ9</a></li>
+					</ul>
+					
+					<aside class="notes">
+						<p>
+							Es existieren über 40 verschieden JVM Projekte (https://en.wikipedia.org/wiki/List_of_Java_virtual_machines)
+							
+							nachfolgend die bekanntesten aus dem Desktop und Serverbereich
+							
+							* HotSpot von Oracle (hält trademark), seit 1999, verwendet mehrere. verschiedene GCs, enthält verschiedene JITs, seit 13 November 2006 unter GPLv2, dadurch haben sich viele der anderen Projekte erledigt
+							* In 2017, J9 became an Eclipse Foundation project under the name OpenJ9, formerly IBM
+						</p>
+					</aside>
+				</section>
+				
+				<section>
+					<h2>Existierende Sprachen</h2>
+					
+					<p>A JVM language is any language with functionality that can be expressed in terms of a valid class file. <a href="https://en.wikipedia.org/wiki/List_of_JVM_languages">[Wikipedia]</a></p>
+					
+					<ul>
+						<li>Clojure, a functional Lisp dialect</li>
+						<li>Apache Groovy, a dynamic programming and scripting language</li>
+						<li>Scala, a statically-typed object-oriented and functional programming language</li>
+						<li>Kotlin, a statically-typed language from JetBrains, the developers of IntelliJ IDEA</li>
+						<li>JRuby, an implementation of Ruby</li>
+						<li>Jython, an implementation of Python</li>
+						<li>Nashorn, an implementation of Javascript</li>
+						<li>...</li>
+					</ul>
+					
+					<aside class="notes">
+						<p>
+							viele andere, gute basis um neue sprachen zu entwickeln und alte sprachen auf neuere hardware zu portieren
+						</p>
+					</aside>
+				</section>
+				
+				<section>
+					<h2>Existierende Distributionen</h2>
+					
+					<ul>
+						<li>JRE = JVM</li>
+						<li>JDK = JVM + Compiler + Debugger + Profiler</li>
+						<li>IcedTea</li>
+					</ul>
+					
+					<ul>
+						<li>OracleJDK</li>
+						<li>OpenJDK</li>
+						<li>IcedTea</li>
+					</ul>
+					
+					<aside class="notes">
+						<p>
+							licensed and supported by Oracle
+							tested with licensed test suite from Oracle but open source
+							also open-source build and test system, but same code
+						</p>
+					</aside>
+				</section>
+				
+				<section>
+					<h2>Nicht standardisierte JVM flags</h2>
+					
+					<ul>
+						<li>-X are non-standard</li>
+						<li>-XX are not stable and are subject to change without notice</li>
+					</ul>
+					
+					<aside class="notes">
+						<p>
+							Some are standard and must be found in any conforming Java virtual machine; others are specific to HotSpot and may not be found in other JVMs (options that begin with -X or -XX are non-standard).
+
+						</p>
+					</aside>
+				</section>
+				
+				<section>
+					<h2>Garbage Collection Motivation</h2>
+					
+					<ul>
+						<li>Performance</li>
+						<li>Einfachheit</li>
+						<li>Sicherheit</li>
+					</ul>
+					
+					<aside class="notes">
+						<p>
+							All objects* (except some strings) are created and stored on the heap
+
+							garbage collection is a process to automatically free the space on the heap which is no longer needed
+							
+							different strategies to implement this process
+							
+							an object is no longer needed when the object is no longer referenced or only weakly referenced or is only referenced by objects that are no longer needed
+						
+							ziel von java war es unter anderem eine einfach aber performante laufzeitumgebung zu schaffen
+							
+							vermutlich steigert es sogar effektiv die performance, genau wie bei compilern von high level languages der compiler in der lage ist optimierungen zu finden die der normale programmierer nicht gefunden hätte
+							
+							außerdem erleitert es die programmierung im sinne von kognitiver last und sicherheits aspekten
+						</p>
+					</aside>
+				</section>
+				
+				<section>
+					<h2>Probleme in der Praxis</h2>
+					
+					<p>Eigentlich keine, aber...</p>
+					
+					<ul>
+						<li>resourcen finalize</li>
+						<li>stop the world pauses</li>
+						<li>tradeoff zwischen throughput und pauses</li>
+					</ul>
+					
+					TODO, image zu stop the world pauses
+					
+					<aside class="notes">
+						<p>
+							eigentlich kein problem wenn ein objekt nicht mehr gebraucht wird dann kann man es im hintergrund ja klamm und heimlich entfernen
+							
+							
+						</p>
+					</aside>
+				</section>
+				
+				<section>
+					<h2>Warum so wichtig?</h2>
+					
+					<p>Kurz gesagt: <a href="https://en.wikipedia.org/wiki/Amdahl%27s_law">Amdahls Law</a></p>
+					
+					<img src="img/amdahls-law.png" />
+					
+					<aside class="notes">
+						<p>
+							je mehr die anzahl der prozessoren zunimmt desto schlimmer werden die stop the world pauses
+							
+							
+						</p>
+					</aside>
+				</section>
+				
+				<section>
+					<h2>Memory Structure: Heap und Stack</h2>
+					
+					<img src="img/jvm-simple-memory-structure.svg" />
+					
+					<p>-Xss option für die Stackgröße</p>
+					
+					<aside class="notes">
+						<p>
+							vom allgemeinen zum speziellen (hotspot)
+
+							stack und register basiert (register auf grung von performance da computer einfach so gebaut sind)
+							
+							stack per thread, contains thread local primitives, can also contain objects if jvm is sure that it's not used in another thread and the existence is only local
+							
+						</p>
+					</aside>
+				</section>
+				
+				<section>
+					<h2>Memory Structure: weak generational hypothesis</h2>
+					
+					TODO table
+					
+					<aside class="notes">
+						<p>
+							young objects die earlier
+
+							young space daher sehr effizient garbage collectable, lebendige objekte sind schwieriger 
+							
+							
+							PermGenSpace to MetaSpace
+							
+							* https://dzone.com/articles/java-8-permgen-metaspace
+							* http://tutorials.jenkov.com/java-concurrency/java-memory-model.html
+							* https://dzone.com/articles/java-memory-architecture-model-garbage-collection
+						</p>
+					</aside>
+				</section>
+				
+				<section>
+					<h2>Memory Structure: PermGen Trivia</h2>
+					
+					TODO code
+					
+					string caches
+					integer caches
+					
+					
+					<aside class="notes">
+						<p>
+							depending on the version the permgen and its contents behaves differently
+						</p>
+					</aside>
+				</section>
+				
+				<section>
+					<h2>HotSpot Collectors</h2>
+					
+					<ul>
+						<li>vor J5 serialGC</li>
+						<li>seit J5 standard parallelGC</li>
+						<li>seit J6 cmsGC</li>
+						<li>seit J7 G1GC</li>
+						<li>seit J9 standard G1GC</li>
+					</ul>
+					
+					<img src="img/jvm-serial-parallel-gc.png" />
+					
+					<img src="img/jvm-cms-gc.png" />
+					
+					TODO, Unterschied zwischen parallel und concurrent wichtig im nachfolgenden
+					
+					<aside class="notes">
+						<p>
+							serialGC immer noch verwendet und am effizientesten für heaps kleiner 100MB, ist aber bei solr installationen nicht immer unbedingt der fall
+							
+							parallel best throughput, but can have long pauses
+							
+							cms can have low pauses
+							
+							g1 also low pauses but better throughput
+							
+							decided by gctuning ergonomics, standard for 64bit x86 machines
+						</p>
+					</aside>
+				</section>
+				
+				<section>
+					<h2>Other Collectors</h2>
+					
+					<ul>
+						<li>OpenJ9</li>
+						<li>Azul (pauseless)</li>
+					</ul>
+					
+					<aside class="notes">
+						<p>
+							OpenJ9 mit Optimierungen für spezielle IBM Hardware, ansonsten ähnlich
+							
+							Azul, hat keine Pausen, in der Theorie
+						</p>
+					</aside>
+				</section>
+				
+				<section>
+					<h2>Future Collectors</h2>
+					
+					<ul>
+						<li><a href="https://wiki.openjdk.java.net/display/shenandoah/Main">Shenandoah</a></li>
+					</ul>
+					
+					<aside class="notes">
+						<p>
+							wird für zukünftige HotSpot entwickelt, wird auch keine Pausen haben, aber für Server nicht so wichtig
+						</p>
+					</aside>
+				</section>
+
+
+
+<section>
+
+
+analyse solr default configuration for the JVM
+----------------------------------------------
+
+bezüglich logging
++++++++++++++++++
+
+'-verbose:gc' '-XX:+PrintHeapAtGC' '-XX:+PrintGCDetails' \
+    '-XX:+PrintGCDateStamps' '-XX:+PrintGCTimeStamps' '-XX:+PrintTenuringDistribution' \
+    '-XX:+PrintGCApplicationStoppedTime'
+
+if [ "$GC_LOG_OPTS" != "" ]; then
+  gc_log_flag="-Xloggc"
+  if [ "$JAVA_VENDOR" == "IBM J9" ]; then
+    gc_log_flag="-Xverbosegclog"
+  fi
+  GC_LOG_OPTS+=("$gc_log_flag:$SOLR_LOGS_DIR/solr_gc.log" -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=9 -XX:GCLogFileSize=20M)
+fi
+
+memory layout
++++++++++++++
+
+JAVA_MEM_OPTS=()
+if [ -z "$SOLR_HEAP" ] && [ -n "$SOLR_JAVA_MEM" ]; then
+  JAVA_MEM_OPTS=($SOLR_JAVA_MEM)
+else
+  SOLR_HEAP="${SOLR_HEAP:-512m}"
+  JAVA_MEM_OPTS=("-Xms$SOLR_HEAP" "-Xmx$SOLR_HEAP")
+fi
+
+# Pick default for Java thread stack size, and then add to SOLR_OPTS
+if [ -z ${SOLR_JAVA_STACK_SIZE+x} ]; then
+  SOLR_JAVA_STACK_SIZE='-Xss256k'
+fi
+SOLR_OPTS+=($SOLR_JAVA_STACK_SIZE)
+
+# define default GC_TUNE
+  if [ -z ${GC_TUNE+x} ]; then
+      GC_TUNE=('-XX:NewRatio=3' \
+        '-XX:SurvivorRatio=4' \
+        '-XX:TargetSurvivorRatio=90' \
+        '-XX:MaxTenuringThreshold=8' \
+        '-XX:+UseConcMarkSweepGC' \
+        '-XX:+UseParNewGC' \
+        '-XX:ConcGCThreads=4' '-XX:ParallelGCThreads=4' \
+        '-XX:+CMSScavengeBeforeRemark' \
+        '-XX:PretenureSizeThreshold=64m' \
+        '-XX:+UseCMSInitiatingOccupancyOnly' \
+        '-XX:CMSInitiatingOccupancyFraction=50' \
+        '-XX:CMSMaxAbortablePrecleanTime=6000' \
+        '-XX:+CMSParallelRemarkEnabled' \
+        '-XX:+ParallelRefProcEnabled' \
+        '-XX:-OmitStackTraceInFastThrow')
+  else
+    GC_TUNE=($GC_TUNE)
+  fi
+
+Future
+------
+
+Analysis in case of
+* crash
+* hung
+* out of memory
+
+Performance Tuning
+* slow performance
+
+
+</section>				
+				<section>
+					<h2>Danke!</h2>
+				
+				</section>
+				
+				<section>
+					<h2>Referenzen</h2>
+				
+* https://en.wikipedia.org/wiki/Java_virtual_machine
+* https://en.wikipedia.org/wiki/Virtual_machine
+* https://en.wikipedia.org/wiki/List_of_Java_virtual_machines
+* https://en.wikipedia.org/wiki/HotSpot
+* https://en.wikipedia.org/wiki/OpenJ9
+* https://en.wikipedia.org/wiki/Comparison_of_Java_virtual_machines
+* https://en.wikipedia.org/wiki/List_of_JVM_languages
+
+* https://www.azul.com/resources/azul-technology/azul-c4-garbage-collector/
+* http://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html
+
+* https://www.onlinedigitallearning.com/mod/lesson/view.php?navbutton=Next+activity%3A+Identifying+a+sluggish+JVM&id=15475
+
+* https://dzone.com/articles/java-8-permgen-metaspace
+
+* http://www.oracle.com/technetwork/java/javase/tech/vmoptions-jsp-140102.html
+
+* https://dzone.com/articles/java-8-permgen-metaspace
+* http://tutorials.jenkov.com/java-concurrency/java-memory-model.html
+* https://dzone.com/articles/java-memory-architecture-model-garbage-collection
+
+* https://docs.oracle.com/javase/1.5.0/docs/guide/vm/gc-ergonomics.html
+* https://www.cubrid.org/blog/understanding-java-garbage-collection
+
+* https://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/ergonomics.html
+* https://docs.oracle.com/javase/9/gctuning/ergonomics.htm
+				</section>
 			</div>
 		</div>
 
