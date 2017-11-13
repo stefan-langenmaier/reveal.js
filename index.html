@@ -495,25 +495,120 @@ fi
 						</p>
 					</aside>
 				</section>
-
-
-
-<section>
-
-
-Future
-------
-
-Analysis in case of
-* crash
-* hung
-* out of memory
-
-Performance Tuning
-* slow performance
-
-Alternative GCs
-</section>				
+				
+				<section>
+					<h2>HotSpot Java: GC</h2>
+					
+					<ul>
+						<li>-XX:+UseConcMarkSweepGC</li>
+						<li>-XX:+UseParNewGC</li>
+					</ul>
+					
+					<aside class="notes">
+						<ul>
+							<li>-XX:+UseConcMarkSweepGC CMS aktivieren, aber ab einem heap von 4-6GB sollte man G1 verwenden</li>
+							<li>-XX:+UseParNewGC für die young generation wird immer noch der paralle gc verwendet, eigentlich standard für cms</li>
+						</ul>
+					</aside>
+				</section>
+				
+				<section>
+					<h2>HotSpot Java: Memory organisation</h2>
+					
+					<ul>
+						<li>-XX:NewRatio=3</li>
+						<li>-XX:SurvivorRatio=4</li>
+						<li>-XX:TargetSurvivorRatio=90</li>
+						<li>-XX:MaxTenuringThreshold=8</li>
+						<li>-XX:+CMSScavengeBeforeRemark</li>
+						<li>-XX:PretenureSizeThreshold=64m</li>
+					</ul>
+					
+					<aside class="notes">
+						<ul>
+							<li>-XX:NewRatio=2 standard tradeoff between minor and major gc, more ram can increase this</li>
+							<li>-XX:SurvivorRatio=8 sollte eigentlich nicht zum tuning verwendet werden, kann über logging optimal ermittelt werden</li>
+							<li>-XX:TargetSurvivorRatio=50 will eine besser auslastung des survivors spaces und damit eine vorzeitige promotion zum tenured space verhindern. man könnte auch -XX:+UseAdaptiveSizePolicy verwenden um das automatisch zu tunen lassen</li>
+							<li>-XX:MaxTenuringThreshold=4 standard für CMS, wieviele collections ein objekt überleben muss bevor es in den tenured space kommt</li>
+							<li>-XX:+CMSScavengeBeforeRemark versucht die abhängigkeiten zwischen tenured und young zu verkleinern indem immer vor major ein minor gc durchgeführt wird</li>
+							<li>-XX:PretenureSizeThreshold=0 normalerweise deaktiviert, objekte dieser größe gehen direkt in den tenured spacce</li>
+						</ul>
+					</aside>
+				</section>
+				
+				<section>
+					<h2>HotSpot Java: Parallel tuning</h2>
+					
+					<ul>
+						<li>-XX:ConcGCThreads=4</li>
+						<li>-XX:ParallelGCThreads=4</li>
+						<li>-XX:+UseCMSInitiatingOccupancyOnly -XX:CMSInitiatingOccupancyFraction=50</li>
+						<li>-XX:+CMSParallelRemarkEnabled</li>
+						<li>-XX:+ParallelRefProcEnabled</li>
+					</ul>
+					
+					<aside class="notes">
+						<ul>
+							<li>-XX:ConcGCThreads=4 es gibt keinen eindeutigen default wert</li>
+							<li>-XX:ParallelGCThreads=4 es gibt keinen eindeutigen default wert</li>
+							<li>-XX:+UseCMSInitiatingOccupancyOnly -XX:CMSInitiatingOccupancyFraction=50 macht es etwas berechenbarer wann der CMS angestoßen wird</li>
+							<li>-XX:+CMSParallelRemarkEnabled makes sense on multi core</li>
+							<li>-XX:+ParallelRefProcEnabled referenzen werden parallel bearbeitet</li>
+						</ul>
+					</aside>
+				</section>
+				
+				<section>
+					<h2>HotSpot Java: Misc</h2>
+					
+					<ul>
+						<li>-XX:CMSMaxAbortablePrecleanTime=6000</li>
+						<li>-XX:-OmitStackTraceInFastThrow</li>
+					</ul>
+					
+					<aside class="notes">
+						<ul>
+							<li>-XX:CMSMaxAbortablePrecleanTime=6000 no idea and the default is 5000?</li>
+							<li>-XX:-OmitStackTraceInFastThrow zwingt jvm dazu immer die stacktraces zu erhalten</li>
+						</ul>
+						<p>
+							
+							
+						</p> 
+					</aside>
+				</section>
+				
+				<section>
+					<h2>Empfehlung</h2>
+					
+					G1GC, alte Meldungen die sich auf Lucene beziehen sind gefixt und es gibt aktuelle JVMs.
+					
+					<aside class="notes">
+						<p>
+							wird für zukünftige HotSpot entwickelt, wird auch keine Pausen haben, aber für Server nicht so wichtig
+						</p>
+					</aside>
+				</section>
+				
+				<section>
+					<h2>Zukunft: Analyse</h2>
+					
+					<ul>
+						<li>Crash</li>
+						<li>Hänger</li>
+						<li>Out of memory</li>
+						<li>Performance</li>
+						<li>Alternative GCs</li>
+						<li>Fusion default config</li>
+					</ul>
+					
+					<aside class="notes">
+						<p>
+							wird für zukünftige HotSpot entwickelt, wird auch keine Pausen haben, aber für Server nicht so wichtig
+						</p>
+					</aside>
+				</section>
+				
 				<section>
 					<h2>Danke!</h2>
 				
@@ -522,32 +617,39 @@ Alternative GCs
 				<section>
 					<h2>Referenzen</h2>
 				
-* https://en.wikipedia.org/wiki/Java_virtual_machine
-* https://en.wikipedia.org/wiki/Virtual_machine
-* https://en.wikipedia.org/wiki/List_of_Java_virtual_machines
-* https://en.wikipedia.org/wiki/HotSpot
-* https://en.wikipedia.org/wiki/OpenJ9
-* https://en.wikipedia.org/wiki/Comparison_of_Java_virtual_machines
-* https://en.wikipedia.org/wiki/List_of_JVM_languages
+					<ul>
+						<li><a href="https://en.wikipedia.org/wiki/Java_virtual_machine">https://en.wikipedia.org/wiki/Java_virtual_machine</a></li>
+						<li><a href="https://en.wikipedia.org/wiki/Virtual_machine">https://en.wikipedia.org/wiki/Virtual_machine</a></li>
+						<li><a href="https://en.wikipedia.org/wiki/List_of_Java_virtual_machines">https://en.wikipedia.org/wiki/List_of_Java_virtual_machines</a></li>
+						<li><a href="https://en.wikipedia.org/wiki/HotSpot">https://en.wikipedia.org/wiki/HotSpot</a></li>
+						<li><a href="https://en.wikipedia.org/wiki/OpenJ9">https://en.wikipedia.org/wiki/OpenJ9</a></li>
+						<li><a href="https://en.wikipedia.org/wiki/Comparison_of_Java_virtual_machines">https://en.wikipedia.org/wiki/Comparison_of_Java_virtual_machines</a></li>
+						<li><a href="https://en.wikipedia.org/wiki/List_of_JVM_languages">https://en.wikipedia.org/wiki/List_of_JVM_languages</a></li>
 
-* https://www.azul.com/resources/azul-technology/azul-c4-garbage-collector/
-* http://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html
+						<li><a href="https://www.azul.com/resources/azul-technology/azul-c4-garbage-collector/">https://www.azul.com/resources/azul-technology/azul-c4-garbage-collector/</a></li>
+						<li><a href="http://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html">http://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html</a></li>
 
-* https://www.onlinedigitallearning.com/mod/lesson/view.php?navbutton=Next+activity%3A+Identifying+a+sluggish+JVM&id=15475
+						<li><a href="https://www.onlinedigitallearning.com/mod/lesson/view.php?navbutton=Next+activity%3A+Identifying+a+sluggish+JVM&id=15475">https://www.onlinedigitallearning.com/mod/lesson/view.php?navbutton=Next+activity%3A+Identifying+a+sluggish+JVM&amp;id=15475</a></li>
 
-* https://dzone.com/articles/java-8-permgen-metaspace
+						<li><a href="https://dzone.com/articles/java-8-permgen-metaspace">https://dzone.com/articles/java-8-permgen-metaspace</a></li>
 
-* http://www.oracle.com/technetwork/java/javase/tech/vmoptions-jsp-140102.html
+						<li><a href="http://www.oracle.com/technetwork/java/javase/tech/vmoptions-jsp-140102.html">http://www.oracle.com/technetwork/java/javase/tech/vmoptions-jsp-140102.html</a></li>
 
-* https://dzone.com/articles/java-8-permgen-metaspace
-* http://tutorials.jenkov.com/java-concurrency/java-memory-model.html
-* https://dzone.com/articles/java-memory-architecture-model-garbage-collection
+						<li><a href="https://dzone.com/articles/java-8-permgen-metaspace">https://dzone.com/articles/java-8-permgen-metaspace</a></li>
+						<li><a href="http://tutorials.jenkov.com/java-concurrency/java-memory-model.html">http://tutorials.jenkov.com/java-concurrency/java-memory-model.html</a></li>
+						<li><a href="https://dzone.com/articles/java-memory-architecture-model-garbage-collection">https://dzone.com/articles/java-memory-architecture-model-garbage-collection</a></li>
 
-* https://docs.oracle.com/javase/1.5.0/docs/guide/vm/gc-ergonomics.html
-* https://www.cubrid.org/blog/understanding-java-garbage-collection
+						<li><a href="https://docs.oracle.com/javase/1.5.0/docs/guide/vm/gc-ergonomics.html">https://docs.oracle.com/javase/1.5.0/docs/guide/vm/gc-ergonomics.html</a></li>
+						<li><a href="https://www.cubrid.org/blog/understanding-java-garbage-collection">https://www.cubrid.org/blog/understanding-java-garbage-collection</a></li>
 
-* https://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/ergonomics.html
-* https://docs.oracle.com/javase/9/gctuning/ergonomics.htm
+						<li><a href="https://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/ergonomics.html">https://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/ergonomics.html</a></li>
+						<li><a href="https://docs.oracle.com/javase/9/gctuning/ergonomics.htm">https://docs.oracle.com/javase/9/gctuning/ergonomics.htm</a></li>
+					
+						https://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/cms.html
+						https://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/sizing.html
+						https://wiki.apache.org/solr/ShawnHeisey
+					</ul>
+
 				</section>
 			</div>
 		</div>
