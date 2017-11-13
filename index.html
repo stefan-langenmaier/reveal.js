@@ -158,7 +158,6 @@
 					<ul>
 						<li>JRE = JVM</li>
 						<li>JDK = JVM + Compiler + Debugger + Profiler</li>
-						<li>IcedTea</li>
 					</ul>
 					
 					<ul>
@@ -288,6 +287,7 @@
 
 							young space daher sehr effizient garbage collectable, lebendige objekte sind schwieriger 
 							
+							TODO was wenn old young referenziert
 							
 							PermGenSpace to MetaSpace
 							
@@ -320,6 +320,7 @@
 					<ul>
 						<li>vor J5 serialGC</li>
 						<li>seit J5 standard parallelGC</li>
+						<li>seit J5 ergonomics</li>
 						<li>seit J6 cmsGC</li>
 						<li>seit J7 G1GC</li>
 						<li>seit J9 standard G1GC</li>
@@ -376,35 +377,72 @@
 						</p>
 					</aside>
 				</section>
-
-
-
-<section>
-
-
-analyse solr default configuration for the JVM
-----------------------------------------------
-
-bezüglich logging
-+++++++++++++++++
-
-'-verbose:gc' '-XX:+PrintHeapAtGC' '-XX:+PrintGCDetails' \
-    '-XX:+PrintGCDateStamps' '-XX:+PrintGCTimeStamps' '-XX:+PrintTenuringDistribution' \
-    '-XX:+PrintGCApplicationStoppedTime'
-
-if [ "$GC_LOG_OPTS" != "" ]; then
-  gc_log_flag="-Xloggc"
-  if [ "$JAVA_VENDOR" == "IBM J9" ]; then
-    gc_log_flag="-Xverbosegclog"
+				
+				<section>
+					<h2>Solr Configuration</h2>
+					
+					<p>Von einem aktuellen Solr 7.1</p>
+					
+					<pre><code class="bash" data-trim contenteditable="true">
+# Establish default GC logging opts if no env var set (otherwise init to sensible default)
+if [ -z ${GC_LOG_OPTS+x} ]; then
+  if [[ "$JAVA_VER_NUM" &lt; "9" ]] ; then
+    GC_LOG_OPTS=('-verbose:gc' '-XX:+PrintHeapAtGC' '-XX:+PrintGCDetails' \
+                 '-XX:+PrintGCDateStamps' '-XX:+PrintGCTimeStamps' '-XX:+PrintTenuringDistribution' \
+                 '-XX:+PrintGCApplicationStoppedTime')
+  else
+    GC_LOG_OPTS=('-Xlog:gc*')
   fi
-  GC_LOG_OPTS+=("$gc_log_flag:$SOLR_LOGS_DIR/solr_gc.log" -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=9 -XX:GCLogFileSize=20M)
+else
+  GC_LOG_OPTS=($GC_LOG_OPTS)
 fi
-
-memory layout
-+++++++++++++
-
+					</code></pre>
+					
+					<aside class="notes">
+						<p>
+							solr GC logging configuration
+						</p>
+					</aside>
+				</section>
+				
+				<section>
+					<h2>Solr Configuration</h2>
+					
+					<pre><code class="bash" data-trim contenteditable="true">
+# if verbose gc logging enabled, setup the location of the log file and rotation
+if [ "$GC_LOG_OPTS" != "" ]; then
+  if [[ "$JAVA_VER_NUM" &lt; "9" ]] ; then
+    gc_log_flag="-Xloggc"
+    if [ "$JAVA_VENDOR" == "IBM J9" ]; then
+      gc_log_flag="-Xverbosegclog"
+    fi
+    GC_LOG_OPTS+=("$gc_log_flag:$SOLR_LOGS_DIR/solr_gc.log" '-XX:+UseGCLogFileRotation' '-XX:NumberOfGCLogFiles=9' '-XX:GCLogFileSize=20M')
+  else
+    # http://openjdk.java.net/jeps/158
+    for i in "${!GC_LOG_OPTS[@]}";
+    do
+      # for simplicity, we only look at the prefix '-Xlog:gc'
+      # (if 'all' or multiple tags are used starting with anything other then 'gc' the user is on their own)
+      # if a single additional ':' exists in param, then there is already an explicit output specifier
+      GC_LOG_OPTS[$i]=$(echo ${GC_LOG_OPTS[$i]} | sed "s|^\(-Xlog:gc[^:]*$\)|\1:file=$SOLR_LOGS_DIR/solr_gc.log:time,uptime:filecount=9,filesize=20000|")
+    done
+  fi
+fi
+					</code></pre>
+					
+					<aside class="notes">
+						<p>
+							solr GC file rotation
+						</p>
+					</aside>
+				</section>
+				
+				<section>
+					<h2>Solr Configuration</h2>
+					
+					<pre><code class="bash" data-trim contenteditable="true">
 JAVA_MEM_OPTS=()
-if [ -z "$SOLR_HEAP" ] && [ -n "$SOLR_JAVA_MEM" ]; then
+if [ -z "$SOLR_HEAP" ] &amp;&amp; [ -n "$SOLR_JAVA_MEM" ]; then
   JAVA_MEM_OPTS=($SOLR_JAVA_MEM)
 else
   SOLR_HEAP="${SOLR_HEAP:-512m}"
@@ -416,27 +454,52 @@ if [ -z ${SOLR_JAVA_STACK_SIZE+x} ]; then
   SOLR_JAVA_STACK_SIZE='-Xss256k'
 fi
 SOLR_OPTS+=($SOLR_JAVA_STACK_SIZE)
-
+					</code></pre>
+					
+					<aside class="notes">
+						<p>
+							solr has a default heap and stack size, might not be a good idea
+						</p>
+					</aside>
+				</section>
+				
+				<section>
+					<h2>Solr Configuration</h2>
+					
+					<pre><code class="bash" data-trim contenteditable="true">
 # define default GC_TUNE
-  if [ -z ${GC_TUNE+x} ]; then
-      GC_TUNE=('-XX:NewRatio=3' \
-        '-XX:SurvivorRatio=4' \
-        '-XX:TargetSurvivorRatio=90' \
-        '-XX:MaxTenuringThreshold=8' \
-        '-XX:+UseConcMarkSweepGC' \
-        '-XX:+UseParNewGC' \
-        '-XX:ConcGCThreads=4' '-XX:ParallelGCThreads=4' \
-        '-XX:+CMSScavengeBeforeRemark' \
-        '-XX:PretenureSizeThreshold=64m' \
-        '-XX:+UseCMSInitiatingOccupancyOnly' \
-        '-XX:CMSInitiatingOccupancyFraction=50' \
-        '-XX:CMSMaxAbortablePrecleanTime=6000' \
-        '-XX:+CMSParallelRemarkEnabled' \
-        '-XX:+ParallelRefProcEnabled' \
-        '-XX:-OmitStackTraceInFastThrow')
-  else
-    GC_TUNE=($GC_TUNE)
-  fi
+if [ -z ${GC_TUNE+x} ]; then
+    GC_TUNE=('-XX:NewRatio=3' \
+      '-XX:SurvivorRatio=4' \
+      '-XX:TargetSurvivorRatio=90' \
+      '-XX:MaxTenuringThreshold=8' \
+      '-XX:+UseConcMarkSweepGC' \
+      '-XX:+UseParNewGC' \
+      '-XX:ConcGCThreads=4' '-XX:ParallelGCThreads=4' \
+      '-XX:+CMSScavengeBeforeRemark' \
+      '-XX:PretenureSizeThreshold=64m' \
+      '-XX:+UseCMSInitiatingOccupancyOnly' \
+      '-XX:CMSInitiatingOccupancyFraction=50' \
+      '-XX:CMSMaxAbortablePrecleanTime=6000' \
+      '-XX:+CMSParallelRemarkEnabled' \
+      '-XX:+ParallelRefProcEnabled' \
+      '-XX:-OmitStackTraceInFastThrow')
+else
+  GC_TUNE=($GC_TUNE)
+fi
+					</code></pre>
+					
+					<aside class="notes">
+						<p>
+							solr GC tuning parameter
+						</p>
+					</aside>
+				</section>
+
+
+
+<section>
+
 
 Future
 ------
@@ -449,7 +512,7 @@ Analysis in case of
 Performance Tuning
 * slow performance
 
-
+Alternative GCs
 </section>				
 				<section>
 					<h2>Danke!</h2>
