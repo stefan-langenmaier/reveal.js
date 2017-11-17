@@ -13,7 +13,8 @@
 
 		<link rel="stylesheet" href="css/reveal.css">
 		<link rel="stylesheet" href="css/theme/black.css">
-
+		<link rel="stylesheet" href="css/custom.css">
+		
 		<!-- Theme used for syntax highlighting of code -->
 		<link rel="stylesheet" href="lib/css/zenburn.css">
 
@@ -30,7 +31,7 @@
 		<div class="reveal">
 			<div class="slides">
 				<section>
-					<h2>JVM/GC Einführung und Konfiguration für Solr</h2>
+					<h2>JVM/GC Überischt und Konfiguration für Solr</h2>
 					
 					<aside class="notes">
 						<p>
@@ -41,24 +42,49 @@
 				</section>
 				
 				<section>
-					<h2>Geschichte der JVM</h2>
+					<section>
+						<h2>Geschichte der JVM</h2>
+						
+						<ul>
+							<li>abstract computing machine</li>
+							<li>specification, implementation, and instance</li>
+							<li>entwickelt für Java, aber andere Sprachen möglich</li>
+						</ul>
+						
+						<aside class="notes">
+							<p>
+								Java virtual machine (JVM) is an abstract computing machine
+								three notions of the JVM: specification, implementation, and instance
+								
+								designed for java the J, but abstract so other languages are possible, later
+								
+								first specification of the vm
+							</p>
+						</aside>
+					</section>
 					
-					<ul>
-						<li>abstract computing machine</li>
-						<li>specification, implementation, and instance</li>
-						<li>entwickelt für Java, aber andere Sprachen möglich</li>
-					</ul>
-					
-					<aside class="notes">
-						<p>
-							Java virtual machine (JVM) is an abstract computing machine
-							three notions of the JVM: specification, implementation, and instance
-							
-							designed for java the J, but abstract so other languages are possible, later
-							
-							first specification of the vm
-						</p>
-					</aside>
+					<section>
+						<h2>Existierende Sprachen</h2>
+						
+						<p>A JVM language is any language with functionality that can be expressed in terms of a valid class file. <a href="https://en.wikipedia.org/wiki/List_of_JVM_languages">[Wikipedia]</a></p>
+						
+						<ul>
+							<li>Clojure, a functional Lisp dialect</li>
+							<li>Apache Groovy, a dynamic programming and scripting language</li>
+							<li>Scala, a statically-typed object-oriented and functional programming language</li>
+							<li>Kotlin, a statically-typed language from JetBrains, the developers of IntelliJ IDEA</li>
+							<li>JRuby, an implementation of Ruby</li>
+							<li>Jython, an implementation of Python</li>
+							<li>Nashorn, an implementation of Javascript</li>
+							<li>...</li>
+						</ul>
+						
+						<aside class="notes">
+							<p>
+								viele andere, gute basis um neue sprachen zu entwickeln und alte sprachen auf neuere hardware zu portieren
+							</p>
+						</aside>
+					</section>
 				</section>
 				
 				<section>
@@ -111,7 +137,7 @@
 							<ul>
 								<li>seit 1999</li>
 								<li>seit 13 November 2006 unter GPLv2</li>
-								<li>seit Oracle, wird JRockit mit HotSpot gemerget</li>
+								<li>seit Oracle (2010), wird JRockit mit HotSpot zusammengelegt</li>
 							</ul>
 						</li>
 						<li><a href="https://en.wikipedia.org/wiki/OpenJ9">OpenJ9</a></li>
@@ -119,7 +145,7 @@
 					
 					<aside class="notes">
 						<p>
-							Es existieren über 40 verschieden JVM Projekte (https://en.wikipedia.org/wiki/List_of_Java_virtual_machines)
+							es gibt zwar viele aber die sind nicht im serverbereich interessant bzw nicht mehr
 							
 							nachfolgend die bekanntesten aus dem Desktop und Serverbereich
 							
@@ -130,34 +156,11 @@
 				</section>
 				
 				<section>
-					<h2>Existierende Sprachen</h2>
-					
-					<p>A JVM language is any language with functionality that can be expressed in terms of a valid class file. <a href="https://en.wikipedia.org/wiki/List_of_JVM_languages">[Wikipedia]</a></p>
-					
-					<ul>
-						<li>Clojure, a functional Lisp dialect</li>
-						<li>Apache Groovy, a dynamic programming and scripting language</li>
-						<li>Scala, a statically-typed object-oriented and functional programming language</li>
-						<li>Kotlin, a statically-typed language from JetBrains, the developers of IntelliJ IDEA</li>
-						<li>JRuby, an implementation of Ruby</li>
-						<li>Jython, an implementation of Python</li>
-						<li>Nashorn, an implementation of Javascript</li>
-						<li>...</li>
-					</ul>
-					
-					<aside class="notes">
-						<p>
-							viele andere, gute basis um neue sprachen zu entwickeln und alte sprachen auf neuere hardware zu portieren
-						</p>
-					</aside>
-				</section>
-				
-				<section>
 					<h2>Existierende Distributionen</h2>
 					
 					<ul>
-						<li>JRE = JVM</li>
-						<li>JDK = JVM + Compiler + Debugger + Profiler</li>
+						<li>JRE = JVM + Standardklassen + OS spezifische Klassen/Schnittstellen</li>
+						<li>JDK = JRE + Compiler + Debugger + Profiler</li>
 					</ul>
 					
 					<ul>
@@ -176,28 +179,12 @@
 				</section>
 				
 				<section>
-					<h2>Nicht standardisierte JVM flags</h2>
-					
-					<ul>
-						<li>-X are non-standard</li>
-						<li>-XX are not stable and are subject to change without notice</li>
-					</ul>
-					
-					<aside class="notes">
-						<p>
-							Some are standard and must be found in any conforming Java virtual machine; others are specific to HotSpot and may not be found in other JVMs (options that begin with -X or -XX are non-standard).
-
-						</p>
-					</aside>
-				</section>
-				
-				<section>
 					<h2>Garbage Collection Motivation</h2>
 					
 					<ul>
-						<li>Performance</li>
 						<li>Einfachheit</li>
 						<li>Sicherheit</li>
+						<li>Performance</li>
 					</ul>
 					
 					<aside class="notes">
@@ -221,24 +208,126 @@
 				
 				<section>
 					<h2>Probleme in der Praxis</h2>
+					<section>
+						<p>Eigentlich keine, aber...</p>
+						
+						<ul>
+							<li>resourcen finalize</li>
+							<li>stop the world pauses</li>
+							<li>tradeoff zwischen throughput und pauses</li>
+						</ul>
+	
+						
+						<aside class="notes">
+							<p>
+								resource finalize is a programming issue
+								
+								stop the world, can always happen regarding the following, but the time it will cause can be reduced by different strategies
+							</p>
+						</aside>
+					</section>
 					
-					<p>Eigentlich keine, aber...</p>
+					<section>
+						<table class="jvm">
+							<tr>
+								<td colspan="2" class="gc-used"></td>
+								<td colspan="5" class="gc-used"></td>
+								<td colspan="3" class="gc-used"></td>
+								<td colspan="4" class="gc-used"></td>
+							</tr>
+							<tr>
+								<td colspan="1" class="gc-used"></td>
+								<td colspan="5" class="gc-used"></td>
+								<td colspan="1" class="gc-used"></td>
+								<td colspan="1" class="gc-used"></td>
+								<td colspan="5" class="gc-used"></td>
+								<td colspan="1" class="gc-free"></td>
+							</tr>
+						</table>
+						
+						<aside class="notes">
+							<p>
+								nehmen wir an der heap ist relativ voll, aber alle objekte haben darin platz
+							</p>
+						</aside>
+					</section>
 					
-					<ul>
-						<li>resourcen finalize</li>
-						<li>stop the world pauses</li>
-						<li>tradeoff zwischen throughput und pauses</li>
-					</ul>
+					<section>
+						<table class="jvm">
+							<tr>
+								<td colspan="2" class="gc-garbage"></td>
+								<td colspan="5" class="gc-used"></td>
+								<td colspan="3" class="gc-garbage"></td>
+								<td colspan="4" class="gc-used"></td>
+							</tr>
+							<tr>
+								<td colspan="1" class="gc-garbage"></td>
+								<td colspan="5" class="gc-used"></td>
+								<td colspan="1" class="gc-garbage"></td>
+								<td colspan="1" class="gc-used"></td>
+								<td colspan="5" class="gc-used"></td>
+								<td colspan="1" class="gc-free"></td>
+							</tr>
+						</table>
+						
+						<aside class="notes">
+							<p>
+								im verlauf des programms werden einige objekte zu garbage
+							</p>
+						</aside>
+					</section>
 					
-					TODO, image zu stop the world pauses
+
 					
-					<aside class="notes">
-						<p>
-							eigentlich kein problem wenn ein objekt nicht mehr gebraucht wird dann kann man es im hintergrund ja klamm und heimlich entfernen
-							
-							
-						</p>
-					</aside>
+					
+					<section>
+						<table class="jvm">
+							<tr>
+								<td colspan="2" class="gc-free"></td>
+								<td colspan="5" class="gc-used"></td>
+								<td colspan="3" class="gc-free"></td>
+								<td colspan="4" class="gc-used"></td>
+							</tr>
+							<tr>
+								<td colspan="1" class="gc-free"></td>
+								<td colspan="5" class="gc-used"></td>
+								<td colspan="1" class="gc-free"></td>
+								<td colspan="1" class="gc-used"></td>
+								<td colspan="5" class="gc-used"></td>
+								<td colspan="1" class="gc-free"></td>
+							</tr>
+						</table>
+						
+						<aside class="notes">
+							<p>
+								und können wieder freigegeben werden
+								
+								was passiert wenn jetzt ein neues objekt der größe "5" angelegt werden soll
+							</p>
+						</aside>
+					</section>
+					
+					<section>
+						<table class="jvm">
+							<tr>
+								<td colspan="5" class="gc-used"></td>
+								<td colspan="5" class="gc-used"></td>
+								<td colspan="4" class="gc-used"></td>
+							</tr>
+							<tr>
+								<td colspan="5" class="gc-used"></td>
+								<td colspan="1" class="gc-used"></td>
+								<td colspan="8" class="gc-free"></td>
+							</tr>
+						</table>
+						
+						<aside class="notes">
+							<p>
+								der speicher ist vorhanden muss aber kompakter gemacht werden
+							</p>
+						</aside>
+					</section>
+					
 				</section>
 				
 				<section>
@@ -246,40 +335,75 @@
 					
 					<p>Kurz gesagt: <a href="https://en.wikipedia.org/wiki/Amdahl%27s_law">Amdahls Law</a></p>
 					
-					<img src="img/amdahls-law.png" />
+					<p>
+						<img src="img/amdahls-law.png" /><br />
+						<small>Bild von <a href="https://docs.oracle.com/javase/9/gctuning/introduction-garbage-collection-tuning.htm">Oracle.com</a></small>
+					</p>
 					
 					<aside class="notes">
 						<p>
 							je mehr die anzahl der prozessoren zunimmt desto schlimmer werden die stop the world pauses
-							
-							
 						</p>
 					</aside>
 				</section>
 				
 				<section>
-					<h2>Memory Structure: Heap und Stack</h2>
+					<section>
+						<h2>Memory Structure: Heap und Stack</h2>
+						
+						<img src="img/jvm-simple-memory-structure.svg" />
+						
+						<p>-Xss option für die Stackgröße</p>
+						
+						<aside class="notes">
+							<p>
+								vom allgemeinen zum speziellen (hotspot)
+	
+								stack und register basiert (register auf grund von performance da computer einfach so gebaut sind)
+								
+								stack per thread, contains thread local primitives, can also contain objects if jvm is sure that it's not used in another thread and the existence is only local
+								
+								ein teil des heap ist aber auch pro thread reserviert
+								
+								gc läuft auf heap, aber nur auf teil abhängig von version
+							</p>
+						</aside>
+					</section>
 					
-					<img src="img/jvm-simple-memory-structure.svg" />
-					
-					<p>-Xss option für die Stackgröße</p>
-					
-					<aside class="notes">
-						<p>
-							vom allgemeinen zum speziellen (hotspot)
-
-							stack und register basiert (register auf grung von performance da computer einfach so gebaut sind)
-							
-							stack per thread, contains thread local primitives, can also contain objects if jvm is sure that it's not used in another thread and the existence is only local
-							
-						</p>
-					</aside>
+					<section>
+						<h2>Memory Structure: PermGen Trivia</h2>
+						
+						TODO code
+						
+						string caches
+						integer caches
+						
+						
+						<aside class="notes">
+							<p>
+								depending on the version the permgen and its contents behaves differently
+							</p>
+						</aside>
+					</section>
 				</section>
 				
 				<section>
 					<h2>Memory Structure: weak generational hypothesis</h2>
 					
-					TODO table
+					<section>
+						<p>
+							<img src="img/generational-hypothesis.png" /><br />
+							<small>Bild von <a href="https://dzone.com/articles/how-tame-java-gc-pauses">DZone</a></small>
+						</p>
+					</section>
+					
+					<section>
+						<p>
+							<img src="img/jvm7-heap-model.jpg" /><br />
+							<small>Bild von <a href="https://dzone.com/articles/java-memory-architecture-model-garbage-collection">DZone</a></small>
+						</p>
+					</section>
+					
 					
 					<aside class="notes">
 						<p>
@@ -294,22 +418,6 @@
 							* https://dzone.com/articles/java-8-permgen-metaspace
 							* http://tutorials.jenkov.com/java-concurrency/java-memory-model.html
 							* https://dzone.com/articles/java-memory-architecture-model-garbage-collection
-						</p>
-					</aside>
-				</section>
-				
-				<section>
-					<h2>Memory Structure: PermGen Trivia</h2>
-					
-					TODO code
-					
-					string caches
-					integer caches
-					
-					
-					<aside class="notes">
-						<p>
-							depending on the version the permgen and its contents behaves differently
 						</p>
 					</aside>
 				</section>
@@ -374,6 +482,22 @@
 					<aside class="notes">
 						<p>
 							wird für zukünftige HotSpot entwickelt, wird auch keine Pausen haben, aber für Server nicht so wichtig
+						</p>
+					</aside>
+				</section>
+				
+				<section>
+					<h2>Nicht standardisierte JVM flags</h2>
+					
+					<ul>
+						<li>-X are non-standard</li>
+						<li>-XX are not stable and are subject to change without notice</li>
+					</ul>
+					
+					<aside class="notes">
+						<p>
+							Some are standard and must be found in any conforming Java virtual machine; others are specific to HotSpot and may not be found in other JVMs (options that begin with -X or -XX are non-standard).
+
 						</p>
 					</aside>
 				</section>
@@ -571,17 +695,15 @@ fi
 							<li>-XX:CMSMaxAbortablePrecleanTime=6000 no idea and the default is 5000?</li>
 							<li>-XX:-OmitStackTraceInFastThrow zwingt jvm dazu immer die stacktraces zu erhalten</li>
 						</ul>
-						<p>
-							
-							
-						</p> 
 					</aside>
 				</section>
 				
 				<section>
 					<h2>Empfehlung</h2>
 					
-					G1GC, alte Meldungen die sich auf Lucene beziehen sind gefixt und es gibt aktuelle JVMs.
+					G1GC
+lucene wiki:https://wiki.apache.org/lucene-java/JavaBugs
+Do not, under any circumstances, run Lucene with the G1 garbage collector. Lucene's test suite fails with the G1 garbage collector on a regular basis, including bugs that cause index corruption. There is no person on this planet that seems to understand such bugs (see https://bugs.openjdk.java.net/browse/JDK-8038348, open for over a year), so don't count on the situation changing soon. This information is not out of date, and don't think that the next oracle java release will fix the situation. 
 					
 					<aside class="notes">
 						<p>
@@ -648,6 +770,8 @@ fi
 						https://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/cms.html
 						https://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/sizing.html
 						https://wiki.apache.org/solr/ShawnHeisey
+						https://blogs.oracle.com/poonam/understanding-cms-gc-logs
+						https://blogs.oracle.com/jonthecollector/what-the-hecks-a-concurrent-mode
 					</ul>
 
 				</section>
@@ -662,6 +786,8 @@ fi
 			// - https://github.com/hakimel/reveal.js#configuration
 			// - https://github.com/hakimel/reveal.js#dependencies
 			Reveal.initialize({
+				history: true,
+				
 				dependencies: [
 					{ src: 'plugin/markdown/marked.js' },
 					{ src: 'plugin/markdown/markdown.js' },

@@ -1,0 +1,23 @@
+table.jvm {
+	table-layout: fixed;
+	width: 100%;
+}
+
+table.jvm td {
+	height: 1em;
+	border-color: black;
+	border-style: solid;
+	border-width: 3px;
+}
+
+.gc-used {
+	background-color: green;
+}
+
+.gc-free {
+	background-color: white;
+}
+
+.gc-garbage {
+	background-color: yellow;
+}
