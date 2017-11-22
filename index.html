@@ -56,9 +56,11 @@
 								Java virtual machine (JVM) is an abstract computing machine
 								three notions of the JVM: specification, implementation, and instance
 								
-								designed for java the J, but abstract so other languages are possible, later
+								wurde 1994 von sun eingeführt, zunächst als spezifikation damit die implementierung unabhängig von bestimmten bedingungen ist
 								
-								first specification of the vm
+								alles relativ offen weil als anwendungsgebiet der browser gesehen wurde und es klar war das niemand aleine alle platformen implementieren wird
+								
+								designed for java the J, aber da abstrakt mit robusten implementierungen und gutes modell um schnell neue sprachen zu entwicken wurde sie auch dafür populär
 							</p>
 						</aside>
 					</section>
@@ -69,10 +71,7 @@
 						<p>A JVM language is any language with functionality that can be expressed in terms of a valid class file. <a href="https://en.wikipedia.org/wiki/List_of_JVM_languages">[Wikipedia]</a></p>
 						
 						<ul>
-							<li>Clojure, a functional Lisp dialect</li>
-							<li>Apache Groovy, a dynamic programming and scripting language</li>
 							<li>Scala, a statically-typed object-oriented and functional programming language</li>
-							<li>Kotlin, a statically-typed language from JetBrains, the developers of IntelliJ IDEA</li>
 							<li>JRuby, an implementation of Ruby</li>
 							<li>Jython, an implementation of Python</li>
 							<li>Nashorn, an implementation of Javascript</li>
@@ -92,7 +91,8 @@
 					
 					<ul>
 						<li>32-bit</li>
-						<li>hybrid mit einem  Stack and register–register oder load/store Ansatz</li>
+						<li>hybrid mit einem Stack and register–register oder load/store Ansatz</li>
+						<li>Datentypen</li>
 						<li>class loader</li>
 					</ul>
 					
@@ -158,22 +158,26 @@
 				<section>
 					<h2>Existierende Distributionen</h2>
 					
-					<ul>
-						<li>JRE = JVM + Standardklassen + OS spezifische Klassen/Schnittstellen</li>
-						<li>JDK = JRE + Compiler + Debugger + Profiler</li>
-					</ul>
+					<section>
+						<ul>
+							<li>JRE = JVM + Standardklassen + OS spezifische Klassen/Schnittstellen</li>
+							<li>JDK = JRE + Compiler + Debugger + Profiler</li>
+						</ul>
+					</section>
 					
-					<ul>
-						<li>OracleJDK</li>
-						<li>OpenJDK</li>
-						<li>IcedTea</li>
-					</ul>
+					<section>
+						<ul>
+							<li>OracleJDK</li>
+							<li>OpenJDK</li>
+							<li>IcedTea</li>
+						</ul>
+					</section>
 					
 					<aside class="notes">
 						<p>
 							licensed and supported by Oracle
 							tested with licensed test suite from Oracle but open source
-							also open-source build and test system, but same code
+							also open-source build and test system, but same code with additions for example other interpreters Hotspot Zero
 						</p>
 					</aside>
 				</section>
@@ -212,10 +216,11 @@
 						<p>Eigentlich keine, aber...</p>
 						
 						<ul>
-							<li>resourcen finalize</li>
+							<li>finalize</li>
 							<li>stop the world pauses</li>
-							<li>tradeoff zwischen throughput und pauses</li>
 						</ul>
+						
+						<p>=>Abwägung zwischen Durchsatz und Latenz</p>
 	
 						
 						<aside class="notes">
@@ -324,6 +329,8 @@
 						<aside class="notes">
 							<p>
 								der speicher ist vorhanden muss aber kompakter gemacht werden
+								
+								das fragmentierungs problem ist wichtig, cms ignoriert das z.b. vollständig
 							</p>
 						</aside>
 					</section>
@@ -348,43 +355,23 @@
 				</section>
 				
 				<section>
-					<section>
-						<h2>Memory Structure: Heap und Stack</h2>
-						
-						<img src="img/jvm-simple-memory-structure.svg" />
-						
-						<p>-Xss option für die Stackgröße</p>
-						
-						<aside class="notes">
-							<p>
-								vom allgemeinen zum speziellen (hotspot)
-	
-								stack und register basiert (register auf grund von performance da computer einfach so gebaut sind)
-								
-								stack per thread, contains thread local primitives, can also contain objects if jvm is sure that it's not used in another thread and the existence is only local
-								
-								ein teil des heap ist aber auch pro thread reserviert
-								
-								gc läuft auf heap, aber nur auf teil abhängig von version
-							</p>
-						</aside>
-					</section>
+					<h2>Memory Structure: Heap und Stack</h2>
 					
-					<section>
-						<h2>Memory Structure: PermGen Trivia</h2>
-						
-						TODO code
-						
-						string caches
-						integer caches
-						
-						
-						<aside class="notes">
-							<p>
-								depending on the version the permgen and its contents behaves differently
-							</p>
-						</aside>
-					</section>
+					<img src="img/jvm-simple-memory-structure.svg" />
+					
+					<aside class="notes">
+						<p>
+							vom allgemeinen zum speziellen (hotspot)
+
+							stack und register basiert (register auf grund von performance da computer einfach so gebaut sind)
+							
+							stack per thread, contains thread local primitives, can also contain objects if jvm is sure that it's not used in another thread and the existence is only local
+							
+							ein teil des heap ist aber auch pro thread reserviert
+							
+							gc läuft auf heap, aber nur auf teil abhängig von version
+						</p>
+					</aside>
 				</section>
 				
 				<section>
@@ -395,6 +382,14 @@
 							<img src="img/generational-hypothesis.png" /><br />
 							<small>Bild von <a href="https://dzone.com/articles/how-tame-java-gc-pauses">DZone</a></small>
 						</p>
+						
+						<aside class="notes">
+							<p>
+								young objects die earlier
+	
+								young space daher sehr effizient garbage collectable, lebendige objekte sind schwieriger
+							</p>
+						</aside>
 					</section>
 					
 					<section>
@@ -402,57 +397,80 @@
 							<img src="img/jvm7-heap-model.jpg" /><br />
 							<small>Bild von <a href="https://dzone.com/articles/java-memory-architecture-model-garbage-collection">DZone</a></small>
 						</p>
+						
+						<aside class="notes">
+							<p>
+								PermGenSpace to MetaSpace
+							</p>
+						</aside>
 					</section>
-					
-					
-					<aside class="notes">
-						<p>
-							young objects die earlier
-
-							young space daher sehr effizient garbage collectable, lebendige objekte sind schwieriger 
-							
-							TODO was wenn old young referenziert
-							
-							PermGenSpace to MetaSpace
-							
-							* https://dzone.com/articles/java-8-permgen-metaspace
-							* http://tutorials.jenkov.com/java-concurrency/java-memory-model.html
-							* https://dzone.com/articles/java-memory-architecture-model-garbage-collection
-						</p>
-					</aside>
 				</section>
 				
 				<section>
 					<h2>HotSpot Collectors</h2>
 					
-					<ul>
-						<li>vor J5 serialGC</li>
-						<li>seit J5 standard parallelGC</li>
-						<li>seit J5 ergonomics</li>
-						<li>seit J6 cmsGC</li>
-						<li>seit J7 G1GC</li>
-						<li>seit J9 standard G1GC</li>
-					</ul>
+					<section>
+						<ul>
+							<li>vor Java5 serialGC</li>
+							<li>seit Java5 Standard parallelGC</li>
+							<li>seit Java5 ergonomics</li>
+							<li>seit Java6 cmsGC</li>
+							<li>seit Java7 G1GC</li>
+							<li>seit Java9 Standard G1GC</li>
+						</ul>
+						
+						<aside class="notes">
+							<p>
+								decided by gctuning ergonomics, standard for 64bit x86 machines
+							</p>
+						</aside>
+					</section>
 					
-					<img src="img/jvm-serial-parallel-gc.png" />
-					
-					<img src="img/jvm-cms-gc.png" />
-					
-					TODO, Unterschied zwischen parallel und concurrent wichtig im nachfolgenden
-					
-					<aside class="notes">
+					<section>
+						<h3>Serial/Parallel GC</h3>
 						<p>
-							serialGC immer noch verwendet und am effizientesten für heaps kleiner 100MB, ist aber bei solr installationen nicht immer unbedingt der fall
-							
-							parallel best throughput, but can have long pauses
-							
-							cms can have low pauses
-							
-							g1 also low pauses but better throughput
-							
-							decided by gctuning ergonomics, standard for 64bit x86 machines
+							<img src="img/jvm-serial-parallel-gc.png" /><br />
+							<small>Bild von <a href="https://www.cubrid.org/blog/understanding-java-garbage-collection">cubrid.org</a></small>
 						</p>
-					</aside>
+						
+						<aside class="notes">
+							<p>
+								serialGC immer noch verwendet und am effizientesten für heaps kleiner 100MB, ist aber bei solr installationen nicht immer unbedingt der fall
+								
+								parallel best throughput, but can have long pauses 99:1
+							</p>
+						</aside>
+					</section>
+					
+					<section>
+						<h3>CMS GC</h3>
+						<p>
+							<img src="img/jvm-cms-gc.png" /><br />
+							<small>Bild von <a href="https://www.cubrid.org/blog/understanding-java-garbage-collection">cubrid.org</a></small>
+						</p>
+						
+						<aside class="notes">
+							<p>
+								cms can have low pauses, is not compacting
+							</p>
+						</aside>
+					</section>
+					
+					<section>
+						<h3>G1 GC</h3>
+						<p>
+							<img src="img/jvm-g1-gc.png" /><br />
+							<small>Bild von <a href="https://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/g1_gc.html#heap_division_by_g1">oracle.com</a></small>
+						</p>
+						
+						<aside class="notes">
+							<p>
+								g1 also low pauses but better throughput goal 9:1
+							</p>
+						</aside>
+					</section>
+
+					
 				</section>
 				
 				<section>
@@ -461,53 +479,27 @@
 					<ul>
 						<li>OpenJ9</li>
 						<li>Azul (pauseless)</li>
+						<li><a href="https://wiki.openjdk.java.net/display/shenandoah/Main">Shenandoah</a> (zukünftig)</li>
 					</ul>
 					
 					<aside class="notes">
 						<p>
 							OpenJ9 mit Optimierungen für spezielle IBM Hardware, ansonsten ähnlich
 							
-							Azul, hat keine Pausen, in der Theorie
-						</p>
-					</aside>
-				</section>
-				
-				<section>
-					<h2>Future Collectors</h2>
-					
-					<ul>
-						<li><a href="https://wiki.openjdk.java.net/display/shenandoah/Main">Shenandoah</a></li>
-					</ul>
-					
-					<aside class="notes">
-						<p>
-							wird für zukünftige HotSpot entwickelt, wird auch keine Pausen haben, aber für Server nicht so wichtig
-						</p>
-					</aside>
-				</section>
-				
-				<section>
-					<h2>Nicht standardisierte JVM flags</h2>
-					
-					<ul>
-						<li>-X are non-standard</li>
-						<li>-XX are not stable and are subject to change without notice</li>
-					</ul>
-					
-					<aside class="notes">
-						<p>
-							Some are standard and must be found in any conforming Java virtual machine; others are specific to HotSpot and may not be found in other JVMs (options that begin with -X or -XX are non-standard).
-
+							Azul, hat keine Pausen, in der Theorie, wie kann das sein, lief früher nur auf bestimmter hardware und jetzt glaub ich nur auf linux x86
+						
+							wird für zukünftige HotSpot entwickelt, wird auch keine Pausen haben
 						</p>
 					</aside>
 				</section>
 				
 				<section>
 					<h2>Solr Configuration</h2>
-					
-					<p>Von einem aktuellen Solr 7.1</p>
-					
-					<pre><code class="bash" data-trim contenteditable="true">
+
+					<section>
+						<p>Von einem aktuellen Solr 7.1</p>
+						
+						<pre><code class="bash" data-trim>
 # Establish default GC logging opts if no env var set (otherwise init to sensible default)
 if [ -z ${GC_LOG_OPTS+x} ]; then
   if [[ "$JAVA_VER_NUM" &lt; "9" ]] ; then
@@ -520,19 +512,17 @@ if [ -z ${GC_LOG_OPTS+x} ]; then
 else
   GC_LOG_OPTS=($GC_LOG_OPTS)
 fi
-					</code></pre>
+						</code></pre>
+						
+						<aside class="notes">
+							<p>
+								solr GC logging configuration
+							</p>
+						</aside>
+					</section>
 					
-					<aside class="notes">
-						<p>
-							solr GC logging configuration
-						</p>
-					</aside>
-				</section>
-				
-				<section>
-					<h2>Solr Configuration</h2>
-					
-					<pre><code class="bash" data-trim contenteditable="true">
+					<section>
+						<pre><code class="bash" data-trim>
 # if verbose gc logging enabled, setup the location of the log file and rotation
 if [ "$GC_LOG_OPTS" != "" ]; then
   if [[ "$JAVA_VER_NUM" &lt; "9" ]] ; then
@@ -552,19 +542,17 @@ if [ "$GC_LOG_OPTS" != "" ]; then
     done
   fi
 fi
-					</code></pre>
+						</code></pre>
+						
+						<aside class="notes">
+							<p>
+								solr GC file rotation
+							</p>
+						</aside>
+					</section>
 					
-					<aside class="notes">
-						<p>
-							solr GC file rotation
-						</p>
-					</aside>
-				</section>
-				
-				<section>
-					<h2>Solr Configuration</h2>
-					
-					<pre><code class="bash" data-trim contenteditable="true">
+					<section>
+						<pre><code class="bash" data-trim>
 JAVA_MEM_OPTS=()
 if [ -z "$SOLR_HEAP" ] &amp;&amp; [ -n "$SOLR_JAVA_MEM" ]; then
   JAVA_MEM_OPTS=($SOLR_JAVA_MEM)
@@ -578,19 +566,17 @@ if [ -z ${SOLR_JAVA_STACK_SIZE+x} ]; then
   SOLR_JAVA_STACK_SIZE='-Xss256k'
 fi
 SOLR_OPTS+=($SOLR_JAVA_STACK_SIZE)
-					</code></pre>
+						</code></pre>
+						
+						<aside class="notes">
+							<p>
+								solr has a default heap and stack size, might not be a good idea
+							</p>
+						</aside>
+					</section>
 					
-					<aside class="notes">
-						<p>
-							solr has a default heap and stack size, might not be a good idea
-						</p>
-					</aside>
-				</section>
-				
-				<section>
-					<h2>Solr Configuration</h2>
-					
-					<pre><code class="bash" data-trim contenteditable="true">
+					<section>
+						<pre><code class="bash" data-trim>
 # define default GC_TUNE
 if [ -z ${GC_TUNE+x} ]; then
     GC_TUNE=('-XX:NewRatio=3' \
@@ -611,105 +597,130 @@ if [ -z ${GC_TUNE+x} ]; then
 else
   GC_TUNE=($GC_TUNE)
 fi
-					</code></pre>
-					
-					<aside class="notes">
-						<p>
-							solr GC tuning parameter
-						</p>
-					</aside>
+						</code></pre>
+						
+						<aside class="notes">
+							<p>
+								solr GC tuning parameter
+							</p>
+						</aside>
+					</section>
 				</section>
 				
 				<section>
-					<h2>HotSpot Java: GC</h2>
+					<h2>HotSpot Java</h2>
 					
-					<ul>
-						<li>-XX:+UseConcMarkSweepGC</li>
-						<li>-XX:+UseParNewGC</li>
-					</ul>
-					
-					<aside class="notes">
+					<section>
+						<h3>GC</h3>
+						
 						<ul>
-							<li>-XX:+UseConcMarkSweepGC CMS aktivieren, aber ab einem heap von 4-6GB sollte man G1 verwenden</li>
-							<li>-XX:+UseParNewGC für die young generation wird immer noch der paralle gc verwendet, eigentlich standard für cms</li>
+							<li>-XX:+UseConcMarkSweepGC</li>
+							<li>-XX:+UseParNewGC</li>
 						</ul>
-					</aside>
-				</section>
-				
-				<section>
-					<h2>HotSpot Java: Memory organisation</h2>
+						
+						<aside class="notes">
+							<ul>
+								<li>-XX:+UseConcMarkSweepGC CMS aktivieren, aber ab einem heap von 4-6GB sollte man G1 verwenden</li>
+								<li>-XX:+UseParNewGC für die young generation wird immer noch der paralle gc verwendet, eigentlich standard für cms</li>
+							</ul>
+						</aside>
+					</section>
 					
-					<ul>
-						<li>-XX:NewRatio=3</li>
-						<li>-XX:SurvivorRatio=4</li>
-						<li>-XX:TargetSurvivorRatio=90</li>
-						<li>-XX:MaxTenuringThreshold=8</li>
-						<li>-XX:+CMSScavengeBeforeRemark</li>
-						<li>-XX:PretenureSizeThreshold=64m</li>
-					</ul>
-					
-					<aside class="notes">
+					<section>
+						<h3>Memory organisation</h3>
+						
 						<ul>
-							<li>-XX:NewRatio=2 standard tradeoff between minor and major gc, more ram can increase this</li>
-							<li>-XX:SurvivorRatio=8 sollte eigentlich nicht zum tuning verwendet werden, kann über logging optimal ermittelt werden</li>
-							<li>-XX:TargetSurvivorRatio=50 will eine besser auslastung des survivors spaces und damit eine vorzeitige promotion zum tenured space verhindern. man könnte auch -XX:+UseAdaptiveSizePolicy verwenden um das automatisch zu tunen lassen</li>
-							<li>-XX:MaxTenuringThreshold=4 standard für CMS, wieviele collections ein objekt überleben muss bevor es in den tenured space kommt</li>
-							<li>-XX:+CMSScavengeBeforeRemark versucht die abhängigkeiten zwischen tenured und young zu verkleinern indem immer vor major ein minor gc durchgeführt wird</li>
-							<li>-XX:PretenureSizeThreshold=0 normalerweise deaktiviert, objekte dieser größe gehen direkt in den tenured spacce</li>
+							<li>-XX:NewRatio=3</li>
+							<li>-XX:SurvivorRatio=4</li>
+							<li>-XX:TargetSurvivorRatio=90</li>
+							<li>-XX:MaxTenuringThreshold=8</li>
+							<li>-XX:PretenureSizeThreshold=64m</li>
 						</ul>
-					</aside>
-				</section>
-				
-				<section>
-					<h2>HotSpot Java: Parallel tuning</h2>
+						
+						<aside class="notes">
+							<ul>
+								<li>-XX:NewRatio=2 standard tradeoff between minor and major gc, more ram can increase this</li>
+								<li>-XX:SurvivorRatio=8 sollte eigentlich nicht zum tuning verwendet werden, kann über logging optimal ermittelt werden</li>
+								<li>-XX:TargetSurvivorRatio=50 will eine besser auslastung des survivors spaces und damit eine vorzeitige promotion zum tenured space verhindern. man könnte auch -XX:+UseAdaptiveSizePolicy verwenden um das automatisch zu tunen lassen</li>
+								<li>-XX:MaxTenuringThreshold=4 standard für CMS, wieviele collections ein objekt überleben muss bevor es in den tenured space kommt</li>
+								<li>-XX:PretenureSizeThreshold=0 normalerweise deaktiviert, objekte dieser größe gehen direkt in den tenured spacce</li>
+							</ul>
+						</aside>
+					</section>
 					
-					<ul>
-						<li>-XX:ConcGCThreads=4</li>
-						<li>-XX:ParallelGCThreads=4</li>
-						<li>-XX:+UseCMSInitiatingOccupancyOnly -XX:CMSInitiatingOccupancyFraction=50</li>
-						<li>-XX:+CMSParallelRemarkEnabled</li>
-						<li>-XX:+ParallelRefProcEnabled</li>
-					</ul>
-					
-					<aside class="notes">
+					<section>
+						<h3>Parallel tuning</h3>
+						
 						<ul>
-							<li>-XX:ConcGCThreads=4 es gibt keinen eindeutigen default wert</li>
-							<li>-XX:ParallelGCThreads=4 es gibt keinen eindeutigen default wert</li>
-							<li>-XX:+UseCMSInitiatingOccupancyOnly -XX:CMSInitiatingOccupancyFraction=50 macht es etwas berechenbarer wann der CMS angestoßen wird</li>
-							<li>-XX:+CMSParallelRemarkEnabled makes sense on multi core</li>
-							<li>-XX:+ParallelRefProcEnabled referenzen werden parallel bearbeitet</li>
+							<li>-XX:ConcGCThreads=4</li>
+							<li>-XX:ParallelGCThreads=4</li>
+							<li>-XX:+UseCMSInitiatingOccupancyOnly -XX:CMSInitiatingOccupancyFraction=50</li>
+							<li>-XX:+CMSParallelRemarkEnabled</li>
+							<li>-XX:+ParallelRefProcEnabled</li>
 						</ul>
-					</aside>
-				</section>
-				
-				<section>
-					<h2>HotSpot Java: Misc</h2>
+						
+						<aside class="notes">
+							<ul>
+								<li>-XX:ConcGCThreads=4 es gibt keinen eindeutigen default wert</li>
+								<li>-XX:ParallelGCThreads=4 es gibt keinen eindeutigen default wert</li>
+								<li>-XX:+UseCMSInitiatingOccupancyOnly -XX:CMSInitiatingOccupancyFraction=50 macht es etwas berechenbarer wann der CMS angestoßen wird</li>
+								<li>-XX:+CMSParallelRemarkEnabled makes sense on multi core</li>
+								<li>-XX:+ParallelRefProcEnabled referenzen werden parallel bearbeitet</li>
+							</ul>
+						</aside>
+					</section>
 					
-					<ul>
-						<li>-XX:CMSMaxAbortablePrecleanTime=6000</li>
-						<li>-XX:-OmitStackTraceInFastThrow</li>
-					</ul>
-					
-					<aside class="notes">
+					<section>
+						<h3>Sonstiges</h3>
+						
 						<ul>
-							<li>-XX:CMSMaxAbortablePrecleanTime=6000 no idea and the default is 5000?</li>
-							<li>-XX:-OmitStackTraceInFastThrow zwingt jvm dazu immer die stacktraces zu erhalten</li>
+							<li>-XX:CMSMaxAbortablePrecleanTime=6000</li>
+							<li>-XX:-OmitStackTraceInFastThrow</li>
+							<li>-XX:+CMSScavengeBeforeRemark</li>
 						</ul>
-					</aside>
+						
+						<aside class="notes">
+							<ul>
+								<li>-XX:CMSMaxAbortablePrecleanTime=6000 no idea and the default is 5000?</li>
+								<li>-XX:-OmitStackTraceInFastThrow zwingt jvm dazu immer die stacktraces zu erhalten</li>
+								<li>-XX:+CMSScavengeBeforeRemark versucht die abhängigkeiten zwischen tenured und young zu verkleinern indem immer vor major ein minor gc durchgeführt wird</li>
+							</ul>
+						</aside>
+					</section>
 				</section>
-				
+
 				<section>
 					<h2>Empfehlung</h2>
 					
-					G1GC
-lucene wiki:https://wiki.apache.org/lucene-java/JavaBugs
-Do not, under any circumstances, run Lucene with the G1 garbage collector. Lucene's test suite fails with the G1 garbage collector on a regular basis, including bugs that cause index corruption. There is no person on this planet that seems to understand such bugs (see https://bugs.openjdk.java.net/browse/JDK-8038348, open for over a year), so don't count on the situation changing soon. This information is not out of date, and don't think that the next oracle java release will fix the situation. 
+					<section>
+						<h3>CMS</h3>
+						
+						<ul>
+							<li>gut konfiguriert</li>
+							<li>tuning Heap organisation</li>
+						</ul>
+						<aside class="notes">
+							<p>
+								wird für zukünftige HotSpot entwickelt, wird auch keine Pausen haben, aber für Server nicht so wichtig
+							</p>
+						</aside>
+					</section>
 					
-					<aside class="notes">
-						<p>
-							wird für zukünftige HotSpot entwickelt, wird auch keine Pausen haben, aber für Server nicht so wichtig
-						</p>
-					</aside>
+					<section>
+						<h3>G1</h3>
+						
+						<ul>
+							<li>für Heaps größer 6GB</li>
+							<li>maximale Latenz</li>
+							<li>wenig getestet</li>
+						</ul>
+						
+						<aside class="notes">
+							<p>
+								Do not, under any circumstances, run Lucene with the G1 garbage collector. Lucene's test suite fails with the G1 garbage collector on a regular basis, including bugs that cause index corruption. There is no person on this planet that seems to understand such bugs (see https://bugs.openjdk.java.net/browse/JDK-8038348, open for over a year), so don't count on the situation changing soon. This information is not out of date, and don't think that the next oracle java release will fix the situation. 
+							</p>
+						</aside>
+					</section>
 				</section>
 				
 				<section>
@@ -726,7 +737,7 @@ Do not, under any circumstances, run Lucene with the G1 garbage collector. Lucen
 					
 					<aside class="notes">
 						<p>
-							wird für zukünftige HotSpot entwickelt, wird auch keine Pausen haben, aber für Server nicht so wichtig
+							Welche Fragestellungen sind in Zukunft am wichtigsten?
 						</p>
 					</aside>
 				</section>
@@ -767,11 +778,12 @@ Do not, under any circumstances, run Lucene with the G1 garbage collector. Lucen
 						<li><a href="https://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/ergonomics.html">https://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/ergonomics.html</a></li>
 						<li><a href="https://docs.oracle.com/javase/9/gctuning/ergonomics.htm">https://docs.oracle.com/javase/9/gctuning/ergonomics.htm</a></li>
 					
-						https://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/cms.html
-						https://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/sizing.html
-						https://wiki.apache.org/solr/ShawnHeisey
-						https://blogs.oracle.com/poonam/understanding-cms-gc-logs
-						https://blogs.oracle.com/jonthecollector/what-the-hecks-a-concurrent-mode
+						<li><a href="https://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/cms.html">https://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/cms.html</a></li>
+						<li><a href="https://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/sizing.html">https://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/sizing.html</a></li>
+						<li><a href="https://wiki.apache.org/solr/ShawnHeisey">https://wiki.apache.org/solr/ShawnHeisey</a></li>
+						<li><a href="https://blogs.oracle.com/poonam/understanding-cms-gc-logs">https://blogs.oracle.com/poonam/understanding-cms-gc-logs</a></li>
+						<li><a href="https://blogs.oracle.com/jonthecollector/what-the-hecks-a-concurrent-mode">https://blogs.oracle.com/jonthecollector/what-the-hecks-a-concurrent-mode</a></li>
+						<li><a href="https://docs.oracle.com/javase/specs/jvms/se8/html/index.html">https://docs.oracle.com/javase/specs/jvms/se8/html/index.html</a></li>
 					</ul>
 
 				</section>
