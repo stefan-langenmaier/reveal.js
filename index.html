@@ -35,8 +35,9 @@
 					
 					<aside class="notes">
 						<p>
-							Das Verhalten des GC mit besonderem Bezug auf Solr
+							Hallo, im folgenden möchte ich eine Übersicht über die GCs geben die in der JVM verwendet werden, das ist wichtig weil
 							GC ist ein entscheidender Faktor für die Leistung und Stabilität eines Systems
+							Das Verhalten des GC mit besonderem Bezug auf Solr
 						</p>
 					</aside>
 				</section>
@@ -721,6 +722,27 @@ fi
 							</p>
 						</aside>
 					</section>
+					
+					<section>
+						<h3>G1</h3>
+						
+						<pre><code class="bash" data-trim>
+JVM_OPTS=" \
+	-XX:+UseG1GC \
+	-XX:+ParallelRefProcEnabled \
+	-XX:G1HeapRegionSize=8m \
+	-XX:MaxGCPauseMillis=200 \
+	-XX:+UseLargePages \
+	-XX:+AggressiveOpts \
+"
+						</code></pre>
+						
+						<aside class="notes">
+							<p>
+								Do not, under any circumstances, run Lucene with the G1 garbage collector. Lucene's test suite fails with the G1 garbage collector on a regular basis, including bugs that cause index corruption. There is no person on this planet that seems to understand such bugs (see https://bugs.openjdk.java.net/browse/JDK-8038348, open for over a year), so don't count on the situation changing soon. This information is not out of date, and don't think that the next oracle java release will fix the situation. 
+							</p>
+						</aside>
+					</section>
 				</section>
 				
 				<section>
@@ -804,7 +826,9 @@ fi
 					{ src: 'plugin/markdown/marked.js' },
 					{ src: 'plugin/markdown/markdown.js' },
 					{ src: 'plugin/notes/notes.js', async: true },
-					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'socket.io/socket.io.js', async: true },
+					{ src: 'plugin/notes-server/client.js', async: true }
 				]
 			});
 		</script>
