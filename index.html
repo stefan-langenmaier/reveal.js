@@ -737,6 +737,9 @@ JVM_OPTS=" \
 "
 						</code></pre>
 						
+						<p>
+							Quelle: <a href="https://wiki.apache.org/solr/ShawnHeisey#G1_.28Garbage_First.29_Collector">Solr Wiki</a>
+						</p>
 						<aside class="notes">
 							<p>
 								Do not, under any circumstances, run Lucene with the G1 garbage collector. Lucene's test suite fails with the G1 garbage collector on a regular basis, including bugs that cause index corruption. There is no person on this planet that seems to understand such bugs (see https://bugs.openjdk.java.net/browse/JDK-8038348, open for over a year), so don't count on the situation changing soon. This information is not out of date, and don't think that the next oracle java release will fix the situation. 
