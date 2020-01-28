@@ -4,7 +4,10 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>reveal.js</title>
+		<title>Docker composability and Gentoo instrumenting</title>
+		
+		<meta name="description" content="Docker's issues with composing a container and how Gentoo (or a good package manger in general) can help">
+		<meta name="author" content="Stefan Langenmaier">
 
 		<link rel="stylesheet" href="css/reset.css">
 		<link rel="stylesheet" href="css/reveal.css">
@@ -25,18 +28,630 @@
 	<body>
 		<div class="reveal">
 			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
+				<section>
+					<h1>Docker</h1>
+					<h2>und seine Buildprobleme</h2>
+					<h3>und wie ein guter Paketmanager sie löst</h3>
+					<p>
+						<small>Created by <a href="https://github.com/stefan-langenmaier">Stefan Langenmaier</a></small>
+					</p>
+					
+					<aside class="notes">
+						Herzlich Willkommen, zum Vortrag ...
+						
+						Es werden hier nicht alle Buildrobleme abgehandelt, auch wenn ich versuche darauf ein paar Verweise zu setzen,
+						
+						sondern wir werden auf ein bestimmtes Problem näher eingehen.
+						
+						Der Vortrag besteht aus zwei Teilen, im ersten möchte ich dieses Problem etwas näher illustrieren
+						
+						und im zweiten Teil einen Lösungsansatz mit Gentoo vorstellen.
+						
+						Der zweite Teil während wir auf die Installation bei Gentoo warten ist meistens der beste Punkt um Fragen zu stellen. :)
+					</aside>
+				</section>
+
+				<section>
+					<h2>Was ist Docker?</h2>
+					<p>
+						Gute Frage!
+					</p>
+					
+					<aside class="notes">
+						Ich hab diesen Vortrag schon mal vor gut vier Jahren gehalten. Da war Docker und der Container-Ansatz etwas neuer.
+						<ul>
+						    <li>Eine Firma, von der man heute allerdings nicht mehr so viel hört. Heute eher Kubernetes/Openshift.</li>
+						    <li>Ein Kommandozeilenwerkzeug und Service(erstellen, starten, deployen, löschen) zum Verwalten von Container und den dazugehörigen Images auf verschiednene Platformen (linux, mac, win) und mittlerweile Architekturen.</li>
+						    <li>Ein Host für Images (eine Art Appstore,)</li>
+						    <li>Ein Bibliothek und Interface für cgroups im Linux Kernel</li>
+						</ul>
+						
+						Docker ist jede Menge verschiedene Sachen, darum gibt es inzwischen auch jeden Menge Konkurrenz und Standardisierungen und Philosophien
+						podman sehr populär im Moment
+						rkt
+						lxc/lxd
+					</aside>
+				</section>
+
+				<section>
+					<h2>Virtualisation vs Containerisation</h2>
+					<p>
+						Was ist der Unterschied?
+					</p>
+					
+					<aside class="notes">
+						Nur als recap
+						<ul>
+						    <li>Full virtualised systems: jedes System hat seinen eigenen Kernel laufen. Moderne Hardware hat Support, um das mit minimalen Performan-Overhead laufen zu lassen. Ressourcen müssen dediziert zugewiesen werden.</li>
+						    <li>Paravirtualised systems: jedes System hat seinen eigenen Kernel laufen, aber der Kernel weiss das er virtualisiert wird.</li>
+						
+						    <li>Containerized systems: alle System laufen auf dem selben Kernel. Dieser eine Kernel hat die globale Kontrolle über alle Resourcen, macht dieses aber nur eingeschränkt sichtbar für die einzelnen Systeme. Start solcher System ist extrem schnell.</li>
+						</ul>
+						
+						<p>
+							Die Performance und vorallem Ressourcenausnutzung ist dadurch besser.
+							Container versprechen "create once - deploy everywhere",
+							Da die Kernelschnittstelle in der Praxis tatsächlich sehr stabil kann das Versprechen meistens gehalten werden. Das schliesst allerdings keine Bugs mit ein. In diesem Fall kann z.B. ein seperater Kernel diese Versprechen vielleicht besser halten.
+						</p>
+					</aside>
+				</section>
+
+				<section>
+					<h2>Containerization differences/alternatives</h2>
+					
+					<ul>
+						<li>uml</li>
+						<li>OpenVZ</li>
+						<li>Linux VServer</li>
+					</ul>
+					
+					<ul>
+						<li>docker</li>
+						<li>podman</li>
+						<li>lxc/lxd</li>
+						<li>lmctfy</li>
+						<li>rkt</li>
+						<li>systemd-nsspawn</li>
+						<li>flatpak/snap</li>
+					</ul>
+						
+					<ul>
+						<li>jails</li>
+						<li>zones</li>
+					</ul>
+					
+					<aside class="notes">
+						Das ist die kleine Geschichte der Container.  
+						<ul>
+						    <li>uml</li>
+						    <li>OpenVZ</li>
+						    <li>Linux VServer</li>
+						</ul>
+						Diese Lösungen gab es bereits vor den cgroups allerdings haben sie nie die Aufnahme in der Kernel geschafft oder waren proprietär.
+					
+						<ul>
+							<li>docker</li>
+							<li>podman</li>
+							<li>lxc/lxd</li>
+							<li>lmctfy</li>
+							<li>rkt</li>
+							<li>systemd-nsspawn</li>
+							<li>flatpak/snap</li>
+						</ul>
+						Die aktuellen Optionen auf dem "Markt".
+						
+						<ul>
+							<li>jails</li>
+							<li>zones</li>
+						</ul>
+						Auf anderen Kernels gibt es anderen Lösungen (BSD und Solaris).
+						
+					</aside>
+				</section>
+
+				<section>
+					<h2>Bekannte Probleme von Docker</h2>
+					<p>
+						Ich will nicht auf <a href="#/references">alles</a> eingehen.
+					</p>
+					
+					<aside class="notes">
+						Links sind am Ende und Ende gibt es auch einen Link auf die Folien.
+						
+						Man kann verschiedene Meinungen haben, aber das Container vorerst ein Mittel der Wahl bleiben werden ist sicher.
+					</aside>
+				</section>
+
+				<section>
+					<h2>Das spezifische Problem</h2>
+					
+					<ul>
+					    <li>Experimentieren mit Containern/Images</li>
+					    <li>Erstellung eines Produktivsystems</li>
+					</ul>
+					    
+					<aside class="notes">
+						Ich möchte über zwei Dinge sprechen
+						
+						Wie kann man mit einem Container experimentieren, d.h. entwickeln und testen. Dazu müssen Änderungen an den verschiedensten Stellen einfach möglich sein.
+						
+						Der zweite Punkt ist die Erstellung eines minimalen Containers für die Produktivumgebung. Dieser Punkt ist wichtig nicht nur aus Performance oder ästethischen Gründen.
+						
+						Ein Image das schnell und minimal erstellt werden kann ist ein sicheres Image.
+						Wenn es schnell erstellt werden kann ist es einfach aktuell zu halten.
+						Wenn es minimalen Code enthält kann nur dieser ausgenutzt werden.
+						
+						Daher sind diese beiden Punkte auch wenn sie unterschiedlich erscheinen miteinander verbunden.
+						
+						Schauen wir uns einfach an wie bekannte Projekte das machen, oder?
+					</aside>
+				</section>
+				
+				<section>
+					<h2>Nicht betrachtet werden</h2>
+					
+					<ul>
+						<li>yocto</li>
+						<li>buildroot</li>
+						<li>ostree</li>
+					</ul>
+
+					<aside class="notes">
+						spezielle Werkzeuge für den embedded Bereich
+					</aside>
+				</section>
+				
+				<section>
+					<h2>Beispiel (Phusion Passenger)</h2>
+					<pre><code data-trim>
+FROM phusion/baseimage:0.11
+MAINTAINER Phusion &lt;info@phusion.nl&gt;
+
+ADD . /pd_build
+RUN /pd_build/install.sh
+CMD ["/sbin/my_init"]
+EXPOSE 80 443
+					</code></pre>
+					
+					https://github.com/phusion/passenger-docker/blob/master/image/Dockerfile
+					
+					<aside class="notes">
+						Das Dockerfile bildet ab wie ein Image gebaut werden soll.
+						
+						Das erste Beispiel ist von Phusion, die Firma hinter passenger, einem Anwendungsserver für hauptsächlich Rails-Webanwendung.
+						
+						Auf den ersten Blick ist das Dockerfile erstmal ziemlich übersichtlich und ich denke die Phusion Leute stimmen mit mir in einigen Punkten überein wie Images gebaut werden sollen.
+						
+						Aber auf den zweiten Blick?
+						
+						phusion/baseimage ist quasi zu unserer Distribution geworden. Es ist allerdings nicht sofort klar was das genau ist. Was ist die Philosophie von Phusion das aktuell zu halten?
+						
+						danach wird ein Ordner in das Image kopiert und dann ein Bash-Script ausgeführt. Da bin ich neutral dazu wir sehen später schlimmeres. Der kopierte Ordner wird auf jeden Fall in der Historie der Images bleiben.
+						
+						Das Bash-Skript niemand das eigentlich Setup des Images vor. 
+						
+						CMD wird verwendet um das Standardkommando beim Start des Container anzugeben. Kann später überschrieben werden.
+						Hier wird ein Init-System angegeben. Das entspricht nicht ganz der Docker-Philosophi, aber ebenso möglich. Nur Schade das es ausschaut als wäre hier ein custom System angegeben.
+						
+						Und wie aus systemd flamewars weiss reagieren manche Leute darauf sehr empfindlich. Schade also das hier ein weiteres System nötig ist obwohl es schon mehrere gibt. Aber darauf kommen wir auch noch zu sprechen.
+						
+						Die nächste Zeile legt die offenen Ports des Containers zur Laufzeit fest.
+					</aside>
+				</section>
+				
+				<section>
+					<h2>Beispiel (Redmine)</h2>
+					
+					<a href="https://github.com/docker-library/redmine/blob/4064a505db909322bda24823c200f4c97985d638/4.0/Dockerfile">Redmine 4.0 Dockerfile</a>
+					
+					<pre><code data-trim>
+FROM ruby:2.6-slim-buster
+					</code></pre>
+					
+					<a href="https://hub.docker.com/_/ruby">Ruby-Image-Tags</a>
+					
+					Wieso gibt es fünf verschiedene Varianten von ruby:2.6? Was versteckt sich dahinter?
+					
+					<aside class="notes">
+						Gibt bestimmt einen guten Grund aber bleibt weiterhin die Frage woher man weis welchen man nehmen soll.
+						
+						Normal, slim oder das noch "slimmere" alpine?
+					</aside>
+				</section>
+				
+				<section>
+					<h2>Beispiel (Redmine)</h2>
+					
+					<a href="https://github.com/docker-library/redmine/blob/4064a505db909322bda24823c200f4c97985d638/4.0/Dockerfile">Redmine 4.0 Dockerfile</a>
+					
+					<pre><code data-trim>
+RUN set -eux; \
+	savedAptMark="$(apt-mark showmanual)"; \
+	apt-get update; \
+	apt-get install -y --no-install-recommends \
+		dirmngr \
+		gnupg \
+	; \
+	rm -rf /var/lib/apt/lists/*; \
+	\
+	dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')"; \
+	\
+# grab gosu for easy step-down from root
+# https://github.com/tianon/gosu/releases
+	export GOSU_VERSION='1.11'; \
+	wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch"; \
+	wget -O /usr/local/bin/gosu.asc "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch.asc"; \
+	export GNUPGHOME="$(mktemp -d)"; \
+	gpg --batch --keyserver hkps://keys.openpgp.org --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4; \
+	gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu; \
+	gpgconf --kill all; \
+	rm -r "$GNUPGHOME" /usr/local/bin/gosu.asc; \
+	chmod +x /usr/local/bin/gosu; \
+	gosu nobody true; \
+	\
+# grab tini for signal processing and zombie killing
+# https://github.com/krallin/tini/releases
+	export TINI_VERSION='0.18.0'; \
+	wget -O /usr/local/bin/tini "https://github.com/krallin/tini/releases/download/v$TINI_VERSION/tini-$dpkgArch"; \
+	wget -O /usr/local/bin/tini.asc "https://github.com/krallin/tini/releases/download/v$TINI_VERSION/tini-$dpkgArch.asc"; \
+	export GNUPGHOME="$(mktemp -d)"; \
+	gpg --batch --keyserver ha.pool.sks-keyservers.net --recv-keys 6380DC428747F6C393FEACA59A84159D7001A4E5; \
+	gpg --batch --verify /usr/local/bin/tini.asc /usr/local/bin/tini; \
+	gpgconf --kill all; \
+	rm -r "$GNUPGHOME" /usr/local/bin/tini.asc; \
+	chmod +x /usr/local/bin/tini; \
+	tini -h; \
+	\
+# reset apt-mark's "manual" list so that "purge --auto-remove" will remove all build dependencies
+	apt-mark auto '.*' > /dev/null; \
+	[ -z "$savedAptMark" ] || apt-mark manual $savedAptMark; \
+	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false
+					</code></pre>
+					
+					Ziemlich lange Zeile.
+					
+					<aside class="notes">
+						Hier wird versucht zu vermeiden eine Skript-Ornder zu kopieren. Wahrscheinlich auf Kosten der Lesbarkeit. Ich bin mir fast sicher das man das in einem Shell-Skript besser hinbekommt.
+						
+						Damit hat man auf jeden Fall schwierige Debug Problem, wenn man ein Zeichen vergisst und eine Zeile erneut auszuführen kann lange dauern. Schnelle Iterationszyklen werden verhindert.
+					</aside>
+				</section>
+				
+				<section>
+					<h2>Docker build capabilities</h2>
+					
+					<pre><code data-trim>
+FROM ruby:2.6-slim-buster
+					</code></pre>
+					
+					Nicht verfügbar.
+					
+					<aside class="notes">
+						ncurses cannot be built because this uses ptrace syscall,
+						this is syscall which is not allowed by default
+						you can use add-cap, but not during build only during run
+					</aside>
+				</section>
+				
+				<section>
+					<h2>Docker multistage build</h2>
+					
+					Langsam.
+					
+					<aside class="notes">
+						copy data around from one image to the next
+						to reduce the end image size
+						time consuming
+					</aside>
+				</section>
+				
+				<section>
+					<h2>Rant Resumé</h2>
+					
+					Bekannte Limitierungen, könnten technisch gelöst werden.
+					
+					<aside class="notes">
+						Der letzte Punkt wahrscheinlich nicht direkt, denn der build Prozess möchte reproducible builds, auch wenn die Ergebnisse nicht reproducible im Sinne von Debian oder NixOS sind.
+						
+						I don't want to bash this Docker build here/actually I wanted to
+						what I want to say is that assembling a Linux system is hard
+						that's why there is a plethora of different package managers out there
+						They have been in development in a long time
+						There are distributions with packagers out there with intimate knowledge about their users and their packages
+						They feed these package mangers with information
+						
+						You don't want to throw this knowledge away but use it (and built it yourself see the Dockerfile dance)
+						
+						insert xkcd
+					</aside>
+				</section>
+
+				
+				<section>
+					<h2>Beispielproblem (Nextcloud)</h2>
+					<table>
+						<thead>
+							<tr>
+								<td></td>
+								<td>Webserver-Interface</td>
+								<td>PHP</td>
+								<td>DB</td>
+								<td>Nextcloud</td>
+								<td>Sum</td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Kombinationen</td>
+								<td>2</td>
+								<td>3</td>
+								<td>3</td>
+								<td>3</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td style="white-space: nowrap;">Docker (*)</td>
+								<td>2</td>
+								<td>4</td>
+								<td>9</td>
+								<td>27</td>
+								<td>42</td>
+							</tr>
+							<tr>
+								<td style="white-space: nowrap;">Composable (+)</td>
+								<td>2</td>
+								<td>5</td>
+								<td>8</td>
+								<td>11</td>
+								<td>11</td>
+							</tr>
+						</tbody>
+					</table>
+					<aside class="notes">
+						Wir wollen hier nextcloud installieren. Dabei müssen wir einige Komponenten auswählen.
+						
+						Die Anzahl der möglichen Kombination der Komponenten ist in beiden Fällen die gleiche, aber die Anazahl der nötigen Zwischenschritte steigt rapide an (linear vs exponentiell)
+						
+						Jede weitere Dimension mit der wir experimentieren wollen macht das Problem noch schwerwiegender. Man hat mit dem Curse of Dimensions zu tun.
+						
+						Das ist natürlich ein reines Spiel mit Zahlen. Es gibt im produktiven Einsatz wahrscheinlich nicht alle möglichen Kombinationen der PHP-Extensions. Wir werden auch nicht alle Kombinationen durchgenen. Diese muss man aber während der Entwicklung schon irgendwie als Möglichkeit haben.
+						
+						Das Verhalten wenn weitere Dimensionen wie  accelerators APCu oder Caches Redis/Memcache hinzukommen wird nur noch schlimmer.
+					</aside>
+				</section>
+				
+				<section>
+					<h2>Let's visualize it (stacked)</h2>
+					<div id="stackednetwork" style="height: 50vh; width: 100%;"></div>
+					
+					<aside class="notes">
+						Um das nochmal zu veranschaulichen habe ich das grafisch dargestellt. Man will zu einem bestimmten Blatt unten kommen. Das ist eine gewünschte Konfiguration. Und beim Testen will man zwischen den Blättern springen können.
+						
+						Damit das schnell geht möchte man den Unterbau möglicht gering halten.
+						
+						Eine Entscheidung auf einer niedrigen Ebene hat Einfluss auf alles darüber.
+					</aside>
+				</section>
+				
+				<section>
+					<h2>Let's visualize it (composed)</h2>
+					<div id="composednetwork" style="height: 50vh; width: 100%;"></div>
+					
+					<aside class="notes">
+						Pakete können mit verschieden anderen Paketen zusammenarbeiten, daher können sie wiederverwendet werden.
+					</aside>
+				</section>
+				
+				
+				<section>
+					<h2>Diese Problem kann man ignorieren, wenn man</h2>
+					<ul>
+						<li>Fan von Monokulturen ist</li>
+						<li>auf Vendor Lock-in steht</li>
+						
+					</ul>
+					<aside class="notes">
+						Das Phänomen wir d ersichtlich wenn man bemerkt das es zu aufwenig ist von einem basimage auf ein anderes zu wechseln.
+					</aside>
+				</section>
+
+				<section>
+					<h2>Die Lösung</h2>
+					<p>gute Paketmanager</p>
+					<ul>
+						<li>stabil</li>
+						<li>Support</li>
+						<li>Best-Practices</li>
+						<li>Dokumentation</li>
+					</ul>
+					<aside class="notes">
+						Paketmanager gibt es schon eine ganze Weile, sie sind sehr stabil und haben Dokumentation.
+						Es gibt eine etablierte Dokumentation mit dem Upstream.
+						Wird von Leuten erstellt die das Gesamtsystem im Auge haben mit Best-Practices.
+						
+						Jedes Mal wenn man eine Anwendung ohne Paketmanager aufsetzt sagt man quasi man kennt die Anwendung besser als die Entwickler der Distribution. Das mag bei einer selbst-entwickelten Anwendung der fall sein, aber trifft das auch auf alle Abhängigkeiten zu?
+					</aside>
+				</section>
+				
+				<section>
+					<h2>Agenda Resumé</h2>
+					
+					Fokus auf die Erstellung der Images. Will nicht Docker, noch Container als Lösung in Frage stellen.
+					
+					Topics not checked
+						buildroot
+						ostree
+						???
+					
+					<aside class="notes">
+						Mostly I want to nitpick on this `docker build` part and especially the way this nice idea goes of the rail if you want to customize
+						Docker is not going away. Well maybe Docker but not running applications in containers be it whatever else as runtime.
+						What are these package managers doing differently? They have been used for more than two decades to customize and assemble systems.
+						The goal is to see how can you package manger help you to
+						* effienctly build you image
+						* in a secure manner
+						* with a useful size
+						I try to show this with Gentoo, but I'm well aware that others are capable of this
+						I'd like to see another talk which one-ups me here
+					</aside>
+				</section>
+				
+				<section>
+					<h2>Example - Gentoo</h2>
+					<p>
+						Creating a minimal Redmine installation with lxc and portage as package manger for Gentoo.
+
+					</p>
+					<aside class="notes">
+						Discloser: Si ce n'est pas connu, j'aime utiliser Gentoo
+						
+						On va utiliser Gentoo pour installer Redmine
+						Gentoo va fournir portage, c'est le gestionnaire de paquets et l'installation lxc laquelle on utilise pour rouler les conteneur. Mais c'est aussi possible avec d'autres distro et gestionnaire de paquets.
+						
+						On va voir deux système. Une runtime qui contenir Redmine à la fin avec toutes les dépendendances nécessaire.
+						Un sytème qui va bootstraper l'installation parce qu'on commence à zero.
+					</aside>
+				</section>
+				
+				<section>
+					<h2>Base Installation</h2>
+					<ol>
+						<li>lxc-create -n redmine-runtime -t gentoo-runtime -- --template /home/stefan/git/lxc-gentoo-build-tools/redmine-runtime-template</li>
+						
+						<li>nano config</li>
+						
+						<li>emerge baselayout openrc shadow util-linux bash coreutils -av -j4</li>
+						
+						<li>emerge grep net-tools procps gcc findutils nano sed -av -j4</li>
+						
+					</ol>
+					
+					<aside class="notes">
+						Le dossier de template contient seulement les fichiers de configuration. Aucune executable.
+						
+						Le gentoo-runtime a créé la configuration.
+						
+						La première commande install les outils nécessaire pour le système openrc, on pourrait choisir aussi systemd, la deuxième fais une installation à la base.
+						
+						Une système de base de Gentoo est prêt
+					</aside>
+				</section>
+				
+				<section>
+					<h2>Redmine Installation</h2>
+					<ol>
+						<li>emerge redmine -av -j4</li>
+					</ol>
+					
+					<aside class="notes">
+						L'installation de Redmine est facile.
+					</aside>
+				</section>
+				
+				<section>
+					<h2>Redmine Configuration</h2>
+
+					<ol>
+						<li>emerge --config "=www-apps/redmine-9999"</li>
+						 
+						
+						<li>groupadd apache</li>
+						<li>useradd -g apache apache</li>
+						<li>chown apache:apache .</li>
+						<li>chown apache:apache db/ files/ tmp/ -R</li>
+
+						<li>/etc/init.d/apache2 start</li>
+
+					</ol>
+					
+					<aside class="notes">
+						Il faut qu'on fasse la configuration. Ça peut prendre un peu du temps. On n'a pas installé tous les dépendences avec Gentoo (c'est aussi possible), mais parce qu'on utilise le code qui vient directement du git, on utilse bundler pour fournir les dépendences de Ruby.
+						
+						Après il faut qu'on ajoute les permission et ça devrait être tous.
+					</aside>
+				</section>
+				
+				<section>
+					<h2>Change of webserver</h2>
+
+					<ol>
+						<li>emerge nginx</li>
+						<li>/etc/init.d/apache2 stop</li>
+						<li>/etc/init.d/nginx start</li>
+					</ol>
+					
+					<aside class="notes">
+						Un exemple comment on peut changer les composantes. On va installer nginx comme serveur web.
+					</aside>
+				</section>
+				
+				<section>
+					<h2>Import into Docker</h2>
+
+					<ol>
+						<li>sudo tar -c . | sudo docker import - reponame</li>
+					</ol>
+					
+					<aside class="notes">
+						If for the deployment in production the high-level tools of docker are better suited you can cimport the whole directory at anytime into Docker.
+					</aside>
+				</section>
+				
+				
+
+<!--				
+				<section>
+					<h2>Installation cleanup</h2>
+					<ol>
+						<li>emerge gcc portage perl python -C -av</li>
+					</ol>
+				</section>
+				
+-->
+
+				<section>
+					<h2>Thanks - Q/A</h2>
+				</section>
+
+				<section id="references">
+					<h1>Links/References</h1>
+					https://pythonspeed.com/articles/system-packages-docker/
+
+					https://github.com/docker-slim/docker-slim
+
+					really small but size is not the most important, it's important to understand what's in you container
+					<ul>
+						<li><a href="http://www.boycottdocker.org/">boycott docker</a></li>
+						<li><a href="http://thenewstack.io/coreos-calls-docker-fundamentally-flawed-releases-prototype-alternative/">coreos and rocket</a></li>
+						<li><a href="http://en.wikipedia.org/wiki/Operating-system-level_virtualization">Wikipedia: Operating-system-level Virtualization</a></li>
+						<li><a href="https://www.packer.io/docs/builders/docker.html">packer</a></li>
+						<li><a href="http://www.vitavonni.de/blog/201503/2015031201-the-sad-state-of-sysadmin-in-the-age-of-containers.html">container rant</a></li>
+						<li><a href="https://www.andreas-jung.com/contents/the-case-against-docker">another container rant</a></li>
+						<li><a href="http://reventlov.com/advisories/using-the-docker-command-to-root-the-host">docker vurn</a></li>
+						<li><a href="https://chimeracoder.github.io/docker-without-docker/#34">docker without docker</a></li>
+						<li><a href="https://coreos.com/blog/rkt-0.5.4/">rkt authentication</a></li>
+						<li><a href="http://mjg59.dreamwidth.org/36312.html">licensing issues with binary distributions</a></li>
+					</ul>
+				</section>
+
 			</div>
 		</div>
 
 		<script src="js/reveal.js"></script>
+		<script src="js/vis-network.min.js"></script>
 
 		<script>
 			// More info about config & dependencies:
 			// - https://github.com/hakimel/reveal.js#configuration
 			// - https://github.com/hakimel/reveal.js#dependencies
 			Reveal.initialize({
+				//controls: true,
+				//progress: true,
+				history: true,
+				width: "100%",
+				height: "100%",
+				//center: true,
+				
 				dependencies: [
 					{ src: 'plugin/markdown/marked.js' },
 					{ src: 'plugin/markdown/markdown.js' },
@@ -44,6 +659,121 @@
 					{ src: 'plugin/highlight/highlight.js', async: true }
 				]
 			});
+		</script>
+		
+		<script type="text/javascript">
+			var levels = [ 2, 3, 3, 3 ];
+			var nodeIdCounter = 0;
+			function generateGraph(levels, data, level, nodeId) {
+				var nodes = data['nodes'];
+				var edges = data['edges'];
+				for (var i = 0; i < levels[level]; i++) {
+					nodes.add({
+						id : nodeIdCounter,
+						label : "*",
+						level : level + 1
+					});
+					edges.add({
+						from : nodeId,
+						to : nodeIdCounter
+					});
+					nodeIdCounter++;
+					if (level <= levels.length) {
+						data = generateGraph(levels, data, level + 1,
+								nodeIdCounter - 1);
+					}
+				}
+
+				return data;
+			}
+
+			// create an array with nodes
+			var nodes = new vis.DataSet([ {
+				id : nodeIdCounter++,
+				label : 'LDB',
+				level : 0
+			} ]);
+
+			// create an array with edges
+			var edges = new vis.DataSet([]);
+
+			// create a network
+			var container = document.getElementById("stackednetwork");
+			var data = {
+				nodes : nodes,
+				edges : edges
+			};
+			var options = {
+				layout : {
+					hierarchical : {
+						enabled : true,
+						direction : 'UD'
+					}
+				}
+			};
+			data = generateGraph(levels, data, 0, nodeIdCounter - 1);
+			var network = new vis.Network(container, data, options);
+		</script>
+
+		<script type="text/javascript">
+		var levels = [ 2, 3, 3, 3 ];
+		var nodeIdCounter = 0;
+
+			function generateGraph(levels, data, level, nodeId) {
+				var nodes = data['nodes'];
+				var edges = data['edges'];
+				for (var i = 0; i < levels[level]; i++) {
+					nodes.add({
+						id : nodeIdCounter,
+						label : "*",
+						level : level + 1
+					});
+					for (var k = 0; k < nodes.length; k++) {
+						var n = nodes.get(k);
+						if (n['level'] === level) {
+							edges.add({
+								from : n['id'],
+								to : nodeIdCounter
+							});
+						}
+					}
+					nodeIdCounter++;
+
+				}
+				if (level <= levels.length) {
+					data = generateGraph(levels, data, level + 1,
+							nodeIdCounter - 1);
+				}
+
+				return data;
+			}
+
+			// create an array with nodes
+			var nodes = new vis.DataSet([ {
+				id : nodeIdCounter++,
+				label : 'LDB',
+				level : 0
+			} ]);
+
+			// create an array with edges
+			var edges = new vis.DataSet([]);
+
+			// create a network
+			var container = document.getElementById("composednetwork");
+			var data = {
+				nodes : nodes,
+				edges : edges
+			};
+			var options = {
+				layout : {
+					hierarchical : {
+						enabled : true,
+						direction : 'UD'
+					}
+				}
+			};
+			data = generateGraph(levels, data, 0, nodeIdCounter - 1);
+			var network = new vis.Network(container, data, options);
 		</script>
 	</body>
 </html>
