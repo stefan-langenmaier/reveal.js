@@ -474,143 +474,159 @@ FROM ruby:2.6-slim-buster
 				</section>
 				
 				<section>
-					<h2>Agenda Resumé</h2>
+					<h2>Rekapitulation</h2>
 					
-					Fokus auf die Erstellung der Images. Will nicht Docker, noch Container als Lösung in Frage stellen.
-					
-					Topics not checked
-						buildroot
-						ostree
-						???
-					
-					<aside class="notes">
-						Mostly I want to nitpick on this `docker build` part and especially the way this nice idea goes of the rail if you want to customize
-						Docker is not going away. Well maybe Docker but not running applications in containers be it whatever else as runtime.
-						What are these package managers doing differently? They have been used for more than two decades to customize and assemble systems.
-						The goal is to see how can you package manger help you to
-						* effienctly build you image
-						* in a secure manner
-						* with a useful size
-						I try to show this with Gentoo, but I'm well aware that others are capable of this
-						I'd like to see another talk which one-ups me here
-					</aside>
-				</section>
-				
-				<section>
-					<h2>Example - Gentoo</h2>
 					<p>
-						Creating a minimal Redmine installation with lxc and portage as package manger for Gentoo.
-
+					Fokus auf die Erstellung der Images (mit "normalem"" Paketmanager).
 					</p>
+					
+					<p>
+					D.h., nicht betrachtet
+					</p>
+					<ul>
+						<li>buildroot</li>
+						<li>ostree</li>
+						<li>kubler</li>
+					</ul>
+					
 					<aside class="notes">
-						Discloser: Si ce n'est pas connu, j'aime utiliser Gentoo
+						Will nicht Docker, noch Container als Lösung in Frage stellen. Docker is "here to stay" bzw nicht unbedingt Docker aber die Ausführung von Anwendung in Containern.
 						
-						On va utiliser Gentoo pour installer Redmine
-						Gentoo va fournir portage, c'est le gestionnaire de paquets et l'installation lxc laquelle on utilise pour rouler les conteneur. Mais c'est aussi possible avec d'autres distro et gestionnaire de paquets.
+						Aber ich will die Weise wie `docker build` arbeitet und insbesondere wie es schiefläuft wenn man anfangen will eigene Images zu bauen.
 						
-						On va voir deux système. Une runtime qui contenir Redmine à la fin avec toutes les dépendendances nécessaire.
-						Un sytème qui va bootstraper l'installation parce qu'on commence à zero.
+						Normale Paketmanager machen das nur schon ein paar Dekaden. Das Ziel ist es zu zeigen wie sie dabei helfen:
+						* effizient Images zu bauen
+						* auf eine sichere Art und Weise
+						* mit einer sinnvollen Grösse (man musst die erzeugten Images ja dann doch noch austauschen)
+						
+						Ich mache das im nachfolgenden mit Gentoo, bin mir sehr bewusst das andere das auch können
+						würde micht über einen Talk freuen der mich ich einem der Punkt one-upped.
 					</aside>
 				</section>
 				
 				<section>
-					<h2>Base Installation</h2>
+					<h2>Beispiel - Nextcloud</h2>
+
+					<p>
+						Ein minimales Images für Nextcloud - als Referenz nehmen wir das offizielle <a href="TODO">Alpine-Image</a>.
+					</p>
+
+					<aside class="notes">
+						Wir schauen uns zuerst das Alpine-Image an.
+						
+						cd work
+						docker create --name nextcloud-fpm-alpine nextcloud:fpm-alpine
+						docker export nextcloud-fpm-alpine | tar -xv
+						baobab .
+						
+						Grossteil macht die Nextcloud Installation aus
+						
+						Wir sehen aber das auch ein Init-System vorhanden ist.
+						
+						Background zu Alpine, was ich mitbkomme ist es sehr beliebt aufgrund seiner kompakten Pakte und schnellen Paketmanagers
+						Besonderheit die Distribution verwendet eine besonders kleine libc (musl).
+					</aside>
+				</section>
+				
+				<section>
+					<h2>Setup</h2>
 					<ol>
-						<li>lxc-create -n redmine-runtime -t gentoo-runtime -- --template /home/stefan/git/lxc-gentoo-build-tools/redmine-runtime-template</li>
-						
-						<li>nano config</li>
-						
-						<li>emerge baselayout openrc shadow util-linux bash coreutils -av -j4</li>
-						
-						<li>emerge grep net-tools procps gcc findutils nano sed -av -j4</li>
-						
+						<li>export PORTAGE_CONFIGROOT=/var/build-root/portage-configroot</li>
+						<li>eselect profile set container/amd64</li>
+						<li>export ROOT=/var/build-root/rootfs</li>
+						<li>ROOT=/var/build-root/rootfs/ PORTAGE_CONFIGROOT=/var/build-root/portage-configroot/ emerge @system -av --jobs=5</li>
 					</ol>
 					
 					<aside class="notes">
-						Le dossier de template contient seulement les fichiers de configuration. Aucune executable.
+						Das Setup sollte mit eigentlich jeder Distribution möglich sein. Ich verwende aber ein paar Eigenschaften von Gentoo die mir hier sehr nützlich erscheinen.
 						
-						Le gentoo-runtime a créé la configuration.
+						Das sind hauptsächlich zwei Umgebungsvariablen ROOT und PORTAGE_CONFIGROOT. Sie setzen ein alternative Verzeichnisse für den Paketmanager
 						
-						La première commande install les outils nécessaire pour le système openrc, on pourrait choisir aussi systemd, la deuxième fais une installation à la base.
+						Profile in Gentoo ermöglich einige Voreinstellungen. Darunter z.B. Standardpakete die installiert werden sollen. In Containern sind nicht alle Pakete nötig die auf einer physischen Maschine laufen.
+						Das Profil ist nicht in Gentoo, ich hab das auf Github, falls da jemand interessiert ist.
 						
-						Une système de base de Gentoo est prêt
+						Emerge ist der Paketmanager und @world ist die Sammlung aller Pakete für dieses System. Da der Ordner leer ist. Wird das komplette System darin erzeugte werden. `-av` frägt mich nochmal.
 					</aside>
 				</section>
 				
 				<section>
-					<h2>Redmine Installation</h2>
+					<h2>Vergleich</h2>
 					<ol>
-						<li>emerge redmine -av -j4</li>
+						<li>export ROOT=/build/rootfs</li>
+						<li>export PORTAGE_CONFIGROOT=/build/portage-configroot</li>
+						<li>eselect profile set container/amd64</li>
+						<li>emerge @world -av</li>
 					</ol>
 					
 					<aside class="notes">
-						L'installation de Redmine est facile.
-					</aside>
-				</section>
-				
-				<section>
-					<h2>Redmine Configuration</h2>
-
-					<ol>
-						<li>emerge --config "=www-apps/redmine-9999"</li>
-						 
+						Baobab
+						Gentoo Image ist grösser, das liegt zum einen daran das wir glibc verwenden. Vorteil ist wir haben weniger Stress mit Paketen die nicht so gut getestet sind mit musl. Anscheind auch Performance ist besser in manchen Fällen, z.B. auflösen von DNS-Sachen. Aber ich will hier auch nicht in einen Flamewar.
 						
-						<li>groupadd apache</li>
-						<li>useradd -g apache apache</li>
-						<li>chown apache:apache .</li>
-						<li>chown apache:apache db/ files/ tmp/ -R</li>
-
-						<li>/etc/init.d/apache2 start</li>
-
-					</ol>
-					
-					<aside class="notes">
-						Il faut qu'on fasse la configuration. Ça peut prendre un peu du temps. On n'a pas installé tous les dépendences avec Gentoo (c'est aussi possible), mais parce qu'on utilise le code qui vient directement du git, on utilse bundler pour fournir les dépendences de Ruby.
+						Das ist aber nicht der einzige Grund. Alpine baut manche Pakete ohne Doku und manpages und nicht alle Pakete in Gentoo machen das.
 						
-						Après il faut qu'on ajoute les permission et ça devrait être tous.
+						In Gentoo ist das gcc Paket nicht gut aufgeteilt.
+						
+						Wir haben ein komplettes init-Sytem mit dabei. Vorteil das Image kann mit der Dockerphilosophie gestartet werden oder klassisch wie eine VM. Nützlich wenn man sich keinen Kopf machen will um z.B. einen Cron in seiner Anwendung mitlaufen lassen will.
+						
+						Alpine hat aber z.B. für alle Datenbank-Triber mit dabei. Das ist ein Vorteil unseres Images.
+						
+						Ich zieh meinen Hut vor den Alpine Leuten die Standard-Installation ist kleiner. Ich bin aber ein schlechter Verlierer und werf noch händisch unnötiges Zeug raus.
+						
+						delete documentation
+						delete locales
+						delete includes
+						
+						Damit sollte alles gezeigt sein:
+						* wir können damit kleinere Images bauen (sicherer)
+						* wir haben mehr Funktionalität und Flexibiltät 
+						* wir können existierende Paketmanager verwenden (existierendes Wissen)
+						* und sind damit nicht auf die Image-Ersteller als Mittelsmann angewiesen (keine vendor lockin)
 					</aside>
 				</section>
-				
+
 				<section>
-					<h2>Change of webserver</h2>
+					<h2>Aufräumen</h2>
 
 					<ol>
-						<li>emerge nginx</li>
-						<li>/etc/init.d/apache2 stop</li>
-						<li>/etc/init.d/nginx start</li>
+						<li>bash ./cleanup.sh</li>
 					</ol>
 					
 					<aside class="notes">
-						Un exemple comment on peut changer les composantes. On va installer nginx comme serveur web.
+						Wir löschen Dateien die nicht benötigt werden.
+
+						Wir schalten noch ein paar Standarddienste die in Containern nicht gebraucht werden aus.
 					</aside>
 				</section>
-				
+
 				<section>
-					<h2>Import into Docker</h2>
+					<h2>Funktion</h2>
 
 					<ol>
-						<li>sudo tar -c . | sudo docker import - reponame</li>
+						<li>docker-compose up</li>
 					</ol>
 					
 					<aside class="notes">
-						If for the deployment in production the high-level tools of docker are better suited you can cimport the whole directory at anytime into Docker.
+						Jetzt muss man nur noch zeigen, dass das erstellte Image funktioniert.
+						
+						Hier wird als Webserver noch ein Nginx-Container gestartet.
+					</aside>
+				</section>
+
+				<section>
+					<h2>Image-Erstellung</h2>
+
+					<ol>
+						<li>sudo tar -c . | sudo docker import - &lt;imagename&gt;</li>
+					</ol>
+					
+					<aside class="notes">
+						Images sind praktisch für den Austausch. Bisher haben wir ja nur einen Ordner mit den Dateien. Mit Tools wie podman muss zum Ausführen eines Containers nicht unbedingt ein Images erstellt werden. Sehr praktisch für Tests.
+						Wenn man am Ende der Entwicklung aber eine austauschbares Images haben möchte, kann das wie hier beschrieben erstellt werden.
 					</aside>
 				</section>
 				
-				
-
-<!--				
 				<section>
-					<h2>Installation cleanup</h2>
-					<ol>
-						<li>emerge gcc portage perl python -C -av</li>
-					</ol>
-				</section>
-				
--->
-
-				<section>
-					<h2>Thanks - Q/A</h2>
+					<h2>Danke - Q/A</h2>
 				</section>
 
 				<section id="references">
@@ -618,6 +634,8 @@ FROM ruby:2.6-slim-buster
 					https://pythonspeed.com/articles/system-packages-docker/
 
 					https://github.com/docker-slim/docker-slim
+					
+					https://pythonspeed.com/articles/alpine-docker-python/
 
 					really small but size is not the most important, it's important to understand what's in you container
 					<ul>
