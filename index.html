@@ -508,15 +508,15 @@ FROM ruby:2.6-slim-buster
 					<h2>Beispiel - Nextcloud</h2>
 
 					<p>
-						Ein minimales Images für Nextcloud - als Referenz nehmen wir das offizielle <a href="TODO">Alpine-Image</a>.
+						Ein Image für Nextcloud - als Referenz nehmen wir das offizielle (18-apache) <a href="https://hub.docker.com/_/nextcloud?tab=description">Image</a>.
 					</p>
 
 					<aside class="notes">
-						Wir schauen uns zuerst das Alpine-Image an.
+						Wir schauen uns zuerst das Image an.
 						
 						cd work
-						docker create --name nextcloud-fpm-alpine nextcloud:fpm-alpine
-						docker export nextcloud-fpm-alpine | tar -xv
+						docker create --name nextcloud-apache nextcloud:18-apache
+						docker export nextcloud-apache | tar -xv
 						baobab .
 						
 						Grossteil macht die Nextcloud Installation aus
@@ -531,9 +531,9 @@ FROM ruby:2.6-slim-buster
 				<section>
 					<h2>Setup</h2>
 					<ol>
-						<li>export PORTAGE_CONFIGROOT=/var/build-root/portage-configroot</li>
+						<li>export PORTAGE_CONFIGROOT=/var/build-root/portage-configroot/</li>
 						<li>eselect profile set container/amd64</li>
-						<li>export ROOT=/var/build-root/rootfs</li>
+						<li>export ROOT=/var/build-root/rootfs/</li>
 						<li>ROOT=/var/build-root/rootfs/ PORTAGE_CONFIGROOT=/var/build-root/portage-configroot/ emerge @system -av --jobs=5</li>
 					</ol>
 					
@@ -550,12 +550,11 @@ FROM ruby:2.6-slim-buster
 				</section>
 				
 				<section>
-					<h2>Vergleich</h2>
+					<h2>Setup II</h2>
 					<ol>
-						<li>export ROOT=/build/rootfs</li>
-						<li>export PORTAGE_CONFIGROOT=/build/portage-configroot</li>
-						<li>eselect profile set container/amd64</li>
-						<li>emerge @world -av</li>
+						<li>emerge nextcloud -av</li>
+						<li>emerge nginx -av</li>
+						<li>webapp-config -h localhost -d nextcloud -s nginx -c -I nextcloud 18.0.1</li>
 					</ol>
 					
 					<aside class="notes">
@@ -599,20 +598,6 @@ FROM ruby:2.6-slim-buster
 				</section>
 
 				<section>
-					<h2>Funktion</h2>
-
-					<ol>
-						<li>docker-compose up</li>
-					</ol>
-					
-					<aside class="notes">
-						Jetzt muss man nur noch zeigen, dass das erstellte Image funktioniert.
-						
-						Hier wird als Webserver noch ein Nginx-Container gestartet.
-					</aside>
-				</section>
-
-				<section>
 					<h2>Image-Erstellung</h2>
 
 					<ol>
@@ -624,7 +609,21 @@ FROM ruby:2.6-slim-buster
 						Wenn man am Ende der Entwicklung aber eine austauschbares Images haben möchte, kann das wie hier beschrieben erstellt werden.
 					</aside>
 				</section>
-				
+
+				<section>
+					<h2>Funktion</h2>
+
+					<ol>
+						<li>docker run --rm --tmpfs /run -it --name nextcloud -p 127.0.0.1:80:80/tcp testimage /sbin/init</li>
+					</ol>
+					
+					<aside class="notes">
+						Jetzt muss man nur noch zeigen, dass das erstellte Image funktioniert.
+						
+						Hier wird als Webserver noch ein Nginx-Container gestartet.
+					</aside>
+				</section>
+
 				<section>
 					<h2>Danke - Q/A</h2>
 				</section>
