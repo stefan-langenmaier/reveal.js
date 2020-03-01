@@ -97,7 +97,7 @@
 				</section>
 
 				<section>
-					<h2>Containerization differences/alternatives</h2>
+					<h2>Containerization Unterschiede/Alternativen</h2>
 					
 					<ul>
 						<li>uml</li>
@@ -153,12 +153,18 @@
 					<h2>Bekannte Probleme von Docker</h2>
 					<p>
 						Ich will nicht auf <a href="#/references">alles</a> eingehen.
+						
+						Vorwissen
+						
+						<a href="https://github.com/moby/moby/blob/master/ROADMAP.md#12-image-builder">Aktuelles</a>
 					</p>
 					
 					<aside class="notes">
 						Links sind am Ende und Ende gibt es auch einen Link auf die Folien.
 						
 						Man kann verschiedene Meinungen haben, aber das Container vorerst ein Mittel der Wahl bleiben werden ist sicher.
+						
+						Der Vortrag richtet sich an Leute die schon docker build verwendet haben und und sich dann gedacht haben da muss ich mehr machen als nur ein COPY einer einzelnen Datei und dann läuft das.
 					</aside>
 				</section>
 
@@ -166,10 +172,10 @@
 					<h2>Das spezifische Problem</h2>
 					
 					<ul>
-					    <li>Experimentieren mit Containern/Images</li>
-					    <li>Erstellung eines Produktivsystems</li>
+						<li>Experimentieren mit Containern/Images</li>
+						<li>Erstellung eines Produktivsystems</li>
 					</ul>
-					    
+
 					<aside class="notes">
 						Ich möchte über zwei Dinge sprechen
 						
@@ -186,10 +192,10 @@
 						Schauen wir uns einfach an wie bekannte Projekte das machen, oder?
 					</aside>
 				</section>
-				
+
 				<section>
 					<h2>Nicht betrachtet werden</h2>
-					
+
 					<ul>
 						<li>yocto</li>
 						<li>buildroot</li>
@@ -253,7 +259,7 @@ FROM ruby:2.6-slim-buster
 					Wieso gibt es fünf verschiedene Varianten von ruby:2.6? Was versteckt sich dahinter?
 					
 					<aside class="notes">
-						Gibt bestimmt einen guten Grund aber bleibt weiterhin die Frage woher man weis welchen man nehmen soll.
+						Gibt bestimmt einen guten Grund aber bleibt weiterhin die Frage woher man weiss welchen man nehmen soll.
 						
 						Normal, slim oder das noch "slimmere" alpine?
 					</aside>
@@ -311,7 +317,7 @@ RUN set -eux; \
 					Ziemlich lange Zeile.
 					
 					<aside class="notes">
-						Hier wird versucht zu vermeiden eine Skript-Ornder zu kopieren. Wahrscheinlich auf Kosten der Lesbarkeit. Ich bin mir fast sicher das man das in einem Shell-Skript besser hinbekommt.
+						Hier wird versucht zu vermeiden eine Skript-Ordner zu kopieren. Wahrscheinlich auf Kosten der Lesbarkeit. Ich bin mir fast sicher das man das in einem Shell-Skript besser hinbekommt.
 						
 						Damit hat man auf jeden Fall schwierige Debug Problem, wenn man ein Zeichen vergisst und eine Zeile erneut auszuführen kann lange dauern. Schnelle Iterationszyklen werden verhindert.
 					</aside>
@@ -320,16 +326,31 @@ RUN set -eux; \
 				<section>
 					<h2>Docker build capabilities</h2>
 					
-					<pre><code data-trim>
-FROM ruby:2.6-slim-buster
-					</code></pre>
-					
 					Nicht verfügbar.
 					
 					<aside class="notes">
 						ncurses cannot be built because this uses ptrace syscall,
 						this is syscall which is not allowed by default
 						you can use add-cap, but not during build only during run
+					</aside>
+				</section>
+				
+				<section>
+					<h2>Umgebungsvariablen</h2>
+					
+					Nicht verfügbar.
+					
+					<aside class="notes">
+					</aside>
+				</section>
+				
+				<section>
+					<h2>Mounts</h2>
+					
+					Nicht verfügbar.
+					
+					<aside class="notes">
+						man kann keine Verzeichnisse mounten die nur während des Builds vorhanden sein sollen
 					</aside>
 				</section>
 				
@@ -605,8 +626,11 @@ FROM ruby:2.6-slim-buster
 					</ol>
 					
 					<aside class="notes">
-						Images sind praktisch für den Austausch. Bisher haben wir ja nur einen Ordner mit den Dateien. Mit Tools wie podman muss zum Ausführen eines Containers nicht unbedingt ein Images erstellt werden. Sehr praktisch für Tests.
+						Images sind praktisch für den Austausch.
 						Wenn man am Ende der Entwicklung aber eine austauschbares Images haben möchte, kann das wie hier beschrieben erstellt werden.
+						
+						Zu Beginn wollteich kleiner als das Alpine-Image werden, aber das habe ich nicht ganz geschafft (ca. 20% kleiner). :)
+						really small but size is not the most important, it's important to understand what's in you container
 					</aside>
 				</section>
 
@@ -630,24 +654,17 @@ FROM ruby:2.6-slim-buster
 
 				<section id="references">
 					<h1>Links/References</h1>
-					https://pythonspeed.com/articles/system-packages-docker/
 
-					https://github.com/docker-slim/docker-slim
-					
-					https://pythonspeed.com/articles/alpine-docker-python/
-
-					really small but size is not the most important, it's important to understand what's in you container
 					<ul>
-						<li><a href="http://www.boycottdocker.org/">boycott docker</a></li>
-						<li><a href="http://thenewstack.io/coreos-calls-docker-fundamentally-flawed-releases-prototype-alternative/">coreos and rocket</a></li>
 						<li><a href="http://en.wikipedia.org/wiki/Operating-system-level_virtualization">Wikipedia: Operating-system-level Virtualization</a></li>
+						<li><a href="https://pythonspeed.com/articles/alpine-docker-python/">Alpine-Docker &amp; Pyhton</a></li>
+						<li><a href="https://github.com/docker-slim/docker-slim">Profiling for image reduction</a></li>
+						<li><a href="https://jaxenter.com/anti-docker-blog-114422.html">Boycott Docker</a></li>
+						<li><a href="http://thenewstack.io/coreos-calls-docker-fundamentally-flawed-releases-prototype-alternative/">coreos and rocket</a></li>
 						<li><a href="https://www.packer.io/docs/builders/docker.html">packer</a></li>
+						<li><a href="https://buildah.io/">buildah</a></li>
 						<li><a href="http://www.vitavonni.de/blog/201503/2015031201-the-sad-state-of-sysadmin-in-the-age-of-containers.html">container rant</a></li>
-						<li><a href="https://www.andreas-jung.com/contents/the-case-against-docker">another container rant</a></li>
-						<li><a href="http://reventlov.com/advisories/using-the-docker-command-to-root-the-host">docker vurn</a></li>
-						<li><a href="https://chimeracoder.github.io/docker-without-docker/#34">docker without docker</a></li>
-						<li><a href="https://coreos.com/blog/rkt-0.5.4/">rkt authentication</a></li>
-						<li><a href="http://mjg59.dreamwidth.org/36312.html">licensing issues with binary distributions</a></li>
+						<li><a href="https://chimeracoder.github.io/docker-without-docker">Docker without Docker</a></li>
 					</ul>
 				</section>
 
