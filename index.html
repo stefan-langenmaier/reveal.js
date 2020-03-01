@@ -6,7 +6,7 @@
 
 		<title>Docker composability and Gentoo instrumenting</title>
 		
-		<meta name="description" content="Docker's issues with composing a container and how Gentoo (or a good package manger in general) can help">
+		<meta name="description" content="Docker's issues with composing a container and how Gentoo (or a good package manager in general) can help">
 		<meta name="author" content="Stefan Langenmaier">
 
 		<link rel="stylesheet" href="css/reset.css">
@@ -30,10 +30,10 @@
 			<div class="slides">
 				<section>
 					<h1>Docker</h1>
-					<h2>und seine Buildprobleme</h2>
+					<h2>und seine Build-Probleme</h2>
 					<h3>und wie ein guter Paketmanager sie löst</h3>
 					<p>
-						<small>Created by <a href="https://github.com/stefan-langenmaier">Stefan Langenmaier</a></small>
+						<small><a href="https://github.com/stefan-langenmaier">Stefan Langenmaier</a></small>
 					</p>
 					
 					<aside class="notes">
@@ -48,6 +48,8 @@
 						und im zweiten Teil einen Lösungsansatz mit Gentoo vorstellen.
 						
 						Der zweite Teil während wir auf die Installation bei Gentoo warten ist meistens der beste Punkt um Fragen zu stellen. :)
+						
+						Als Spoiler vorweg, es wird Gentoo als Paketmanager verwendet, wer fragen hat also am besten warten bis wir zur Installation kommen. Da haben wir dann Zeit.
 					</aside>
 				</section>
 
@@ -254,10 +256,12 @@ EXPOSE 80 443
 FROM ruby:2.6-slim-buster
 					</code></pre>
 					
-					<a href="https://hub.docker.com/_/ruby">Ruby-Image-Tags</a>
-					
-					Wieso gibt es fünf verschiedene Varianten von ruby:2.6? Was versteckt sich dahinter?
-					
+					<p>
+						<a href="https://hub.docker.com/_/ruby">Ruby-Image-Tags</a>
+					</p>
+					<p>
+						Wieso gibt es fünf verschiedene Varianten von ruby:2.6? Was versteckt sich dahinter?
+					</p>
 					<aside class="notes">
 						Gibt bestimmt einen guten Grund aber bleibt weiterhin die Frage woher man weiss welchen man nehmen soll.
 						
@@ -314,7 +318,7 @@ RUN set -eux; \
 	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false
 					</code></pre>
 					
-					Ziemlich lange Zeile.
+					Ziemlich lange Zeile
 					
 					<aside class="notes">
 						Hier wird versucht zu vermeiden eine Skript-Ordner zu kopieren. Wahrscheinlich auf Kosten der Lesbarkeit. Ich bin mir fast sicher das man das in einem Shell-Skript besser hinbekommt.
@@ -326,7 +330,7 @@ RUN set -eux; \
 				<section>
 					<h2>Docker build capabilities</h2>
 					
-					Nicht verfügbar.
+					Nicht verfügbar
 					
 					<aside class="notes">
 						ncurses cannot be built because this uses ptrace syscall,
@@ -338,7 +342,7 @@ RUN set -eux; \
 				<section>
 					<h2>Umgebungsvariablen</h2>
 					
-					Nicht verfügbar.
+					Nicht verfügbar
 					
 					<aside class="notes">
 					</aside>
@@ -347,7 +351,7 @@ RUN set -eux; \
 				<section>
 					<h2>Mounts</h2>
 					
-					Nicht verfügbar.
+					Nicht verfügbar
 					
 					<aside class="notes">
 						man kann keine Verzeichnisse mounten die nur während des Builds vorhanden sein sollen
@@ -357,7 +361,7 @@ RUN set -eux; \
 				<section>
 					<h2>Docker multistage build</h2>
 					
-					Langsam.
+					Langsam
 					
 					<aside class="notes">
 						copy data around from one image to the next
@@ -369,7 +373,7 @@ RUN set -eux; \
 				<section>
 					<h2>Rant Resumé</h2>
 					
-					Bekannte Limitierungen, könnten technisch gelöst werden.
+					Bekannte Limitierungen - könnten technisch gelöst werden.
 					
 					<aside class="notes">
 						Der letzte Punkt wahrscheinlich nicht direkt, denn der build Prozess möchte reproducible builds, auch wenn die Ergebnisse nicht reproducible im Sinne von Debian oder NixOS sind.
@@ -413,13 +417,13 @@ RUN set -eux; \
 							<tr>
 								<td style="white-space: nowrap;">Docker (*)</td>
 								<td>2</td>
-								<td>4</td>
-								<td>9</td>
-								<td>27</td>
-								<td>42</td>
+								<td>6</td>
+								<td>18</td>
+								<td>54</td>
+								<td>80</td>
 							</tr>
 							<tr>
-								<td style="white-space: nowrap;">Composable (+)</td>
+								<td style="white-space: nowrap;">Komposition (+)</td>
 								<td>2</td>
 								<td>5</td>
 								<td>8</td>
@@ -465,7 +469,7 @@ RUN set -eux; \
 				
 				
 				<section>
-					<h2>Diese Problem kann man ignorieren, wenn man</h2>
+					<h2>Dieses Problem kann man ignorieren, wenn man</h2>
 					<ul>
 						<li>Fan von Monokulturen ist</li>
 						<li>auf Vendor Lock-in steht</li>
@@ -480,9 +484,9 @@ RUN set -eux; \
 					<h2>Die Lösung</h2>
 					<p>gute Paketmanager</p>
 					<ul>
-						<li>stabil</li>
+						<li>Stabilität</li>
 						<li>Support</li>
-						<li>Best-Practices</li>
+						<li>Best Practices</li>
 						<li>Dokumentation</li>
 					</ul>
 					<aside class="notes">
@@ -498,18 +502,9 @@ RUN set -eux; \
 					<h2>Rekapitulation</h2>
 					
 					<p>
-					Fokus auf die Erstellung der Images (mit "normalem"" Paketmanager).
+					Fokus auf die Erstellung der Images (mit "normalem" Paketmanager)
 					</p>
-					
-					<p>
-					D.h., nicht betrachtet
-					</p>
-					<ul>
-						<li>buildroot</li>
-						<li>ostree</li>
-						<li>kubler</li>
-					</ul>
-					
+
 					<aside class="notes">
 						Will nicht Docker, noch Container als Lösung in Frage stellen. Docker is "here to stay" bzw nicht unbedingt Docker aber die Ausführung von Anwendung in Containern.
 						
@@ -526,10 +521,10 @@ RUN set -eux; \
 				</section>
 				
 				<section>
-					<h2>Beispiel - Nextcloud</h2>
+					<h2>Beispiel - ein Image für Nextcloud</h2>
 
 					<p>
-						Ein Image für Nextcloud - als Referenz nehmen wir das offizielle (18-apache) <a href="https://hub.docker.com/_/nextcloud?tab=description">Image</a>.
+						 Referenz: das offizielle <a href="https://hub.docker.com/_/nextcloud?tab=description">Image (18-apache)</a>.
 					</p>
 
 					<aside class="notes">
@@ -555,7 +550,7 @@ RUN set -eux; \
 						<li>export PORTAGE_CONFIGROOT=/var/build-root/portage-configroot/</li>
 						<li>eselect profile set container/amd64</li>
 						<li>export ROOT=/var/build-root/rootfs/</li>
-						<li>ROOT=/var/build-root/rootfs/ PORTAGE_CONFIGROOT=/var/build-root/portage-configroot/ emerge @system -av --jobs=5</li>
+						<li>emerge @system -av --jobs=5</li>
 					</ol>
 					
 					<aside class="notes">
