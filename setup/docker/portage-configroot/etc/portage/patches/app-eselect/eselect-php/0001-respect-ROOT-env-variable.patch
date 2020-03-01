@@ -1,0 +1,84 @@
+From ae01b1b9e8a18565736e601e01bdb04b30441467 Mon Sep 17 00:00:00 2001
+From: Stefan Langenmaier <stefan.langenmaier@makandra.de>
+Date: Wed, 12 Feb 2020 17:24:53 +0100
+Subject: [PATCH] respect ROOT env variable
+
+---
+ src/php.eselect.in.in | 26 ++++++++++++++++++--------
+ 1 file changed, 18 insertions(+), 8 deletions(-)
+
+diff --git a/src/php.eselect.in.in b/src/php.eselect.in.in
+index 8e25f96..9492f5d 100644
+--- a/src/php.eselect.in.in
++++ b/src/php.eselect.in.in
+@@ -113,11 +113,11 @@ sapi_active_link_dir() {
+ 	local sapi="${1}"
+ 
+ 	case "${sapi}" in
+-		apache2) echo "@LIBDIR@/apache2/modules" ;;
+-		cli)     echo "@BINDIR@" ;;
+-		fpm)     echo "@BINDIR@" ;;
+-		cgi)     echo "@BINDIR@" ;;
+-		phpdbg)  echo "@BINDIR@" ;;
++		apache2) echo "${ROOT%/}@LIBDIR@/apache2/modules" ;;
++		cli)     echo "${ROOT%/}@BINDIR@" ;;
++		fpm)     echo "${ROOT%/}@BINDIR@" ;;
++		cgi)     echo "${ROOT%/}@BINDIR@" ;;
++		phpdbg)  echo "${ROOT%/}@BINDIR@" ;;
+ 		*)       die "invalid SAPI name: ${sapi}" ;;
+ 	esac
+ }
+@@ -249,7 +249,7 @@ find_targets() {
+ 	# TODO: when there aren't any phpX.Y directories, this returns
+ 	# "php*.*". This doesn't seem to bother our consumers, but it
+ 	# would probably be more polite to return nothing in that case.
+-	cd "@LIBDIR@" && echo php*.*
++	cd "${ROOT%/}@LIBDIR@" && echo php*.*
+ }
+ 
+ # List all valid targets for the given SAPI. The list is obtained by
+@@ -283,7 +283,7 @@ find_sapi_targets() {
+ 	esac
+ 
+ 	for target in $(find_targets); do
+-		local pattern="@LIBDIR@/${target}/${pattern_suffix}"
++		local pattern="${ROOT%/}@LIBDIR@/${target}/${pattern_suffix}"
+ 
+ 		for file in $pattern; do
+ 			[[ -f "${file}" ]] && echo "${target}"
+@@ -338,7 +338,7 @@ get_sapi_active_target() {
+ #
+ write_mod_php_conf() {
+ 	local target="${1}"
+-	local conf_dir="@LOCALSTATEDIR@/lib/eselect-php"
++	local conf_dir="${ROOT%/}@LOCALSTATEDIR@/lib/eselect-php"
+ 	local conf_path="${conf_dir}/mod_php.conf"
+ 
+ 	@MKDIR_P@ "${conf_dir}" || die "failed to create ${conf_dir}"
+@@ -538,6 +538,11 @@ describe_list_options() {
+ }
+ 
+ do_list() {
++	if [ "${ROOT%/}" != "" ] ; then
++		local msg
++		write_warning_msg "ROOT only supported in setting the configuration"
++		echo
++	fi
+ 	local sapi="${1}"
+ 	check_module "${sapi}"
+ 	list_sapi "${sapi}"
+@@ -558,6 +563,11 @@ describe_show_options() {
+ }
+ 
+ do_show() {
++	if [ "${ROOT%/}" != "" ] ; then
++		local msg
++		write_warning_msg "ROOT only supported in setting the configuration"
++		echo
++	fi
+ 	local sapi="${1}"
+ 	check_module "${sapi}"
+ 	get_sapi_active_target "${sapi}"
+-- 
+2.17.1
+
