@@ -45,11 +45,15 @@
 						
 						Der Vortrag besteht aus zwei Teilen, im ersten möchte ich dieses Problem etwas näher illustrieren
 						
+						Ich werde nochmal schnell über Docker und die aktuelle Container-Landschaft schauen,
+						
+						ich denke aber als Vorwissen ist es ideal wenn man schon mal selbst zumindest einmal docker build ausgeführt hat und das dahinterliegende Dockerfile angeschaut hat
+						
 						und im zweiten Teil einen Lösungsansatz mit Gentoo vorstellen.
 						
 						Der zweite Teil während wir auf die Installation bei Gentoo warten ist meistens der beste Punkt um Fragen zu stellen. :)
 						
-						Als Spoiler vorweg, es wird Gentoo als Paketmanager verwendet, wer fragen hat also am besten warten bis wir zur Installation kommen. Da haben wir dann Zeit.
+						
 					</aside>
 				</section>
 
@@ -62,10 +66,10 @@
 					<aside class="notes">
 						Ich hab diesen Vortrag schon mal vor gut vier Jahren gehalten. Da war Docker und der Container-Ansatz etwas neuer.
 						<ul>
-						    <li>Eine Firma, von der man heute allerdings nicht mehr so viel hört. Heute eher Kubernetes/Openshift.</li>
-						    <li>Ein Kommandozeilenwerkzeug und Service(erstellen, starten, deployen, löschen) zum Verwalten von Container und den dazugehörigen Images auf verschiednene Platformen (linux, mac, win) und mittlerweile Architekturen.</li>
-						    <li>Ein Host für Images (eine Art Appstore,)</li>
-						    <li>Ein Bibliothek und Interface für cgroups im Linux Kernel</li>
+							<li>Eine Firma, von der man heute allerdings nicht mehr so viel hört. Heute eher Kubernetes/Openshift.</li>
+							<li>Ein Kommandozeilenwerkzeug und Service(erstellen, starten, deployen, löschen) zum Verwalten von Container und den dazugehörigen Images auf verschiednene Platformen (linux, mac, win) und mittlerweile Architekturen.</li>
+							<li>Ein Host für Images (eine Art Appstore,)</li>
+							<li>Ein Bibliothek und Interface für cgroups im Linux Kernel</li>
 						</ul>
 						
 						Docker ist jede Menge verschiedene Sachen, darum gibt es inzwischen auch jeden Menge Konkurrenz und Standardisierungen und Philosophien
@@ -84,14 +88,13 @@
 					<aside class="notes">
 						Nur als recap
 						<ul>
-						    <li>Full virtualised systems: jedes System hat seinen eigenen Kernel laufen. Moderne Hardware hat Support, um das mit minimalen Performan-Overhead laufen zu lassen. Ressourcen müssen dediziert zugewiesen werden.</li>
-						    <li>Paravirtualised systems: jedes System hat seinen eigenen Kernel laufen, aber der Kernel weiss das er virtualisiert wird.</li>
-						
-						    <li>Containerized systems: alle System laufen auf dem selben Kernel. Dieser eine Kernel hat die globale Kontrolle über alle Resourcen, macht dieses aber nur eingeschränkt sichtbar für die einzelnen Systeme. Start solcher System ist extrem schnell.</li>
+							<li>Full virtualised systems: jedes System hat seinen eigenen Kernel laufen. Moderne Hardware hat Support, um das mit minimalen Performan-Overhead laufen zu lassen. Ressourcen müssen dediziert zugewiesen werden.</li>
+							<li>Paravirtualised systems: jedes System hat seinen eigenen Kernel laufen, aber der Kernel weiss das er virtualisiert wird.</li>
+							<li>Containerized systems: alle System laufen auf dem selben Kernel. Dieser eine Kernel hat die globale Kontrolle über alle Resourcen, macht dieses aber nur eingeschränkt sichtbar für die einzelnen Systeme. Start solcher System ist extrem schnell.</li>
 						</ul>
 						
 						<p>
-							Die Performance und vorallem Ressourcenausnutzung ist dadurch besser.
+							Die Performance und vor allem Ressourcenausnutzung ist dadurch besser.
 							Container versprechen "create once - deploy everywhere",
 							Da die Kernelschnittstelle in der Praxis tatsächlich sehr stabil kann das Versprechen meistens gehalten werden. Das schliesst allerdings keine Bugs mit ein. In diesem Fall kann z.B. ein seperater Kernel diese Versprechen vielleicht besser halten.
 						</p>
@@ -125,9 +128,9 @@
 					<aside class="notes">
 						Das ist die kleine Geschichte der Container.  
 						<ul>
-						    <li>uml</li>
-						    <li>OpenVZ</li>
-						    <li>Linux VServer</li>
+							<li>uml</li>
+							<li>OpenVZ</li>
+							<li>Linux VServer</li>
 						</ul>
 						Diese Lösungen gab es bereits vor den cgroups allerdings haben sie nie die Aufnahme in der Kernel geschafft oder waren proprietär.
 					
@@ -140,7 +143,7 @@
 							<li>systemd-nsspawn</li>
 							<li>flatpak/snap</li>
 						</ul>
-						Die aktuellen Optionen auf dem "Markt".
+						Die aktuellen Optionen auf dem "Markt". Wichtig alle basieren auf cgroups. Unterschied ist die Kitchensink und wie z.B. die Daten herum ausgetauscht werden. (Images) Das ist der Punkt auf den wir eingehen werden.
 						
 						<ul>
 							<li>jails</li>
@@ -155,8 +158,6 @@
 					<h2>Bekannte Probleme von Docker</h2>
 					<p>
 						Ich will nicht auf <a href="#/references">alles</a> eingehen.
-						
-						Vorwissen
 						
 						<a href="https://github.com/moby/moby/blob/master/ROADMAP.md#12-image-builder">Aktuelles</a>
 					</p>
@@ -221,7 +222,7 @@ CMD ["/sbin/my_init"]
 EXPOSE 80 443
 					</code></pre>
 					
-					https://github.com/phusion/passenger-docker/blob/master/image/Dockerfile
+					<a href="https://github.com/phusion/passenger-docker/blob/master/image/Dockerfile">Quelle</a>
 					
 					<aside class="notes">
 						Das Dockerfile bildet ab wie ein Image gebaut werden soll.
@@ -236,10 +237,10 @@ EXPOSE 80 443
 						
 						danach wird ein Ordner in das Image kopiert und dann ein Bash-Script ausgeführt. Da bin ich neutral dazu wir sehen später schlimmeres. Der kopierte Ordner wird auf jeden Fall in der Historie der Images bleiben.
 						
-						Das Bash-Skript niemand das eigentlich Setup des Images vor. 
+						Das Bash-Skript nimmt das eigentliche Setup des Images vor. 
 						
 						CMD wird verwendet um das Standardkommando beim Start des Container anzugeben. Kann später überschrieben werden.
-						Hier wird ein Init-System angegeben. Das entspricht nicht ganz der Docker-Philosophi, aber ebenso möglich. Nur Schade das es ausschaut als wäre hier ein custom System angegeben.
+						Hier wird ein Init-System angegeben. Das entspricht nicht ganz der Docker-Philosophie, aber ebenso möglich. Nur Schade das es ausschaut als wäre hier ein custom System angegeben.
 						
 						Und wie aus systemd flamewars weiss reagieren manche Leute darauf sehr empfindlich. Schade also das hier ein weiteres System nötig ist obwohl es schon mehrere gibt. Aber darauf kommen wir auch noch zu sprechen.
 						
@@ -442,6 +443,10 @@ RUN set -eux; \
 						Das ist natürlich ein reines Spiel mit Zahlen. Es gibt im produktiven Einsatz wahrscheinlich nicht alle möglichen Kombinationen der PHP-Extensions. Wir werden auch nicht alle Kombinationen durchgenen. Diese muss man aber während der Entwicklung schon irgendwie als Möglichkeit haben.
 						
 						Das Verhalten wenn weitere Dimensionen wie  accelerators APCu oder Caches Redis/Memcache hinzukommen wird nur noch schlimmer.
+						
+						Das Problem mag einfach erscheinen aber es ist das selbe das hinter der Dependency Hell steckt oder anderen kombinatorischen Explosionen bei der Versionierung von Artefakten
+						
+						https://worklifenotes.com/2020/03/04/microservices-combinatorial-explosion-of-versions/
 					</aside>
 				</section>
 				
@@ -476,7 +481,7 @@ RUN set -eux; \
 						
 					</ul>
 					<aside class="notes">
-						Das Phänomen wir d ersichtlich wenn man bemerkt das es zu aufwenig ist von einem basimage auf ein anderes zu wechseln.
+						Das Phänomen wird ersichtlich wenn man bemerkt das es zu aufwenig ist von einem basimage auf ein anderes zu wechseln.
 					</aside>
 				</section>
 
@@ -493,14 +498,14 @@ RUN set -eux; \
 						Paketmanager gibt es schon eine ganze Weile, sie sind sehr stabil und haben Dokumentation.
 						Es gibt eine etablierte Dokumentation mit dem Upstream.
 						Wird von Leuten erstellt die das Gesamtsystem im Auge haben mit Best-Practices.
-						
+
 						Jedes Mal wenn man eine Anwendung ohne Paketmanager aufsetzt sagt man quasi man kennt die Anwendung besser als die Entwickler der Distribution. Das mag bei einer selbst-entwickelten Anwendung der fall sein, aber trifft das auch auf alle Abhängigkeiten zu?
 					</aside>
 				</section>
 				
 				<section>
 					<h2>Rekapitulation</h2>
-					
+
 					<p>
 					Fokus auf die Erstellung der Images (mit "normalem" Paketmanager)
 					</p>
@@ -530,17 +535,16 @@ RUN set -eux; \
 					<aside class="notes">
 						Wir schauen uns zuerst das Image an.
 						
+						<pre>
 						cd work
 						docker create --name nextcloud-apache nextcloud:18-apache
 						docker export nextcloud-apache | tar -xv
 						baobab .
+						</pre>
 						
-						Grossteil macht die Nextcloud Installation aus
+						Grossteil macht die ilbc und Nextcloud Installation aus
 						
 						Wir sehen aber das auch ein Init-System vorhanden ist.
-						
-						Background zu Alpine, was ich mitbkomme ist es sehr beliebt aufgrund seiner kompakten Pakte und schnellen Paketmanagers
-						Besonderheit die Distribution verwendet eine besonders kleine libc (musl).
 					</aside>
 				</section>
 				
@@ -548,7 +552,6 @@ RUN set -eux; \
 					<h2>Setup</h2>
 					<ol>
 						<li>export PORTAGE_CONFIGROOT=/var/build-root/portage-configroot/</li>
-						<li>eselect profile set container/amd64</li>
 						<li>export ROOT=/var/build-root/rootfs/</li>
 						<li>emerge @system -av --jobs=5</li>
 					</ol>
@@ -568,9 +571,48 @@ RUN set -eux; \
 				<section>
 					<h2>Setup II</h2>
 					<ol>
-						<li>emerge nextcloud -av</li>
-						<li>emerge nginx -av</li>
-						<li>webapp-config -h localhost -d nextcloud -s nginx -c -I nextcloud 18.0.1</li>
+						<li>emerge nextcloud --onlydeps --jobs=5 -av</li>
+						<li>emerge nginx --jobs=5 -av</li>
+					</ol>
+					
+					<aside class="notes">
+						Baobab
+						Gentoo Image ist grösser, das liegt zum einen daran das wir glibc verwenden. Vorteil ist wir haben weniger Stress mit Paketen die nicht so gut getestet sind mit musl. Anscheind auch Performance ist besser in manchen Fällen, z.B. auflösen von DNS-Sachen. Aber ich will hier auch nicht in einen Flamewar.
+						
+						Das ist aber nicht der einzige Grund. Alpine baut manche Pakete ohne Doku und manpages und nicht alle Pakete in Gentoo machen das.
+						
+						In Gentoo ist das gcc Paket nicht gut aufgeteilt.
+						
+						Wir haben ein komplettes init-Sytem mit dabei. Vorteil das Image kann mit der Dockerphilosophie gestartet werden oder klassisch wie eine VM. Nützlich wenn man sich keinen Kopf machen will um z.B. einen Cron in seiner Anwendung mitlaufen lassen will.
+						
+						Alpine hat aber z.B. für alle Datenbank-Triber mit dabei. Das ist ein Vorteil unseres Images.
+						
+						Ich zieh meinen Hut vor den Alpine Leuten die Standard-Installation ist kleiner. Ich bin aber ein schlechter Verlierer und werf noch händisch unnötiges Zeug raus.
+						
+						delete documentation
+						delete locales
+						delete includes
+						
+						Damit sollte alles gezeigt sein:
+						* wir können damit kleinere Images bauen (sicherer)
+						* wir haben mehr Funktionalität und Flexibiltät 
+						* wir können existierende Paketmanager verwenden (existierendes Wissen)
+						* und sind damit nicht auf die Image-Ersteller als Mittelsmann angewiesen (keine vendor lockin)
+					</aside>
+				</section>
+				
+				<section>
+					<h2>Setup III</h2>
+					<ol>
+						<li>unset ROOT</li>
+						<li>unset PORTAGE_CONFIGROOT</li>
+						echo "www-apps/nextcloud ~amd64" >> /etc/portage/package.accept_keywords
+						echo "www-apps/nextcloud vhosts" >> /etc/portage/package.use/nextcloud
+						emerge webapp-config -av
+						<li>emerge -O nextcloud -av</li>
+						mkdir -p /var/build-root/rootfs/usr/share/webapps          
+						ln -sf /usr/share/webapps/nextcloud /var/build-root/rootfs/usr/share/webapps/nextcloud
+						<li>webapp-config -d nextcloud -s nginx -c -I nextcloud 18.0.1</li>
 					</ol>
 					
 					<aside class="notes">
@@ -633,7 +675,7 @@ RUN set -eux; \
 					<h2>Funktion</h2>
 
 					<ol>
-						<li>docker run --rm --tmpfs /run -it --name nextcloud -p 127.0.0.1:80:80/tcp testimage /sbin/init</li>
+						<li>docker run --rm --tmpfs /run -it --name nextcloud -p 127.0.0.1:8080:80/tcp testimage /sbin/init</li>
 					</ol>
 					
 					<aside class="notes">
