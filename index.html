@@ -37,6 +37,18 @@
 					</p>
 					
 					<aside class="notes">
+						Prepare
+						
+						<ol>
+							<li>unset ROOT</li>
+							<li>unset PORTAGE_CONFIGROOT</li>
+							<li>echo "www-apps/nextcloud ~amd64" >> /etc/portage/package.accept_keywords</li>
+							<li>echo "www-apps/nextcloud vhosts" >> /etc/portage/package.use/nextcloud</li>
+							<li>emerge webapp-config</li>
+							<li>emerge -O nextcloud</li>
+							<li>USE="fpm" emerge eselect-php -av</li>
+						</ol>
+						
 						Herzlich Willkommen, zum Vortrag ...
 						
 						Es werden hier nicht alle Buildrobleme abgehandelt, auch wenn ich versuche darauf ein paar Verweise zu setzen,
@@ -603,19 +615,19 @@ RUN set -eux; \
 				
 				<section>
 					<h2>Setup III</h2>
-					<ol>
-						<li>unset ROOT</li>
-						<li>unset PORTAGE_CONFIGROOT</li>
-						echo "www-apps/nextcloud ~amd64" >> /etc/portage/package.accept_keywords
-						echo "www-apps/nextcloud vhosts" >> /etc/portage/package.use/nextcloud
-						emerge webapp-config -av
-						<li>emerge -O nextcloud -av</li>
-						mkdir -p /var/build-root/rootfs/usr/share/webapps          
-						ln -sf /usr/share/webapps/nextcloud /var/build-root/rootfs/usr/share/webapps/nextcloud
+					<ul>
 						<li>webapp-config -d nextcloud -s nginx -c -I nextcloud 18.0.1</li>
-					</ol>
+					</ul>
 					
 					<aside class="notes">
+					
+						<pre>
+mkdir -p /var/build-root/rootfs/usr/share/webapps
+ln -sf /usr/share/webapps/nextcloud /var/build-root/rootfs/usr/share/webapps/nextcloud
+mkdir /var/build-root/rootfs/var/db/webapps
+chroot /var/build-root/rootfs/ groupadd -g 249 -r nginx
+chroot /var/build-root/rootfs/ useradd -r -u 999 -g 249 -s /sbin/nologin nginx
+						</pre>
 						Baobab
 						Gentoo Image ist grösser, das liegt zum einen daran das wir glibc verwenden. Vorteil ist wir haben weniger Stress mit Paketen die nicht so gut getestet sind mit musl. Anscheind auch Performance ist besser in manchen Fällen, z.B. auflösen von DNS-Sachen. Aber ich will hier auch nicht in einen Flamewar.
 						

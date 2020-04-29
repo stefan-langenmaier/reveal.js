@@ -33,7 +33,7 @@ chroot ${ROOTFS} useradd -u 999 -g 249 -r -M -d /var/lib/nginx -c "added by port
 echo "en_US.UTF-8 UTF-8" > ${ROOTFS}/etc/locale.gen
 ROOT= chroot ${ROOTFS} locale-gen
 
-exit 0
+#exit 0
 #emerge -C nextcloud
 
 #ROOT=/var/build-root/rootfs/ PORTAGE_CONFIGROOT=/var/build-root/portage-configroot/ emerge gcc -1
