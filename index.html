@@ -4,10 +4,11 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>reveal.js</title>
+		<title>Distances, ads and other esoteric stuff</title>
 
 		<link rel="stylesheet" href="css/reset.css">
 		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/custom.css">
 		<link rel="stylesheet" href="css/theme/black.css">
 
 		<!-- Theme used for syntax highlighting of code -->
@@ -25,18 +26,544 @@
 	<body>
 		<div class="reveal">
 			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
+				<section>
+					<h1>Distances, ads and other esoteric stuff</h1>
+					<aside class="notes">
+						<p>Herzlich willkommen. Der Vortrag ist schamlose Werbung für eine App. Die App wurde an der letzten Weihnachtsfier gebrainstormt. Ich hoffe dieses Jahr können wir den Teil mit dem Geld besprechen. Mehr sei aber noch nicht verraten. Links gibt es am Ende. Zunächst soll es um die folgenden Dinge gehen: Distances, ads and other esoteric stuff.</p>
+					</aside>
+				</section>
+				
+				<section>
+					<h2>What is <em>distance</em>?</h2>
+
+					<dl>
+						<dt>
+							<dfn>
+								<a href="https://en.wikipedia.org/wiki/Distance">Distance</a>
+							</dfn>
+						</dt>
+						<dd>
+							...is a numerical <em>measurement</em> of how far apart objects or points are.
+						</dd>
+					</dl>
+
+					<aside class="notes">
+						General, we go into details with more concrete examples in a second. Measurement is important because then we can compare it. This means the measurement converts it into a number.
+						We'll ignore the "far apart" stuff as this is more philosophical.
+					</aside>
+				</section>
+				
+				<section>
+					<h2>Where is it used?</h2>
+
+					<ul>
+						<li>Math (Geometry, Algebra, Statistics)</li>
+						<li>Physics</li>
+						<li>Geography</li>
+						<li>Language (Search, NLP, similarity)</li>
+						<li>Computer science (error correction codes)</li>
+						<li>Marketing (Ads)</li>
+					</ul>
+
+					<aside class="notes">
+						<p>
+						We'll look into concrete examples, just wanted to show the breadth of the distance term. Maths, physics and geography probably come naturally to mind.
+						</p>
+						But also in language there are a lot of topics and games, like word ladder.
+						Marketing is using distances cluster group of data points (humans) in certain categories and the sell stuff to them.
+					</aside>
+				</section>
+				
+				<section>
+					<section>
+						<h2>Geometric-Distance</h2>
+						<p>
+							<img alt="Geometric distance" src="images/manhattan_distance.svg" />
+						</p>
+						
+						<ul>
+							<li>Manhattan distance</li>
+							<li>Euclidean distance</li>
+						</ul>
+						
+						<aside class="notes">
+						</aside>
+					</section>
+					
+					<section>
+						<h3>Manhattan distance</h3>
+
+						<img alt="Geometric distance" src="images/manhattan_distance.svg" />
+
+						<p>number of blocks to walk</p>
+						
+						<p>
+						\[\begin{aligned}
+						d(p,q) = \sum\limits_{i}{|p_{i} - q_{i} |}
+						\end{aligned} \]
+						</p>
+
+						<aside class="notes">
+							with i we walk over the dimensions of the points, so this can be any dimension
+						</aside>
+					</section>
+					
+					<section>
+						<h3>Euclidean distance</h3>
+
+						<img alt="Geometric distance" src="images/manhattan_distance.svg" />
+
+						<p>as the crow flies</p>
+						
+						<p>
+						\[\begin{aligned}
+						d(p,q) = \sum\limits_{i}{\sqrt{(p_{i} - q_{i})^{2}}}
+						\end{aligned} \]
+						</p>
+
+						<aside class="notes">
+							so there is also no limit on two dimensions, this works in three and higher dimensions
+						</aside>
+					</section>
+					
+					<section>
+						<h3>Norm</h3>
+
+						<p>
+						\[\begin{aligned}
+						d_{k} (p,q) = \sum\limits_{i}{\sqrt[k]{|p_{i} - q_{i}|^{k}}}
+						\end{aligned} \]
+						</p>
+						
+						<p>for all k>0</p>
+
+						<aside class="notes">
+							mathematically this is generalized under the term Norm
+							we'll get back to this later
+						</aside>
+					</section>
+				</section>
+				
+				<section>
+					<section>
+						<h2>
+						<a href="https://en.wikipedia.org/wiki/Great-circle_distance">Great-circle distance</a>
+						</h2>
+						
+						<p>
+						<img alt="Geometric distance" src="images/illustration_of_great-circle_distance.svg" />
+						</p>
+						
+						<p>
+						\[\begin{aligned}
+						d(...) = r * \arccos\bigl(\sin\phi_1\sin\phi_2 + \cos\phi_1\cos\phi_2\cos(\Delta\lambda)\bigr)
+						\end{aligned} \]
+						\[\begin{aligned}
+						\lambda_1, \phi_1,\lambda_2, \phi_2
+						\end{aligned} \]
+						</p>
+						
+						<aside class="notes">
+							now we get to a more real "world" example
+							with the earth here we have a three dimensional sphere but we want to find the distance of two points on the two dimensional surface
+							so viel sei schon mal verraten in der App geht es darum sich mit anderen Menschen zu treffen (im RealLife(TM))
+						</aside>
+					</section>
+					
+					<section>
+						<h2>What I did</h2>
+						
+						<pre><code class="hljs" data-trim data-noescape>
+CREATE FUNCTION get_distance_in_meters_between_geo_locations(
+  geo1_latitude DOUBLE, geo1_longitude DOUBLE,
+  geo2_latitude DOUBLE, geo2_longitude DOUBLE
+) RETURNS decimal(20,10) DETERMINISTIC
+BEGIN
+  return 1000 * 6371 *
+    acos(
+        cos(radians(geo1_latitude)) *
+        cos(radians(geo2_latitude)) *
+        cos(radians(geo1_longitude) -
+            radians(geo2_longitude)
+        ) +
+        sin(radians(geo1_latitude)) *
+        sin(radians(geo2_latitude))));
+						</code></pre>
+						
+						<aside class="notes">
+							einfach mal in SQL bauen,
+							wenn man die Koordinaten  in einer Datenbanktabelle hat kann man die Tabelle einfach auf sich selbst joinen und den Abstand für alle berechnen und dann sotieren
+						</aside>
+					</section>
+					
+					<section>
+						<h2>What I should do</h2>
+						
+						<p>
+							<blockquote>...the spherical law of cosines formula can have large rounding errors if the distance is small</blockquote>
+							
+							<img src="images/akward-monkey-looking.jpg" />
+						</p>
+						
+						<p>
+							<a href="https://en.wikipedia.org/wiki/Haversine_formula">Haversine formula</a>
+						</p>
+						
+						<aside class="notes">
+							wäre eine triviale Verbesserung, aber...
+						</aside>
+					</section>
+					
+					<section>
+						<h2>What I should do</h2>
+						
+						<p>
+							<blockquote>...are based on the assumption that the figure of the Earth is an oblate spheroid</blockquote>
+							
+							<img src="images/akward-monkey-looking.jpg" />
+						</p>
+						<p>
+							<a href="https://en.wikipedia.org/wiki/Vincenty%27s_formulae">Vincenty's formula</a>
+						</p>
+						
+						<aside class="notes">
+							funktioniert auch für elipsoide, wie die Erde, aber schwierig in SQL zu implementieren (iterativ)
+						</aside>
+					</section>
+					
+					<section>
+						<h2>What I should do</h2>
+						
+						<p>
+							<a href="https://ericandrewlewis.github.io/how-a-quadtree-works/">Don't calculate it for all points</a><br />
+							<img src="images/quadtree.png" />
+						</p>
+						
+						<a href="https://en.wikipedia.org/wiki/Quadtree">Quadtrees</a>
+						
+						<aside class="notes">
+							wenn wir schon bei Optimierung sind,
+							wenn man den nächsten Punkt finden will muss man nicht unbedingt den Abstand zu allen bestimmen wenn man eine entsprechende Datenstruktur verwendet
+							Datenstruktur die effizient den nächsten Nachbar finden kann.
+							Wird in spielen verwendet und bei Bilder.
+						</aside>
+					</section>
+					
+					<section>
+						<h2>What I really should do</h2>
+						
+						<p>For other reasons I need more than the nearest point</p>
+						
+						<pre><code class="hljs" data-trim data-noescape>
+SELECT ST_AsText(geom), city
+FROM person.address
+ORDER BY geom &lt;-&gt; 'POINT(-121.626 47.8315)'
+FETCH FIRST 7 ROWS ONLY;
+						</code></pre>
+						
+						<a href="https://postgis.net/docs/geometry_distance_knn.html">PostGIS kNN</a>
+						
+						<aside class="notes">
+							Use the proper tool, don't implement it
+							postgis hat auch Funktionen zum Abstand auf einer Kugel oder einem Elipsoid zu bestimmen
+						</aside>
+					</section>
+					
+					
+				</section>
+				
+				<section>
+					<h2>Compass and web apps</h2>
+					
+					<section>
+						<p><a href="https://developer.mozilla.org/en-US/docs/Web/API/Detecting_device_orientation">Device orientation</a></p>
+						
+						<pre><code class="hljs" data-trim data-noescape>
+						window.addEventListener("deviceorientation",
+							handleOrientation);
+						
+						function handleOrientation(event) {
+							var absolute = event.absolute;
+							var alpha    = event.alpha;
+							var beta     = event.beta;
+							var gamma    = event.gamma;
+						}
+						</code></pre>
+						
+						<aside class="notes">
+							a missing feature
+						</aside>
+					</section>
+					
+					<section>
+						<dl>
+							<dt><a href="https://developer.mozilla.org/en-US/docs/Web/API/DeviceOrientationEvent/absolute">absolute=northbound</a></dt>  
+							<dd>On return, absolute is true if the orientation data in instanceOfDeviceOrientationEvent is provided as the difference between the Earth's coordinate frame and the device's coordinate frame, or false if the orientation data is being provided in reference to some arbitrary, device-determined coordinate frame.</dd>
+						</dl>
+						
+						<aside class="notes">
+							northbound is nowadays, a missing feature, it was removed for multiple reasons
+							better VR/AR and web compatability with safari
+						</aside>
+					</section>
+					
+					<section>
+						<p>Spoiler and contradiction</p>
+						
+						<ul>
+							<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/ondeviceorientationabsolute">MDN</a></li>
+							<li><a href="https://w3c.github.io/deviceorientation/spec-source-orientation.html#deviceorientationabsolute">W3C</a></li>
+						</ul>
+						
+						<aside class="notes">
+							solution consensus from the Chrome dev was to create a new event, but accodring to MDN it's not supported and non standrad
+							
+							according to W3C it is, maybe somebody can explain this to me later
+						</aside>
+					</section>
+					
+					<section>
+						
+						<img src="images/new-project.jpg" />
+						<p>Idea: <em>just</em> calculate it yourself!</p>
+						
+						<aside class="notes">
+							back to the topic, as I was not aware of this functionality
+							the idea is, if I have the current gps locations and the current relative position i can infer the absolute orientation with multiple data points
+							in the following I'll describe the high level approach and the building blocks
+						</aside>
+					</section>
+				</section>
+				
+				<section>
+					<h2>Hobocompass</h2>
+					
+					<div style="position:relative" >
+						<p class="fragment " style="position:absolute; margin-left: auto; margin-right: auto; left: 0; right: 0;" data-fragment-index="0">
+						
+						</p>
+						<p class="fragment " style="position:absolute; margin-left: auto; margin-right: auto; left: 0; right: 0;" data-fragment-index="0">
+							<svg height="500" width="500">
+								<defs>
+									<marker id="markerArrow" markerWidth="13" markerHeight="13" refX="2" refY="6" orient="auto">
+										<path d="M2,2 L2,11 L10,6 L2,2" style="fill: red;" />
+									</marker>
+								</defs>
+								
+								<line x1="250" y1="500" x2="250" y2="20" class="arrow base" />
+								
+								<g class="fragment">
+									<line x1="245" y1="500" x2="245" y2="300" class="arrow odd" />
+									<line x1="255" y1="400" x2="255" y2="200" class="arrow even" />
+									<line x1="245" y1="300" x2="245" y2="100" class="arrow odd" />
+									<line x1="255" y1="200" x2="255" y2="020" class="arrow even" />
+								</g>
+								<g class="fragment fade-in-then-out">
+									<text x ="250" y ="480" style="transform: rotate(45deg);" class="phone">📱</text>
+									<text x ="250" y ="350" style="transform: rotate(30deg);" class="phone">📱</text>
+								</g>
+								<g class="fragment fade-in">
+									<text x ="250" y ="400" style="transform: rotate(38deg);" class="phone">📱</text>
+								</g>
+								<g class="fragment fade-in-then-out">
+									<text x ="250" y ="380" style="transform: rotate(45deg);" class="phone">📱</text>
+									<text x ="250" y ="250" style="transform: rotate(30deg);" class="phone">📱</text>
+								</g>
+								<g class="fragment fade-in">
+									<text x ="250" y ="300" style="transform: rotate(38deg);" class="phone">📱</text>
+								</g>
+								<g class="fragment fade-in-then-out">
+									<text x ="250" y ="280" style="transform: rotate(45deg);" class="phone">📱</text>
+									<text x ="250" y ="150" style="transform: rotate(30deg);" class="phone">📱</text>
+								</g>
+								<g class="fragment fade-in">
+									<text x ="250" y ="200" style="transform: rotate(38deg);" class="phone">📱</text>
+								</g>
+								<g class="fragment fade-in-then-out">
+									<text x ="250" y ="180" style="transform: rotate(45deg);" class="phone">📱</text>
+									<text x ="250" y ="050" style="transform: rotate(30deg);" class="phone">📱</text>
+								</g>
+								<g class="fragment fade-in">
+									<text x ="250" y ="100" style="transform: rotate(38deg);" class="phone">📱</text>
+								</g>
+							</svg>
+						</p>
+					</div>
+					
+					<aside class="notes">
+						measure some distance walking with its geographic information and phone orientation
+						
+						split the distance into overlapping chunks
+						
+						average the orientation of the phone over a chunk, now you have and estimation where north is relative the phone orientation
+						
+						to make sure the orientation of the phone is sane we compare it with the next chunk
+						
+						the idea is that it's overlapping it should be similar
+						
+						you take this difference score over multiple chunks and you deem it safe enough
+						
+						how did I come up with this
+						just looked what worked, sampling and sliding window
+						
+						pros:
+						* it evolved like this
+						* but sliding window is good not all data is important, just the most recent, dont carry arround wrong old data, ignore aussreisser
+						
+						cons: 
+						* slow to start
+						* could be faster
+						* can run into wrong optimum and not recover from it
+						* no theoretical explanation
+					</aside>
+				</section>
+				
+				<section>
+					<h2>Angle/arc average</h2>
+					
+					<svg height="500" width="500">
+						<defs>
+							<marker id="markerArrow" markerWidth="13" markerHeight="13" refX="2" refY="6" orient="auto">
+								<path d="M2,2 L2,11 L10,6 L2,2" style="fill: red;" />
+							</marker>
+						</defs>
+						
+						<path class="arc odd" d="M 380,100 A 200,200 0 0 1 450,250" />
+						<g class="fragment fade-out">
+							<path class="arc even" d="M 315,60 A 200,200 0 0 1 450,250" />
+						</g>
+						<g class="fragment fade-in">
+							<path class="arc even" d="M 50,250 A 200,200 0 0 1 450,250" />
+							<path class="arc even" d="M 120,400 A 200,200 0 0 1  50,250" />
+						</g>
+						
+						<g class="fragment">
+							<line x1="250" y1="250" x2="250" y2="50" style="transform: rotate(40deg);" class="arrow rotation" />
+							<line x1="250" y1="250" x2="250" y2="50" style="transform: rotate(20deg);" class="arrow rotation" />
+							<line x1="250" y1="250" x2="250" y2="50" style="transform: rotate(220deg);" class="arrow rotation" />
+						</g>
+						
+						<g class="fragment">
+							<line x1="250" y1="250" x2="250" y2="50" style="transform: rotate(30deg);" class="arrow rotation average" />
+						</g>
+						
+						<g class="fragment">
+							<line x1="250" y1="250" x2="250" y2="50" style="transform: rotate(60deg);" class="arrow rotation" />
+						</g>
+					</svg>
+					<aside class="notes">
+						For the orientation of the phone per chunk we need to average this.
+						
+						How to average angles? Imagine we have two different angle we can represent it as two arc, so a sane person would say the average is somewhere in between
+						
+						What happens if the angle get wider, like for example the extreme on the other side? We could argue that it's perpendicular to the other two but we'll see in a second that doesn't make sense.
+						
+						How do we efficiently compute this with multiple angles.
+						
+						The trick is simple, we change the coordinate system and transform the angles to vectors.
+						
+						This solves the issue how to add multiple angles. We just stack the tips on top of each other.
+						
+						And we get a sane solution for opposite angles as this cancels out the length of the vector and it doesn't make sense to talk about the orientation of a vector of length zero.
+						
+						This length actually gives us more information. Maybe you remember the triangle inequality from school or university.
+						
+						The sum of the two shorter sides of a triangle is always longer than the longer side.
+						
+						If we scale our unit vectors two the number of vectors we know for sure that the sum of their length can never be greater then one. This give a quality metric how much the phone was fiddled around in the hand.
+						
+						If all vector stack on top if each other the result vector is longer. If the phone is twisted and turned a lot the length is shorter. With this information we can make a decision which measurements we should ignore because our assumption of a steady walk does not hold.
+					</aside>
+				</section>
+				
+				<section>
+					<h2>Error distance</h2>
+					<aside class="notes">
+					</aside>
+				</section>
+				
+				<section>
+					<h2>How do I do it</h2>
+					
+					<aside class="notes">
+					</aside>
+				</section>
+				
+				<section>
+					<h2>How should it be done</h2>
+					
+					least squared with and estimator taking into account the accuracy of the point
+					might be even possible to use some AI tech here
+					
+					pros:
+					* could be really fast
+					* have a sound basis of the quality of the estimation
+					<aside class="notes">
+					</aside>
+				</section>
+				
+				<section>
+					<h2>What is statistics?</h2>
+					<aside class="notes">
+						<p></p>
+					</aside>
+				</section>
+				
+				<section>
+					<h2>Textual-Distance</h2>
+					<aside class="notes">
+					</aside>
+				</section>
+				
+				<section>
+					<h2>What is similarity?</h2>
+					<aside class="notes">
+						<p></p>
+					</aside>
+				</section>
+				
+				<section>
+					<h2>Back to Norms (L_k)</h2>
+					<aside class="notes">
+						<p></p>
+					</aside>
+				</section>
+				
+				<section>
+					<h2>Triangle inequality</h2>
+					<aside class="notes">
+						<p></p>
+					</aside>
+				</section>
+				
+				<section>
+					<h2>References</h2>
+					
+					<ul>
+					<li>
+					</ul>
+					
+					<aside class="notes">
+						<p></p>
+					</aside>
+				</section>
 			</div>
 		</div>
 
 		<script src="js/reveal.js"></script>
+		<script src="plugin/math/math.js"></script>
 
 		<script>
 			// More info about config & dependencies:
 			// - https://github.com/hakimel/reveal.js#configuration
 			// - https://github.com/hakimel/reveal.js#dependencies
 			Reveal.initialize({
+				history: true,
+				math: {
+					mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+					config: 'TeX-AMS_HTML-full',
+				},
+				plugins: [ RevealMath ],
 				dependencies: [
 					{ src: 'plugin/markdown/marked.js' },
 					{ src: 'plugin/markdown/markdown.js' },

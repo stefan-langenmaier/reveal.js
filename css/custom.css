@@ -1,0 +1,47 @@
+.arrow {
+	stroke: red;
+	stroke-width:2; 
+	marker-end:url(#markerArrow)
+}
+
+.arrow.odd {
+	opacity: 0.9;
+	stroke: yellow;
+}
+
+.arrow.even {
+	opacity: 0.9;
+	stroke: green;
+}
+
+.arrow.base {
+	opacity: 0.3;
+	stroke-width:4; 
+}
+
+.phone {
+	transform-origin: center;
+	transform-box: fill-box;
+}
+
+.rotation {
+	transform-origin: bottom;
+	transform-box: fill-box;
+}
+
+.average {
+	stroke: green;
+}
+
+.arc {
+	stroke-width: 2;
+	fill: none;
+}
+
+.arc.odd {
+	stroke: yellow;
+}
+
+.arc.even {
+	stroke: green;
+}
