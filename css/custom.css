@@ -4,6 +4,11 @@
 	marker-end:url(#markerArrow)
 }
 
+.point {
+	stroke: red;
+	fill: red; 
+}
+
 .arrow.odd {
 	opacity: 0.9;
 	stroke: yellow;

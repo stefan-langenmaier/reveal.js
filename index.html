@@ -338,57 +338,44 @@ FETCH FIRST 7 ROWS ONLY;
 				<section>
 					<h2>Hobocompass</h2>
 					
-					<div style="position:relative" >
-						<p class="fragment " style="position:absolute; margin-left: auto; margin-right: auto; left: 0; right: 0;" data-fragment-index="0">
+					<svg height="500" width="500">
+						<line x1="250" y1="500" x2="250" y2="20" class="arrow base" />
 						
-						</p>
-						<p class="fragment " style="position:absolute; margin-left: auto; margin-right: auto; left: 0; right: 0;" data-fragment-index="0">
-							<svg height="500" width="500">
-								<defs>
-									<marker id="markerArrow" markerWidth="13" markerHeight="13" refX="2" refY="6" orient="auto">
-										<path d="M2,2 L2,11 L10,6 L2,2" style="fill: red;" />
-									</marker>
-								</defs>
-								
-								<line x1="250" y1="500" x2="250" y2="20" class="arrow base" />
-								
-								<g class="fragment">
-									<line x1="245" y1="500" x2="245" y2="300" class="arrow odd" />
-									<line x1="255" y1="400" x2="255" y2="200" class="arrow even" />
-									<line x1="245" y1="300" x2="245" y2="100" class="arrow odd" />
-									<line x1="255" y1="200" x2="255" y2="020" class="arrow even" />
-								</g>
-								<g class="fragment fade-in-then-out">
-									<text x ="250" y ="480" style="transform: rotate(45deg);" class="phone">📱</text>
-									<text x ="250" y ="350" style="transform: rotate(30deg);" class="phone">📱</text>
-								</g>
-								<g class="fragment fade-in">
-									<text x ="250" y ="400" style="transform: rotate(38deg);" class="phone">📱</text>
-								</g>
-								<g class="fragment fade-in-then-out">
-									<text x ="250" y ="380" style="transform: rotate(45deg);" class="phone">📱</text>
-									<text x ="250" y ="250" style="transform: rotate(30deg);" class="phone">📱</text>
-								</g>
-								<g class="fragment fade-in">
-									<text x ="250" y ="300" style="transform: rotate(38deg);" class="phone">📱</text>
-								</g>
-								<g class="fragment fade-in-then-out">
-									<text x ="250" y ="280" style="transform: rotate(45deg);" class="phone">📱</text>
-									<text x ="250" y ="150" style="transform: rotate(30deg);" class="phone">📱</text>
-								</g>
-								<g class="fragment fade-in">
-									<text x ="250" y ="200" style="transform: rotate(38deg);" class="phone">📱</text>
-								</g>
-								<g class="fragment fade-in-then-out">
-									<text x ="250" y ="180" style="transform: rotate(45deg);" class="phone">📱</text>
-									<text x ="250" y ="050" style="transform: rotate(30deg);" class="phone">📱</text>
-								</g>
-								<g class="fragment fade-in">
-									<text x ="250" y ="100" style="transform: rotate(38deg);" class="phone">📱</text>
-								</g>
-							</svg>
-						</p>
-					</div>
+						<g class="fragment">
+							<line x1="245" y1="500" x2="245" y2="300" class="arrow odd" />
+							<line x1="255" y1="400" x2="255" y2="200" class="arrow even" />
+							<line x1="245" y1="300" x2="245" y2="100" class="arrow odd" />
+							<line x1="255" y1="200" x2="255" y2="020" class="arrow even" />
+						</g>
+						<g class="fragment fade-in-then-out">
+							<text x ="250" y ="480" style="transform: rotate(45deg);" class="phone">📱</text>
+							<text x ="250" y ="350" style="transform: rotate(30deg);" class="phone">📱</text>
+						</g>
+						<g class="fragment fade-in">
+							<text x ="250" y ="400" style="transform: rotate(38deg);" class="phone">📱</text>
+						</g>
+						<g class="fragment fade-in-then-out">
+							<text x ="250" y ="380" style="transform: rotate(45deg);" class="phone">📱</text>
+							<text x ="250" y ="250" style="transform: rotate(30deg);" class="phone">📱</text>
+						</g>
+						<g class="fragment fade-in">
+							<text x ="250" y ="300" style="transform: rotate(38deg);" class="phone">📱</text>
+						</g>
+						<g class="fragment fade-in-then-out">
+							<text x ="250" y ="280" style="transform: rotate(45deg);" class="phone">📱</text>
+							<text x ="250" y ="150" style="transform: rotate(30deg);" class="phone">📱</text>
+						</g>
+						<g class="fragment fade-in">
+							<text x ="250" y ="200" style="transform: rotate(38deg);" class="phone">📱</text>
+						</g>
+						<g class="fragment fade-in-then-out">
+							<text x ="250" y ="180" style="transform: rotate(45deg);" class="phone">📱</text>
+							<text x ="250" y ="050" style="transform: rotate(30deg);" class="phone">📱</text>
+						</g>
+						<g class="fragment fade-in">
+							<text x ="250" y ="100" style="transform: rotate(38deg);" class="phone">📱</text>
+						</g>
+					</svg>
 					
 					<aside class="notes">
 						measure some distance walking with its geographic information and phone orientation
@@ -396,6 +383,8 @@ FETCH FIRST 7 ROWS ONLY;
 						split the distance into overlapping chunks
 						
 						average the orientation of the phone over a chunk, now you have and estimation where north is relative the phone orientation
+						
+						this is assumption 1) the average is reasonable value for this chunk
 						
 						to make sure the orientation of the phone is sane we compare it with the next chunk
 						
@@ -422,20 +411,18 @@ FETCH FIRST 7 ROWS ONLY;
 					<h2>Angle/arc average</h2>
 					
 					<svg height="500" width="500">
-						<defs>
-							<marker id="markerArrow" markerWidth="13" markerHeight="13" refX="2" refY="6" orient="auto">
-								<path d="M2,2 L2,11 L10,6 L2,2" style="fill: red;" />
-							</marker>
-						</defs>
+						<circle cx="250" cy="250" r="2" class="point"/>
 						
 						<path class="arc odd" d="M 380,100 A 200,200 0 0 1 450,250" />
 						<g class="fragment fade-out">
 							<path class="arc even" d="M 315,60 A 200,200 0 0 1 450,250" />
+							<circle cx="347" cy="77" r="2" class="point"/>
 						</g>
 						<g class="fragment fade-in">
 							<path class="arc even" d="M 50,250 A 200,200 0 0 1 450,250" />
 							<path class="arc even" d="M 120,400 A 200,200 0 0 1  50,250" />
 						</g>
+						
 						
 						<g class="fragment">
 							<line x1="250" y1="250" x2="250" y2="50" style="transform: rotate(40deg);" class="arrow rotation" />
@@ -451,6 +438,7 @@ FETCH FIRST 7 ROWS ONLY;
 							<line x1="250" y1="250" x2="250" y2="50" style="transform: rotate(60deg);" class="arrow rotation" />
 						</g>
 					</svg>
+					
 					<aside class="notes">
 						For the orientation of the phone per chunk we need to average this.
 						
@@ -461,11 +449,74 @@ FETCH FIRST 7 ROWS ONLY;
 						How do we efficiently compute this with multiple angles.
 						
 						The trick is simple, we change the coordinate system and transform the angles to vectors.
+					</aside>
+				</section>
+				
+				<section>
+					<h2>Angle/arc average</h2>
+					
+					<svg height="500" width="500">
+						<circle cx="250" cy="250" r="200"/>
 						
+						<g class="fragment fade-in-then-out">
+							<line x1="250" y1="250" x2="250" y2="50" style="transform: rotate(20deg);" class="arrow rotation" />
+							<line x1="250" y1="250" x2="250" y2="50" style="transform: rotate(40deg);" class="arrow rotation" />
+							<line x1="250" y1="250" x2="250" y2="50" style="transform: rotate(60deg);" class="arrow rotation" />
+						</g>
+						
+						<g class="fragment fade-in-then-out">
+							<line x1="250" y1="250" x2="250" y2="50" style="transform: rotate(20deg) scale(0.3);" class="arrow rotation" />
+							<line x1="250" y1="250" x2="250" y2="50" style="transform: rotate(40deg) scale(0.3);" class="arrow rotation" />
+							<line x1="250" y1="250" x2="250" y2="50" style="transform: rotate(60deg) scale(0.3);" class="arrow rotation" />
+						</g>
+						
+						<g class="fragment fade-in">
+							<line x1="250" y1="250" x2="250" y2="50" style="transform: rotate(20deg) scale(0.3);" class="arrow rotation" />
+							<line x1="250" y1="250" x2="250" y2="50" style="transform: translate(20px, -55px) rotate(40deg) scale(0.3);" class="arrow rotation" />
+							<line x1="250" y1="250" x2="250" y2="50" style="transform: translate(60px, -102px) rotate(60deg) scale(0.3);" class="arrow rotation" />
+						</g>
+						
+						<g class="fragment fade-in">
+							<line x1="250" y1="250" x2="355" y2="128" class="arrow rotation" />
+						</g>
+					</svg>
+					
+					<p><a href="https://en.wikipedia.org/wiki/Norm_(mathematics)">Euclidean norm</a></p>
+					
+					<aside class="notes">
 						This solves the issue how to add multiple angles. We just stack the tips on top of each other.
 						
 						And we get a sane solution for opposite angles as this cancels out the length of the vector and it doesn't make sense to talk about the orientation of a vector of length zero.
+					</aside>
+				</section>
+				
+				<section>
+					<h2>Error distance</h2>
+					
+					<svg height="300" width="500">
+						<circle cx="250" cy="250" r="200"/>
 						
+						<g class=" ">
+							<line x1="250" y1="250" x2="250" y2="50" style="transform: rotate(20deg) scale(0.3);" class="arrow rotation" />
+							<line x1="250" y1="250" x2="250" y2="50" style="transform: translate(20px, -55px) rotate(40deg) scale(0.3);" class="arrow rotation" />
+							<line x1="250" y1="250" x2="250" y2="50" style="transform: translate(60px, -102px) rotate(60deg) scale(0.3);" class="arrow rotation" />
+						</g>
+						
+						<g class=" ">
+							<line x1="250" y1="250" x2="355" y2="128" class="arrow rotation" />
+						</g>
+					</svg>
+					
+					<p>
+						\[\begin{aligned}
+						\|\mathbf x + \mathbf y\| \leq \|\mathbf x\| + \|\mathbf y\|
+						\end{aligned} \]
+					</p>
+					<p>
+						<a href="https://en.wikipedia.org/wiki/Triangle_inequality">Triangle inequality</a>
+					</p>
+					
+					<aside class="notes">
 						This length actually gives us more information. Maybe you remember the triangle inequality from school or university.
 						
 						The sum of the two shorter sides of a triangle is always longer than the longer side.
@@ -477,65 +528,70 @@ FETCH FIRST 7 ROWS ONLY;
 				</section>
 				
 				<section>
-					<h2>Error distance</h2>
-					<aside class="notes">
-					</aside>
-				</section>
-				
-				<section>
-					<h2>How do I do it</h2>
+					<h2>How should it be done?</h2>
+					
+					<p class="fragment" data-fragment-index="0">I have no idea. <span class="fragment" data-fragment-index="1">Well some.</span></p>
+					
+					<ol>
+						<li class="fragment" data-fragment-index="1">Linear regression</li>
+						<li class="fragment" data-fragment-index="3">ML/AI</li>
+					</ol>
+					
+					<div style="position:relative; width:640px; height:380px; margin:0 auto;">
+						<div class="fragment fade-in-then-out" data-fragment-index="0" width="640" height="380" style="position:absolute;top:0;left:0;">
+							<img src="images/expanding-brain-1.jpg" />
+						</div>
+						<div class="fragment fade-in-then-out" data-fragment-index="1" width="640" height="380" style="position:absolute;top:0;left:0;">
+							<img src="images/expanding-brain-2.jpg" />
+						</div>
+						<div class="fragment fade-in-then-out" data-fragment-index="2" width="640" height="380" style="position:absolute;top:0;left:0;">
+							<img src="images/linear-regression.svg" />
+						</div> 
+						<div class="fragment fade-in-then-out" data-fragment-index="3" width="640" height="380" style="position:absolute;top:0;left:0;">
+							<img src="images/expanding-brain-3.jpg" />
+						</div>
+					</div>
 					
 					<aside class="notes">
+						Normally there are some typical approaches from here. We have the assumption that the orientation is related to the walking. So maybe we can use a linear regression.
+						pros:
+						* could be really fast
+						* have a sound basis of the quality of the estimation
+						
+						But a linear regression is normally for an ordered input. But this is circular.
+						
+						We have issues when we get to the borders where the data loops, where close value looks like an outlier.
+						
+						So the simple coordinate transformation does not help here. I'm glad if somebody could this explain further to me.
+						
+						But as we are talking about linear regression we are already in the realm of ML and AI. Maybe someone has an idea to analyse the hand motion and can extract more data from this.
+						
+						Anyway there would be more data like gravity sensor and acceleration sensors that could be exploited. I just don't know how to include the data in a model for the prediciton.
 					</aside>
 				</section>
-				
-				<section>
-					<h2>How should it be done</h2>
-					
-					least squared with and estimator taking into account the accuracy of the point
-					might be even possible to use some AI tech here
-					
-					pros:
-					* could be really fast
-					* have a sound basis of the quality of the estimation
-					<aside class="notes">
-					</aside>
-				</section>
-				
-				<section>
-					<h2>What is statistics?</h2>
-					<aside class="notes">
-						<p></p>
-					</aside>
-				</section>
-				
+
 				<section>
 					<h2>Textual-Distance</h2>
+					
 					<aside class="notes">
+						But if you can only meet people in your close vicinity this could get boring. So there should be some way to express yourself.
 					</aside>
 				</section>
-				
+
 				<section>
 					<h2>What is similarity?</h2>
 					<aside class="notes">
 						<p></p>
 					</aside>
 				</section>
-				
+
 				<section>
 					<h2>Back to Norms (L_k)</h2>
 					<aside class="notes">
 						<p></p>
 					</aside>
 				</section>
-				
-				<section>
-					<h2>Triangle inequality</h2>
-					<aside class="notes">
-						<p></p>
-					</aside>
-				</section>
-				
+
 				<section>
 					<h2>References</h2>
 					
@@ -549,6 +605,14 @@ FETCH FIRST 7 ROWS ONLY;
 				</section>
 			</div>
 		</div>
+		
+		<svg height="0" width="00">
+			<defs>
+				<marker id="markerArrow" markerWidth="13" markerHeight="13" refX="2" refY="6" orient="auto">
+					<path d="M2,2 L2,11 L10,6 L2,2" style="fill: red;" />
+				</marker>
+			</defs>
+		</svg>
 
 		<script src="js/reveal.js"></script>
 		<script src="plugin/math/math.js"></script>
