@@ -116,8 +116,8 @@
 						<p>as the crow flies</p>
 						
 						<p>
-						\[\begin{aligned}
-						d(p,q) = \sum\limits_{i}{\sqrt{(p_{i} - q_{i})^{2}}}
+						\[ \begin{aligned}
+						d(p,q) = \sqrt{\sum\limits_{i}{(p_{i} - q_{i})^{2}}}
 						\end{aligned} \]
 						</p>
 
@@ -130,8 +130,8 @@
 						<h3>Norm</h3>
 
 						<p>
-						\[\begin{aligned}
-						d_{k} (p,q) = \sum\limits_{i}{\sqrt[k]{|p_{i} - q_{i}|^{k}}}
+						\[ \begin{aligned}
+						d_{k} (p,q) = \sqrt[k]{\sum\limits_{i}{|p_{i} - q_{i}|^{k}}}
 						\end{aligned} \]
 						</p>
 						
@@ -316,7 +316,7 @@ FETCH FIRST 7 ROWS ONLY;
 						</ul>
 						
 						<aside class="notes">
-							solution consensus from the Chrome dev was to create a new event, but accodring to MDN it's not supported and non standrad
+							solution consensus from the Chrome dev was to create a new event, but according to MDN it's not supported and non standard
 							
 							according to W3C it is, maybe somebody can explain this to me later
 						</aside>
@@ -571,24 +571,205 @@ FETCH FIRST 7 ROWS ONLY;
 				</section>
 
 				<section>
-					<h2>Textual-Distance</h2>
+					<h2>Status feature</h2>
 					
+					<p>
+						<ul>
+							<li class="fragment">🏐🏆🥇</li>
+							<li class="fragment">🎼🎤🎭</li>
+							<li class="fragment">🗣️🇫🇷🇩🇪</li>
+							<li class="fragment">🍆💦🍑</li>
+						</ul>
+					</p>
+					
+					<hr />
+					
+					<p>
+						<ul>
+							<li class="fragment">🎤🇫🇷🥇</li>
+							<li class="fragment">🎤🎤🎤🇫🇷🥇</li>
+						</ul>
+					</p>
+
 					<aside class="notes">
-						But if you can only meet people in your close vicinity this could get boring. So there should be some way to express yourself.
+						If people are too far away you can't meet them, but maybe you want to have a hint for what they are looking for.
+						
+						So the app also has a status feature. The status is your status and at the same time what you are looking for.
+						Only emojis are valid as input. We can talk about this later. SO how could this look like.
+						
+						This could be sports. Looks like this is quite competitive.
+						A jam session.
+						A language exchange
+						or helping someone to get his or her fruits and vegies sorted out.
+						
+						But we don't want to have a catalog to browse through it should match us with the best candidate.
+					</aside>
+				</section>
+				
+				<section>
+					<h3>Klassische Norm (k=2)</h3>
+
+					<p>
+					\[\begin{aligned}
+					d_{2} ((🎤🎤🥇),(🏐🏆🥇)) =
+					\end{aligned} \]
+					</p>
+					
+					<p>
+					\[\begin{aligned}
+					= {\sqrt{(🎤-🏐)^{2}}}  + {\sqrt{(🎤-🏆)^{2}}}  + {\sqrt{(🥇-🥇)^{2}}}
+					\end{aligned} \]
+					</p>
+
+					<aside class="notes">
+						We have already seen this approach it should also work here.
+						
+						We could use the unicode code points fill up missing dimensions if necessary and calculate it
+						
+						But...
+					</aside>
+				</section>
+				
+				<section>
+					<h3>Literature</h3>
+
+					<ul>
+						<li><a href="https://homes.cs.washington.edu/~pedrod/papers/cacm12.pdf">A few useful things to know about machine Learning</a></li>
+						<li><a href="https://bib.dbvis.de/uploadedFiles/155.pdf">On the Surprising Behavior of Distance Metrics in High Dimensional Space</a></li>
+					</ul>
+
+					<aside class="notes">
+						These metrics lose their meaning in higher dimensions
+						
+						We get better results with L1 norm and even better ones with L&lt;1 "norms"
 					</aside>
 				</section>
 
 				<section>
 					<h2>What is similarity?</h2>
+					
+						<p><a href="https://en.wikipedia.org/wiki/Similarity_measure">Wikipedia</a></p>
+
 					<aside class="notes">
-						<p></p>
+						<p>Inverse of the distance on an interval from 0-1, 0 no similarity, 1 total similarity, triangle inequality does no longer hold.</p>
+						
 					</aside>
 				</section>
 
 				<section>
-					<h2>Back to Norms (L_k)</h2>
+					<section>
+						<h2>Textual-Distance</h2>
+	
+						<ul>
+							<li><a href="https://en.wikipedia.org/wiki/Hamming_distance">Hamming distance</a></li>
+							<li><a href="https://en.wikipedia.org/wiki/Levenshtein_distance">Levenshtein distance</a></li>
+							<li><a href="https://en.wikipedia.org/wiki/Tf%E2%80%93idf">tf–idf</a> / <a href="https://en.wikipedia.org/wiki/Okapi_BM25">BM25</a></li>
+							<li><a href="https://en.wikipedia.org/wiki/Jaro%E2%80%93Winkler_distance">Jaro-Winkler distance</a></li>
+						</ul>
+	
+						<aside class="notes">
+							So called <a href="https://en.wikipedia.org/wiki/String_metric">string metrics</a>
+	
+							<ul>
+								<li>Hamming distance, simple for error correcting codes</li>
+								<li>Levenshtein distance, uni homework because of dynamic programming</li>
+								<li>tf–idf / BM25, are used in elasticsearch, better suited for longer texts good with context</li>
+								<li>Jaro-Winkler, simple, works with strings, has a little bit of context</li>
+							</ul>
+	
+							But if you can only meet people in your close vicinity this could get boring. So there should be some way to express yourself.
+						</aside>
+					</section>
+					
+					<section>
+						<h2>Levenshtein distance</h2>
+	
+						<ol>
+							<li><span class="fragment highlight-red" data-fragment-index="1">k</span>itten → <span class="fragment highlight-red" data-fragment-index="1">s</span>itten</li>
+							<li>sitt<span class="fragment highlight-red" data-fragment-index="2">e</span>n → sitt<span class="fragment highlight-red" data-fragment-index="2">i</span>n</li>
+							<li>sittin → sittin<span class="fragment highlight-red" data-fragment-index="3">g</span></li>
+						</ol>
+	
+						<aside class="notes">
+							So called <a href="https://en.wikipedia.org/wiki/String_metric">string metrics</a>
+	
+							<ul>
+								<li>Hamming distance, simple for error correcting codes</li>
+								<li>Levenshtein distance, uni homework because of dynamic programming</li>
+								<li>tf–idf / BM25, are used in elasticsearch, better suited for longer texts good with context</li>
+								<li>Jaro-Winkler, simple, works with strings, has a little bit of context</li>
+							</ul>
+	
+							But if you can only meet people in your close vicinity this could get boring. So there should be some way to express yourself.
+						</aside>
+					</section>
+					
+					<section>
+						<h2>Jaro-Winkler distance</h2>
+
+						<p>
+						\[
+						\begin{aligned} Sim_J (s_1, s_2) = \begin{cases} 0 &\text{if } m = 0, \\ \frac{1}{3}\left( \frac{m}{|s_1|} + \frac{m}{|s_2|} + \frac{m - t}{m} \right) &\text{otherwise}. \end{cases} \end{aligned}
+						\]
+						</p>
+
+						<p>
+						\[
+						\left\lfloor \dfrac{\max (|s_1|, |s_2|)}{2} \right\rfloor - 1
+						\]
+						</p>
+	
+						<aside class="notes">
+						</aside>
+					</section>
+					<section>
+						<h2>Jaro-Winkler distance</h2>
+						
+						<p>s1=martha, s2=marhta</p>
+
+						<p>
+						\[
+						\frac{1}{3}\left( \frac{m}{|s_1|} + \frac{m}{|s_2|} + \frac{m - t}{m} \right)
+						\]
+						</p>
+
+						<p>
+						\[
+						\frac{1}{3}\left( \frac{6}{|6|} + \frac{6}{|6|} + \frac{6 - 1}{1} \right) = 0,944
+						\]
+						</p>
+
+						<aside class="notes">
+						</aside>
+					</section>
+				</section>
+
+				<section>
+					<h2>What should I do</h2>
+					
+					<p><a href="https://en.wikipedia.org/wiki/Semantic_similarity">Semantic similarity</a> / 🏐 ≈ 🏀</p>
+					
+					<blockquote>"All emojis are equal, but some emojis are more equal than others."</blockquote>
+					
 					<aside class="notes">
-						<p></p>
+						in general the approach is okay, not to many symbols or characters to compare, so a lot of the more complex algorithms don't fit here
+						
+						because of that reason one could use the information that some emojis are used in the same context
+						
+						resume, all ingredients together for a dating app.
+						It can find the nearest person. Not very effiently but it works.
+						It can give you the direction. "Working" on all devices. iPhones not really tested.
+						And gives you a "best" match considering the distance to the person.
+					</aside>
+				</section>
+
+				<section>
+					<h2>Thanks</h2>
+					
+					<p><a href="https://ärro.de">https://ärro.de</a></p>
+					
+					<aside class="notes">
+						<p>For anyone who wants to test the app you can now test it here. Feedback is welcome. If you're inside be aware that it's not really working. The cool compass stuff is only activate with firefox, but for this you need a good GPS signal. And make sure to have "device only" for your GPS activated otherwise Google holds back with updates of your location.</p>
 					</aside>
 				</section>
 
@@ -596,7 +777,7 @@ FETCH FIRST 7 ROWS ONLY;
 					<h2>References</h2>
 					
 					<ul>
-					<li>
+					<li></li>
 					</ul>
 					
 					<aside class="notes">
