@@ -29,7 +29,8 @@
 				<section>
 					<h1>Distances, ads and other esoteric stuff</h1>
 					<aside class="notes">
-						<p>Herzlich willkommen. Der Vortrag ist schamlose Werbung für eine App. Die App wurde an der letzten Weihnachtsfier gebrainstormt. Ich hoffe dieses Jahr können wir den Teil mit dem Geld besprechen. Mehr sei aber noch nicht verraten. Links gibt es am Ende. Zunächst soll es um die folgenden Dinge gehen: Distances, ads and other esoteric stuff.</p>
+						<p>Herzlich willkommen. Gleich vorweg, der Vortrag ist schamlose Werbung für eine App. Die App wurde unteranderem an der letzten Weihnachtsfeier gebrainstormt. Ich hoffe dieses Jahr können wir den Teil mit dem Geld besprechen. Mehr sei aber noch nicht verraten. Links gibt es am Ende. Zunächst soll es um die folgenden Dinge gehen: Distances, ads and other esoteric stuff.</p>
+						<p>Inhalt des Vortrags ist theoretischer Natur, wird aber versucht mit praktischen Beispielen und Problem näher gebracht.</p>
 					</aside>
 				</section>
 				
@@ -69,8 +70,8 @@
 						<p>
 						We'll look into concrete examples, just wanted to show the breadth of the distance term. Maths, physics and geography probably come naturally to mind.
 						</p>
-						But also in language there are a lot of topics and games, like word ladder.
-						Marketing is using distances cluster group of data points (humans) in certain categories and the sell stuff to them.
+						<p>But also in language there are a lot of topics and games, like word ladder.</p>
+						<p>Marketing is using distances cluster group of data points (humans) in certain categories and the sell stuff to them.</p>
 					</aside>
 				</section>
 				
@@ -87,6 +88,7 @@
 						</ul>
 						
 						<aside class="notes">
+							These are probably the most common and known distance metrics. 
 						</aside>
 					</section>
 					
@@ -104,7 +106,7 @@
 						</p>
 
 						<aside class="notes">
-							with i we walk over the dimensions of the points, so this can be any dimension
+							with "i" we walk over the dimensions of the points, so this can be any dimension
 						</aside>
 					</section>
 					
@@ -156,17 +158,17 @@
 						
 						<p>
 						\[\begin{aligned}
-						d(...) = r * \arccos\bigl(\sin\phi_1\sin\phi_2 + \cos\phi_1\cos\phi_2\cos(\Delta\lambda)\bigr)
+						d(\lambda_1, \phi_1,\lambda_2, \phi_2) = 
 						\end{aligned} \]
 						\[\begin{aligned}
-						\lambda_1, \phi_1,\lambda_2, \phi_2
+						r * \arccos\bigl(\sin\phi_1\sin\phi_2 + \cos\phi_1\cos\phi_2\cos(\Delta\lambda)\bigr)
 						\end{aligned} \]
 						</p>
 						
 						<aside class="notes">
-							now we get to a more real "world" example
-							with the earth here we have a three dimensional sphere but we want to find the distance of two points on the two dimensional surface
-							so viel sei schon mal verraten in der App geht es darum sich mit anderen Menschen zu treffen (im RealLife(TM))
+							<p>a more real "world" example</p>
+							<p>with the earth here we have a three dimensional sphere but we want to find the distance of two points on the two dimensional surface</p>
+							<p>so viel sei schon mal verraten in der App geht es darum sich mit anderen Menschen zu treffen (im RealLife(TM)), daher ein kleiner Exkurs wie ich das implementiert habe</p>
 						</aside>
 					</section>
 					
@@ -202,7 +204,7 @@ BEGIN
 						<p>
 							<blockquote>...the spherical law of cosines formula can have large rounding errors if the distance is small</blockquote>
 							
-							<img src="images/akward-monkey-looking.jpg" />
+							<img src="images/akward-monkey-looking.jpg" class="scaled-img"/>
 						</p>
 						
 						<p>
@@ -220,7 +222,7 @@ BEGIN
 						<p>
 							<blockquote>...are based on the assumption that the figure of the Earth is an oblate spheroid</blockquote>
 							
-							<img src="images/akward-monkey-looking.jpg" />
+							<img src="images/akward-monkey-looking.jpg" class="scaled-img"/>
 						</p>
 						<p>
 							<a href="https://en.wikipedia.org/wiki/Vincenty%27s_formulae">Vincenty's formula</a>
@@ -235,13 +237,14 @@ BEGIN
 						<h2>What I should do</h2>
 						
 						<p>
-							<a href="https://ericandrewlewis.github.io/how-a-quadtree-works/">Don't calculate it for all points</a><br />
-							<img src="images/quadtree.png" />
+							<a href="https://ericandrewlewis.github.io/how-a-quadtree-works/">Don't calculate it for all points:</a><br />
+							<img src="images/quadtree.png" class="scaled-img"/>
 						</p>
 						
 						<a href="https://en.wikipedia.org/wiki/Quadtree">Quadtrees</a>
 						
 						<aside class="notes">
+							there are techniques to map this to databases: https://en.wikipedia.org/wiki/Z-order_curve
 							wenn wir schon bei Optimierung sind,
 							wenn man den nächsten Punkt finden will muss man nicht unbedingt den Abstand zu allen bestimmen wenn man eine entsprechende Datenstruktur verwendet
 							Datenstruktur die effizient den nächsten Nachbar finden kann.
@@ -251,6 +254,8 @@ BEGIN
 					
 					<section>
 						<h2>What I really should do</h2>
+						
+						<p>Not using <a href="https://jira.mariadb.org/browse/MDEV-13467">MariaDB</a></p>
 						
 						<p>For other reasons I need more than the nearest point</p>
 						
@@ -308,7 +313,7 @@ FETCH FIRST 7 ROWS ONLY;
 					</section>
 					
 					<section>
-						<p>Spoiler and contradiction</p>
+						<p>Spoiler and confusion</p>
 						
 						<ul>
 							<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/ondeviceorientationabsolute">MDN</a></li>
@@ -414,27 +419,39 @@ FETCH FIRST 7 ROWS ONLY;
 						<circle cx="250" cy="250" r="2" class="point"/>
 						
 						<path class="arc odd" d="M 380,100 A 200,200 0 0 1 450,250" />
-						<g class="fragment fade-out">
-							<path class="arc even" d="M 315,60 A 200,200 0 0 1 450,250" />
+						
+						<g class="fragment fade-in-then-out" data-fragment-index="0">
 							<circle cx="347" cy="77" r="2" class="point"/>
 						</g>
-						<g class="fragment fade-in">
+						<g class="fragment fade-in-then-out" data-fragment-index="0">
+							<path class="arc even" d="M 315,60 A 200,200 0 0 1 450,250" />
+						</g>
+						
+						<g class="fragment fade-in-then-out" data-fragment-index="1">
 							<path class="arc even" d="M 50,250 A 200,200 0 0 1 450,250" />
 							<path class="arc even" d="M 120,400 A 200,200 0 0 1  50,250" />
 						</g>
 						
+						<g class="fragment fade-in-then-out" data-fragment-index="2">
+							<path class="arc even" d="M 50,250 A 200,200 0 0 1 450,250" />
+							<path class="arc even" d="M 120,400 A 200,200 0 0 1  50,250" />
+						</g>
 						
-						<g class="fragment">
+						<g class="fragment fade-in-then-out" data-fragment-index="2">
 							<line x1="250" y1="250" x2="250" y2="50" style="transform: rotate(40deg);" class="arrow rotation" />
-							<line x1="250" y1="250" x2="250" y2="50" style="transform: rotate(20deg);" class="arrow rotation" />
 							<line x1="250" y1="250" x2="250" y2="50" style="transform: rotate(220deg);" class="arrow rotation" />
 						</g>
 						
-						<g class="fragment">
+						<g class="fragment" data-fragment-index="3">
+							<line x1="250" y1="250" x2="250" y2="50" style="transform: rotate(40deg);" class="arrow rotation" />
+							<line x1="250" y1="250" x2="250" y2="50" style="transform: rotate(20deg);" class="arrow rotation" />
+						</g>
+						
+						<g class="fragment" data-fragment-index="4">
 							<line x1="250" y1="250" x2="250" y2="50" style="transform: rotate(30deg);" class="arrow rotation average" />
 						</g>
 						
-						<g class="fragment">
+						<g class="fragment" data-fragment-index="5">
 							<line x1="250" y1="250" x2="250" y2="50" style="transform: rotate(60deg);" class="arrow rotation" />
 						</g>
 					</svg>
@@ -769,21 +786,11 @@ FETCH FIRST 7 ROWS ONLY;
 					<p><a href="https://ärro.de">https://ärro.de</a></p>
 					
 					<aside class="notes">
-						<p>For anyone who wants to test the app you can now test it here. Feedback is welcome. If you're inside be aware that it's not really working. The cool compass stuff is only activate with firefox, but for this you need a good GPS signal. And make sure to have "device only" for your GPS activated otherwise Google holds back with updates of your location.</p>
+						<p>For anyone who wants to test the app you can now test it here. Feedback is welcome. If you're inside be aware that it's not really working. The cool compass stuff is only active with firefox, but for this you need a good GPS signal. And make sure to have "device only" for your GPS activated otherwise Google holds back with updates of your location.</p>
+						<p>My load test says I can handle 20-30 concurrent users</p>
 					</aside>
 				</section>
 
-				<section>
-					<h2>References</h2>
-					
-					<ul>
-					<li></li>
-					</ul>
-					
-					<aside class="notes">
-						<p></p>
-					</aside>
-				</section>
 			</div>
 		</div>
 		

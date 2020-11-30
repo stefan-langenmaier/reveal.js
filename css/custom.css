@@ -50,3 +50,11 @@
 .arc.even {
 	stroke: green;
 }
+
+.reveal section.present img {
+	background: rgba(255, 255, 255, 0.7);
+}
+
+.reveal section img.scaled-img {
+	max-height: 6em;
+}
