@@ -99,11 +99,20 @@
 
 						<p>number of blocks to walk</p>
 						
-						<p>
-						\[\begin{aligned}
-						d(p,q) = \sum\limits_{i}{|p_{i} - q_{i} |}
-						\end{aligned} \]
-						</p>
+						<div style="position:relative; width:640px; height:200px; margin:0 auto;">
+							<div class="fragment fade-out" width="640" height="200" style="position:absolute;top:0;left:0;">
+							\[\begin{aligned}
+							d(p,q) = (|p_{x} - q_{y} |) + (|p_{y} - q_{y} |)
+							\end{aligned} \]
+							</div>
+							<div class="fragment" width="640" height="200" style="position:absolute;top:0;left:0;">
+							\[\begin{aligned}
+							d(p,q) = \sum\limits_{i}{|p_{i} - q_{i} |}
+							\end{aligned} \]
+							</div>
+						</div>
+						
+						
 
 						<aside class="notes">
 							with "i" we walk over the dimensions of the points, so this can be any dimension
