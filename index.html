@@ -102,7 +102,7 @@
 						<div style="position:relative; width:640px; height:200px; margin:0 auto;">
 							<div class="fragment fade-out" width="640" height="200" style="position:absolute;top:0;left:0;">
 							\[\begin{aligned}
-							d(p,q) = (|p_{x} - q_{y} |) + (|p_{y} - q_{y} |)
+							d(p,q) = (|p_{x} - q_{x} |) + (|p_{y} - q_{y} |)
 							\end{aligned} \]
 							</div>
 							<div class="fragment" width="640" height="200" style="position:absolute;top:0;left:0;">
@@ -786,6 +786,28 @@ FETCH FIRST 7 ROWS ONLY;
 						It can find the nearest person. Not very effiently but it works.
 						It can give you the direction. "Working" on all devices. iPhones not really tested.
 						And gives you a "best" match considering the distance to the person.
+					</aside>
+				</section>
+
+				<section>
+					<h2>Resume</h2>
+
+					<ul>
+						<li>Geo support</li>
+						<li>Custom function support</li>
+						<li>Near real time support</li>
+					</ul>
+
+					<p>How can I bring my queries in a simple way close to the database?</p>
+
+					<aside class="notes">
+						As I have geographic queries and similarity queries I'm not aware of a system that can do both.
+						Especially that I want to fine tune the similarity algorithm and would like to avoid writing it all in SQL.
+
+						The application is running on a RaspberyPi like device connect with a USB disk. If a client connects it creates about one query per seconds.
+						With twenty clients this is the limits of how many queries this disk can handle. I don't need to have every query committed, a small delay is okay. I don't really need transaction isolation here. Something like near-realtime from Elasticsearch is good enough.
+
+						Is there a backend where I can have the cake and eat it too?
 					</aside>
 				</section>
 
