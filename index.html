@@ -61,8 +61,8 @@
 						<li>Math (Geometry, Algebra, Statistics)</li>
 						<li>Physics</li>
 						<li>Geography</li>
-						<li>Language (Search, NLP, similarity)</li>
-						<li>Computer science (error correction codes)</li>
+						<li>Language (Search, NLP, Similarity)</li>
+						<li>Computer science (Error correction codes)</li>
 						<li>Marketing (Ads)</li>
 					</ul>
 
@@ -151,6 +151,8 @@
 						<aside class="notes">
 							mathematically this is generalized under the term Norm
 							we'll get back to this later
+
+							so much for the theoretical basis, no we look into a concrete example
 						</aside>
 					</section>
 				</section>
@@ -221,6 +223,9 @@ BEGIN
 						</p>
 						
 						<aside class="notes">
+							machmal sollte man aber nicht gleich den ersten Alogrithmus aus dem Internet kopieren,
+							sondern bei Wikipedia noch kurz weiterlesen
+							
 							wäre eine triviale Verbesserung, aber...
 						</aside>
 					</section>
@@ -238,7 +243,11 @@ BEGIN
 						</p>
 						
 						<aside class="notes">
+							aber wenn man dann zu lange bei Wikipedia weiterliest findet man vielleicht auch zu viel.
+
 							funktioniert auch für elipsoide, wie die Erde, aber schwierig in SQL zu implementieren (iterativ)
+
+							und dann hat man schon keine Lust mehr das anzufassen, vor allem weil man dann anfängt nachzudenken und fest stellt
 						</aside>
 					</section>
 					
@@ -253,11 +262,15 @@ BEGIN
 						<a href="https://en.wikipedia.org/wiki/Quadtree">Quadtrees</a>
 						
 						<aside class="notes">
+							Die App will die beiden nächsten Personen zusammenbringen, ich muss nicht den Abstand zu allen bestimmen
+
+							Gibt es da eine bessere Möglichkeit?
+
 							there are techniques to map this to databases: https://en.wikipedia.org/wiki/Z-order_curve
 							wenn wir schon bei Optimierung sind,
-							wenn man den nächsten Punkt finden will muss man nicht unbedingt den Abstand zu allen bestimmen wenn man eine entsprechende Datenstruktur verwendet
 							Datenstruktur die effizient den nächsten Nachbar finden kann.
-							Wird in spielen verwendet und bei Bilder.
+							Wird in Spielen verwendet z.B. das Map-Format für Quake BSP (binary space partitioning) ist eine spezielle Form davon.
+							Für 3D Engines ist es z.B. besser wenn es keine Quadrate sondern Dreiecke sind.
 						</aside>
 					</section>
 					
@@ -266,7 +279,7 @@ BEGIN
 						
 						<p>Not using <a href="https://jira.mariadb.org/browse/MDEV-13467">MariaDB</a></p>
 						
-						<p>For other reasons I need more than the nearest point</p>
+						<p>I need more than the nearest point for other reasons </p>
 						
 						<pre><code class="hljs" data-trim data-noescape>
 SELECT ST_AsText(geom), city
@@ -508,6 +521,7 @@ FETCH FIRST 7 ROWS ONLY;
 					</svg>
 					
 					<p><a href="https://en.wikipedia.org/wiki/Norm_(mathematics)">Euclidean norm</a></p>
+					<p><a href="https://en.wikipedia.org/wiki/Cosine_similarity">Cosine similarity</a></p>
 					
 					<aside class="notes">
 						This solves the issue how to add multiple angles. We just stack the tips on top of each other.
@@ -618,6 +632,8 @@ FETCH FIRST 7 ROWS ONLY;
 					</p>
 
 					<aside class="notes">
+						More information why this status needs a similarity
+
 						If people are too far away you can't meet them, but maybe you want to have a hint for what they are looking for.
 						
 						So the app also has a status feature. The status is your status and at the same time what you are looking for.
@@ -660,12 +676,13 @@ FETCH FIRST 7 ROWS ONLY;
 					<h3>Literature</h3>
 
 					<ul>
-						<li><a href="https://homes.cs.washington.edu/~pedrod/papers/cacm12.pdf">A few useful things to know about machine Learning</a></li>
+						<li><a href="https://homes.cs.washington.edu/~pedrod/papers/cacm12.pdf">A Few Useful Things to Know About Machine Learning</a></li>
 						<li><a href="https://bib.dbvis.de/uploadedFiles/155.pdf">On the Surprising Behavior of Distance Metrics in High Dimensional Space</a></li>
 					</ul>
 
 					<aside class="notes">
-						These metrics lose their meaning in higher dimensions
+						These metrics lose their meaning in higher dimensions with sparse filing.
+						Almost all points are equally far apart.
 						
 						We get better results with L1 norm and even better ones with L&lt;1 "norms"
 					</aside>
@@ -731,7 +748,7 @@ FETCH FIRST 7 ROWS ONLY;
 					</section>
 					
 					<section>
-						<h2>Jaro-Winkler distance</h2>
+						<h2>Jaro-Winkler similarity</h2>
 
 						<p>
 						\[
@@ -746,10 +763,17 @@ FETCH FIRST 7 ROWS ONLY;
 						</p>
 	
 						<aside class="notes">
+							The similarity is split into three parts.
+							
+							# How many matches relative to the first text length
+							# How many matches realitve to the second text length
+							# How many matches properly positioned
+
+							Matches sind dabei Zeichen die in einem bestimmten Abstand übereinstimmen. Der bestimmte Abstand ist durch die untere Formel angegeben. Es ist ungefähr die Hälfte des kürzeren Strings.
 						</aside>
 					</section>
 					<section>
-						<h2>Jaro-Winkler distance</h2>
+						<h2>Jaro-Winkler similarity</h2>
 						
 						<p>s1=martha, s2=marhta</p>
 
@@ -761,11 +785,33 @@ FETCH FIRST 7 ROWS ONLY;
 
 						<p>
 						\[
-						\frac{1}{3}\left( \frac{6}{|6|} + \frac{6}{|6|} + \frac{6 - 1}{1} \right) = 0,944
+						\frac{1}{3}\left( \frac{6}{|6|} + \frac{6}{|6|} + \frac{6 - 1}{6} \right) = 0,944
 						\]
 						</p>
 
 						<aside class="notes">
+							Both string almost match completely except for a single transposition.
+						</aside>
+					</section>
+					<section>
+						<h2>Jaro-Winkler similarity</h2>
+						
+						<p>s1=martha, s2=arhtam</p>
+
+						<p>
+						\[
+						\frac{1}{3}\left( \frac{m}{|s_1|} + \frac{m}{|s_2|} + \frac{m - t}{m} \right)
+						\]
+						</p>
+
+						<p>
+						\[
+						\frac{1}{3}\left( \frac{5}{|6|} + \frac{5}{|6|} + \frac{5 - 1}{6} \right) = 0,822
+						\]
+						</p>
+
+						<aside class="notes">
+							The last m is no longer in the matching field and ignored.
 						</aside>
 					</section>
 				</section>
@@ -843,8 +889,8 @@ FETCH FIRST 7 ROWS ONLY;
 			Reveal.initialize({
 				history: true,
 				math: {
-					mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
-					config: 'TeX-AMS_HTML-full',
+					mathjax: 'js/MathJax.js',
+					config: 'TeX-AMS_CHTML-full',
 				},
 				plugins: [ RevealMath ],
 				dependencies: [
