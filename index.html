@@ -133,6 +133,7 @@
 						</p>
 
 						<aside class="notes">
+							maybe you remember your pythagoras from school
 							so there is also no limit on two dimensions, this works in three and higher dimensions
 						</aside>
 					</section>
@@ -167,7 +168,7 @@
 						<img alt="Geometric distance" src="images/illustration_of_great-circle_distance.svg" />
 						</p>
 						
-						<p>
+						<p class="fragment fade-in">
 						\[\begin{aligned}
 						d(\lambda_1, \phi_1,\lambda_2, \phi_2) = 
 						\end{aligned} \]
@@ -178,6 +179,8 @@
 						
 						<aside class="notes">
 							<p>a more real "world" example</p>
+							<p>it's possible to use euclidean distance, we are searching for the distance of points in two dimensions, BUT the surface is on a 3d sphere</p>
+							
 							<p>with the earth here we have a three dimensional sphere but we want to find the distance of two points on the two dimensional surface</p>
 							<p>so viel sei schon mal verraten in der App geht es darum sich mit anderen Menschen zu treffen (im RealLife(TM)), daher ein kleiner Exkurs wie ich das implementiert habe</p>
 						</aside>
@@ -262,15 +265,15 @@ BEGIN
 						<a href="https://en.wikipedia.org/wiki/Quadtree">Quadtrees</a>
 						
 						<aside class="notes">
-							Die App will die beiden nächsten Personen zusammenbringen, ich muss nicht den Abstand zu allen bestimmen
+							<p>Die App will die beiden nächsten Personen zusammenbringen, ich muss nicht den Abstand zu allen bestimmen</p>
 
-							Gibt es da eine bessere Möglichkeit?
+							<p>Gibt es da eine bessere Möglichkeit?</p>
 
-							there are techniques to map this to databases: https://en.wikipedia.org/wiki/Z-order_curve
-							wenn wir schon bei Optimierung sind,
+							<p>wenn wir schon bei Optimierung sind,
 							Datenstruktur die effizient den nächsten Nachbar finden kann.
-							Wird in Spielen verwendet z.B. das Map-Format für Quake BSP (binary space partitioning) ist eine spezielle Form davon.
-							Für 3D Engines ist es z.B. besser wenn es keine Quadrate sondern Dreiecke sind.
+							there are techniques to map this to databases: https://en.wikipedia.org/wiki/Z-order_curve</p>
+							<p>Wird in Spielen verwendet z.B. das Map-Format für Quake BSP (binary space partitioning) ist eine spezielle Form davon.
+							Für 3D Engines ist es z.B. besser wenn es keine Quadrate sondern Dreiecke sind.</p>
 						</aside>
 					</section>
 					
@@ -318,7 +321,11 @@ FETCH FIRST 7 ROWS ONLY;
 						</code></pre>
 						
 						<aside class="notes">
-							a missing feature
+							<p>now that we know where a person is we need to find out how to get three</p>
+
+							<p>the mobile phone should guide us in the "shortest way", in this case as the crow flies</p>
+
+							<p>no routing but just the direction, for this we need the orientation of the phone</p>
 						</aside>
 					</section>
 					
@@ -343,9 +350,11 @@ FETCH FIRST 7 ROWS ONLY;
 						</ul>
 						
 						<aside class="notes">
-							solution consensus from the Chrome dev was to create a new event, but according to MDN it's not supported and non standard
+							<p>solution consensus from the Chrome dev was to create a new event, but according to MDN it's not supported and non standard</p>
 							
-							according to W3C it is, maybe somebody can explain this to me later
+							<p>according to W3C it is, maybe somebody can explain this to me later</p>
+
+							<p>so I could use this functionality and give up on Firefox, that huge market share on mobile devices OR ....</p>
 						</aside>
 					</section>
 					
@@ -355,9 +364,9 @@ FETCH FIRST 7 ROWS ONLY;
 						<p>Idea: <em>just</em> calculate it yourself!</p>
 						
 						<aside class="notes">
-							back to the topic, as I was not aware of this functionality
-							the idea is, if I have the current gps locations and the current relative position i can infer the absolute orientation with multiple data points
-							in the following I'll describe the high level approach and the building blocks
+							<p>no to be honest, I was not aware of this functionality or at least it did not work for me turns out the compass on the mobile devices does not work well if the devices lies motionless on a table</p>
+							<p>the idea is, if I have the current gps locations and the current relative position i can infer the absolute orientation with multiple data points</p>
+							<p>in the following I'll describe the high level approach and the building blocks</p>
 						</aside>
 					</section>
 				</section>
@@ -405,32 +414,32 @@ FETCH FIRST 7 ROWS ONLY;
 					</svg>
 					
 					<aside class="notes">
-						measure some distance walking with its geographic information and phone orientation
+						<p></p>let's assume the simple case where we walk straight norht and measure some distance walking with its geographic information and phone orientation</p>
 						
-						split the distance into overlapping chunks
+						<p></p>split the distance into overlapping chunks</p>
 						
-						average the orientation of the phone over a chunk, now you have and estimation where north is relative the phone orientation
+						<p></p>average the orientation of the phone over a chunk, now you have and estimation where north is relative the phone orientation</p>
 						
-						this is assumption 1) the average is reasonable value for this chunk
+						<p></p>to make sure the orientation of the phone is sane we compare it with the next chunk</p>
 						
-						to make sure the orientation of the phone is sane we compare it with the next chunk
+						<p></p>you take this difference score over multiple chunks and you deem it safe enough</p>
 						
-						the idea is that it's overlapping it should be similar
-						
-						you take this difference score over multiple chunks and you deem it safe enough
-						
-						how did I come up with this
-						just looked what worked, sampling and sliding window
+						<p>how did I come up with this
+						just looked what worked, sampling and sliding window</p>
 						
 						pros:
-						* it evolved like this
-						* but sliding window is good not all data is important, just the most recent, dont carry arround wrong old data, ignore aussreisser
+						<ul>
+							<li>it evolved like this</li>
+							<li>but sliding window is good not all data is important, just the most recent, dont carry arround wrong old data, ignore extreme points</li>
+						</ul>
 						
 						cons: 
-						* slow to start
-						* could be faster
-						* can run into wrong optimum and not recover from it
-						* no theoretical explanation
+						<ul>
+							<li>slow to start</li>
+							<li>could be faster</li>
+							<li>can run into wrong optimum and not recover from it</li>
+							<li>no theoretical explanation</li>
+						</ul>
 					</aside>
 				</section>
 				
@@ -824,7 +833,7 @@ FETCH FIRST 7 ROWS ONLY;
 					<blockquote>"All emojis are equal, but some emojis are more equal than others."</blockquote>
 					
 					<aside class="notes">
-						in general the approach is okay, not to many symbols or characters to compare, so a lot of the more complex algorithms don't fit here
+						in general the approach is okay, not too many symbols or characters to compare, so a lot of the more complex algorithms don't fit here
 						
 						because of that reason one could use the information that some emojis are used in the same context
 						
@@ -860,7 +869,10 @@ FETCH FIRST 7 ROWS ONLY;
 				<section>
 					<h2>Thanks</h2>
 					
-					<p><a href="https://ärro.de">https://ärro.de</a></p>
+					<p><a href="https://ärro.de">ärro.de</a></p>
+					<p><a href="https://play.google.com/store/apps/details?id=de.xn__rro_pla.twa">Play Store</a></p>
+
+					
 					
 					<aside class="notes">
 						<p>For anyone who wants to test the app you can now test it here. Feedback is welcome. If you're inside be aware that it's not really working. The cool compass stuff is only active with firefox, but for this you need a good GPS signal. And make sure to have "device only" for your GPS activated otherwise Google holds back with updates of your location.</p>
@@ -871,7 +883,7 @@ FETCH FIRST 7 ROWS ONLY;
 			</div>
 		</div>
 		
-		<svg height="0" width="00">
+		<svg height="0" width="0">
 			<defs>
 				<marker id="markerArrow" markerWidth="13" markerHeight="13" refX="2" refY="6" orient="auto">
 					<path d="M2,2 L2,11 L10,6 L2,2" style="fill: red;" />
@@ -887,6 +899,7 @@ FETCH FIRST 7 ROWS ONLY;
 			// - https://github.com/hakimel/reveal.js#configuration
 			// - https://github.com/hakimel/reveal.js#dependencies
 			Reveal.initialize({
+				viewDistance: 30,
 				history: true,
 				math: {
 					mathjax: 'js/MathJax.js',
