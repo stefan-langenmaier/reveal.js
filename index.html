@@ -160,6 +160,79 @@
 				
 				<section>
 					<section>
+						<h2>Distance Office - Kö</h2>
+
+						<img src="images/o-to-k.png">
+
+						<aside class="notes">
+							Here we have real world example. What's the distance between, our office and the Kö. Well we just put it in the previous formula.
+						</aside>
+					</section>
+					<section>
+						<h2>
+						Distance Office - Kö
+						</h2>
+
+						<p class="fragment fade-in">
+							\[ d_{2}(48.34237/10.90563,48.36650/10.89440) \]
+						</p>
+
+						<p class="fragment fade-in">
+							\[  \approx 0,02661 \]
+						</p>
+
+						<ul class="fragment fade-in">
+							<li><a href="https://de.wikipedia.org/wiki/Geographische_Breite#/media/Datei:Latitude_lines.svg">Latitude</a>: 1 deg = 111 km</li>
+							<li><a href="https://de.wikipedia.org/wiki/Geographische_L%C3%A4nge#/media/Datei:Longitude_blue.svg">Longitude</a>: 1 deg = 111 km at the equator</li>
+						</ul>
+
+						<p class="fragment fade-in">
+							\[ 0,026615221 * 111km \approx 2954m \]
+						</p>
+
+						<p class="fragment fade-in">
+							2808m => 6% error
+						</p>
+
+						<aside class="notes">
+							The result by the formula is in degrees, we need to convert them to meters.
+							The problem with the conversion is that it does not work along the longitudes.
+						</aside>
+					</section>
+					<section>
+						<h2>Distance Office - Göggingen</h2>
+
+						<img src="images/o-to-g.png">
+
+						<aside class="notes">
+							Let's try another distance. This time from the office to Göggingen.
+						</aside>
+					</section>
+					<section>
+						<h2>Distance Office - Göggingen</h2>
+
+						<p class="fragment fade-in">
+							\[ d_{2}(48.34237/10.90563,48.33831/10.86774)\]
+						</p>
+
+						<p class="fragment fade-in">
+							\[ \approx 0,03811 \]
+						</p>
+
+						<p class="fragment fade-in">
+							\[ 0,03811 * 111km \approx 4230m \]
+						</p>
+
+						<p class="fragment fade-in">
+							2837m => 49% error
+						</p>
+
+						<aside class="notes">
+							We can see the distance is larger. The real distance is about the same. This is caused by the direction of the distance. In this direction the effect of the longitudes it larger.
+							How can we do better?
+						</aside>
+					</section>
+					<section>
 						<h2>
 						<a href="https://en.wikipedia.org/wiki/Great-circle_distance">Great-circle distance</a>
 						</h2>
@@ -258,7 +331,7 @@ BEGIN
 						<h2>What I should do</h2>
 						
 						<p>
-							<a href="https://ericandrewlewis.github.io/how-a-quadtree-works/">Don't calculate it for all points:</a><br />
+							<a href="https://ericandrewlewis.github.io/how-a-quadtree-works/">Don't calculate it for all points!</a><br />
 							<img src="images/quadtree.png" class="scaled-img"/>
 						</p>
 						
