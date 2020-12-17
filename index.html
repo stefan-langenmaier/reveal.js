@@ -31,6 +31,7 @@
 					<aside class="notes">
 						<p>Herzlich willkommen. Gleich vorweg, der Vortrag ist schamlose Werbung für eine App. Die App wurde unteranderem an der letzten Weihnachtsfeier gebrainstormt. Ich hoffe dieses Jahr können wir den Teil mit dem Geld besprechen. Mehr sei aber noch nicht verraten. Links gibt es am Ende. Zunächst soll es um die folgenden Dinge gehen: Distances, ads and other esoteric stuff.</p>
 						<p>Inhalt des Vortrags ist theoretischer Natur, wird aber versucht mit praktischen Beispielen und Problem näher gebracht.</p>
+						<p>Ich würde mich freuen wenn Kritik gleich live reingeworfen wird.</p>
 					</aside>
 				</section>
 				
@@ -112,8 +113,6 @@
 							</div>
 						</div>
 						
-						
-
 						<aside class="notes">
 							with "i" we walk over the dimensions of the points, so this can be any dimension
 						</aside>
@@ -153,7 +152,8 @@
 							mathematically this is generalized under the term Norm
 							we'll get back to this later
 
-							so much for the theoretical basis, no we look into a concrete example
+							so much for the theoretical basis
+
 						</aside>
 					</section>
 				</section>
@@ -165,7 +165,12 @@
 						<img src="images/o-to-k.png">
 
 						<aside class="notes">
-							Here we have real world example. What's the distance between, our office and the Kö. Well we just put it in the previous formula.
+							now let's talk a little bit about the app. the app is supposed to bring people together. I know, another dating app and that during a pandemic, best idea ever.
+							for a functioning dating app all you is an available and interest other person. first we will have a look at the geoprahical availability. we need to find a nearby person. it does not matter if there is a person two far away.
+
+							for this we need to calculate the distance to that other person.
+
+							So let's look at a real world example. What's the distance between our office and the Kö? Well we just put it in the previous formula.
 						</aside>
 					</section>
 					<section>
@@ -369,10 +374,11 @@ FETCH FIRST 7 ROWS ONLY;
 						<aside class="notes">
 							Use the proper tool, don't implement it
 							postgis hat auch Funktionen zum Abstand auf einer Kugel oder einem Elipsoid zu bestimmen
+
+							so now we come to another aspect of availability. you can swipe in your tinder catalogue all day, but if you never go out then though look
+							what I want to say is that while you are browsing you could already be outside on you way, the next step is the navigation, so you can find this person.
 						</aside>
 					</section>
-					
-					
 				</section>
 				
 				<section>
@@ -689,6 +695,8 @@ FETCH FIRST 7 ROWS ONLY;
 						But as we are talking about linear regression we are already in the realm of ML and AI. Maybe someone has an idea to analyse the hand motion and can extract more data from this.
 						
 						Anyway there would be more data like gravity sensor and acceleration sensors that could be exploited. I just don't know how to include the data in a model for the prediciton.
+
+						No that we know how to meet up the other person we need can go on to optimize the selection of the other person by their interest, for this there is a status feature. This is the sole way of interacting. You can only write emojis.
 					</aside>
 				</section>
 
@@ -714,12 +722,10 @@ FETCH FIRST 7 ROWS ONLY;
 					</p>
 
 					<aside class="notes">
-						More information why this status needs a similarity
-
 						If people are too far away you can't meet them, but maybe you want to have a hint for what they are looking for.
 						
 						So the app also has a status feature. The status is your status and at the same time what you are looking for.
-						Only emojis are valid as input. We can talk about this later. SO how could this look like.
+						Only emojis are valid as input. We can talk about this later. So how could this look like.
 						
 						This could be sports. Looks like this is quite competitive.
 						A jam session.
@@ -731,7 +737,7 @@ FETCH FIRST 7 ROWS ONLY;
 				</section>
 				
 				<section>
-					<h3>Klassische Norm (k=2)</h3>
+					<h3>Euclidean distance (k=2)</h3>
 
 					<p>
 					\[\begin{aligned}
@@ -777,7 +783,6 @@ FETCH FIRST 7 ROWS ONLY;
 
 					<aside class="notes">
 						<p>Inverse of the distance on an interval from 0-1, 0 no similarity, 1 total similarity, triangle inequality does no longer hold.</p>
-						
 					</aside>
 				</section>
 
