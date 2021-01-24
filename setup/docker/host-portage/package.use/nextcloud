@@ -1,3 +1,4 @@
-www-apps/nextcloud vhosts
+app-eselect/eselect-php fpm
 dev-lang/php sqlite curl intl pdo xmlreader truetype zip xmlwriter gd fpm
 media-gfx/imagemagick -openmp
+www-apps/nextcloud vhosts

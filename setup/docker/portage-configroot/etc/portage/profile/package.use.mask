@@ -1,1 +1,0 @@
-dev-php/pecl-imagick php_targets_php7-4

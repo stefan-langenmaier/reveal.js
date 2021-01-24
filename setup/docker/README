@@ -1,0 +1,18 @@
+# Setup
+
+# Setup builder
+
+docker build . -t gentoo-builder
+
+# Setup profiles
+
+cd ~/.gentoo/container-profiles
+sudo chown stefan:stefan .
+git clone git@github.com:stefan-langenmaier/container-profiles.git .
+
+
+# Setup portage
+
+cd ~/.gentoo/portage
+sudo chown stefan:stefan .
+git clone  https://github.com/gentoo-mirror/gentoo . --depth 1

@@ -11,5 +11,7 @@ docker run \
 	-v /home/stefan/git/docker-composability-presentation/setup/docker/portage-configroot:/var/build-root/portage-configroot \
 	-v /home/stefan/.gentoo/container-profiles:/usr/local/portage/container-profiles \
 	-v /home/stefan/.gentoo/config/repos.conf/container-profiles.conf:/etc/portage/repos.conf/container-profiles.conf \
+	--name gentoo-builder \
 	gentoo-builder \
 		/bin/bash \
+
