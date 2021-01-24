@@ -40,16 +40,16 @@
 						Prepare
 						
 						<ol>
+							<li>bash start-builder.sh</li>
+							<li>rm /var/build-root/rootfs/* -rf</li>
 							<li>unset ROOT</li>
 							<li>unset PORTAGE_CONFIGROOT</li>
-							<li>echo "www-apps/nextcloud ~amd64" >> /etc/portage/package.accept_keywords</li>
-							<li>echo "www-apps/nextcloud vhosts" >> /etc/portage/package.use/nextcloud</li>
-							<li>emerge webapp-config</li>
-							<li>emerge -O nextcloud</li>
-							<li>USE="fpm" emerge eselect-php -av</li>
+							<li>bash prepare-builder.sh</li>
 						</ol>
 						
 						Herzlich Willkommen, zum Vortrag ...
+
+						Erstmal vielen Dank für die Einladung hierher, ich freue mich das Thema hier vorstellen zu dürfen.
 						
 						Es werden hier nicht alle Buildrobleme abgehandelt, auch wenn ich versuche darauf ein paar Verweise zu setzen,
 						
@@ -64,114 +64,146 @@
 						und im zweiten Teil einen Lösungsansatz mit Gentoo vorstellen.
 						
 						Der zweite Teil während wir auf die Installation bei Gentoo warten ist meistens der beste Punkt um Fragen zu stellen. :)
-						
-						
 					</aside>
 				</section>
 
 				<section>
-					<h2>Was ist Docker?</h2>
-					<p>
-						Gute Frage!
-					</p>
+					<h2>Zur Person</h2>
+					<h3>Stefan Langenmaier</h3>
+
+					<p>aktuell</p>
+
+					<ul>
+						<li>Operations Engineer bei <a href="https://makandra.de">makandra</a></li>
+						<li>Ruby Webentwicklung, Linux-Hosting sowie Beratung für gössere Setups</li>
+					</ul>
+
+					<p>früher</p>
+
+					<ul>
+						<li>Berater für Suchmaschinen (Solr/Elasticsearch)</li>
+						<li>Consultant für Java-Webentwicklung</li>
+					</ul>
 					
 					<aside class="notes">
-						Ich hab diesen Vortrag schon mal vor gut vier Jahren gehalten. Da war Docker und der Container-Ansatz etwas neuer.
+						Ich denke auf Grund der Mischung habe ich einiges an verschiedenen Setups gesehen
 						<ul>
-							<li>Eine Firma, von der man heute allerdings nicht mehr so viel hört. Heute eher Kubernetes/Openshift.</li>
-							<li>Ein Kommandozeilenwerkzeug und Service(erstellen, starten, deployen, löschen) zum Verwalten von Container und den dazugehörigen Images auf verschiednene Platformen (linux, mac, win) und mittlerweile Architekturen.</li>
-							<li>Ein Host für Images (eine Art Appstore,)</li>
-							<li>Ein Bibliothek und Interface für cgroups im Linux Kernel</li>
+							<li>Linux Tuning und Performance</li>
+							<li>Datenabnken</li>
+							<li>Containern nicht nur mit Docker</li>
+							<li>Continuous Integration</li>
 						</ul>
-						
-						Docker ist jede Menge verschiedene Sachen, darum gibt es inzwischen auch jeden Menge Konkurrenz und Standardisierungen und Philosophien
-						podman sehr populär im Moment
-						rkt
-						lxc/lxd
 					</aside>
 				</section>
 
 				<section>
-					<h2>Virtualisation vs Containerisation</h2>
-					<p>
-						Was ist der Unterschied?
-					</p>
-					
-					<aside class="notes">
-						Nur als recap
-						<ul>
-							<li>Full virtualised systems: jedes System hat seinen eigenen Kernel laufen. Moderne Hardware hat Support, um das mit minimalen Performan-Overhead laufen zu lassen. Ressourcen müssen dediziert zugewiesen werden.</li>
-							<li>Paravirtualised systems: jedes System hat seinen eigenen Kernel laufen, aber der Kernel weiss das er virtualisiert wird.</li>
-							<li>Containerized systems: alle System laufen auf dem selben Kernel. Dieser eine Kernel hat die globale Kontrolle über alle Resourcen, macht dieses aber nur eingeschränkt sichtbar für die einzelnen Systeme. Start solcher System ist extrem schnell.</li>
-						</ul>
-						
+					<section>
+						<h2>Was ist Docker?</h2>
 						<p>
-							Die Performance und vor allem Ressourcenausnutzung ist dadurch besser.
-							Container versprechen "create once - deploy everywhere",
-							Da die Kernelschnittstelle in der Praxis tatsächlich sehr stabil kann das Versprechen meistens gehalten werden. Das schliesst allerdings keine Bugs mit ein. In diesem Fall kann z.B. ein seperater Kernel diese Versprechen vielleicht besser halten.
+							Gute Frage!
 						</p>
-					</aside>
-				</section>
-
-				<section>
-					<h2>Containerization Unterschiede/Alternativen</h2>
-					
-					<ul>
-						<li>uml</li>
-						<li>OpenVZ</li>
-						<li>Linux VServer</li>
-					</ul>
-					
-					<ul>
-						<li>docker</li>
-						<li>podman</li>
-						<li>lxc/lxd</li>
-						<li>lmctfy</li>
-						<li>rkt</li>
-						<li>systemd-nsspawn</li>
-						<li>flatpak/snap</li>
-					</ul>
 						
-					<ul>
-						<li>jails</li>
-						<li>zones</li>
-					</ul>
-					
-					<aside class="notes">
-						Das ist die kleine Geschichte der Container.  
+						<aside class="notes">
+							Ich hab diesen Vortrag zum ersten Mal vor fünf Jahren gehalten. Da war Docker und der Container-Ansatz etwas neuer.
+							<ul>
+								<li>Eine Firma, von der man heute allerdings nicht mehr so viel hört. Heute eher Kubernetes/Openshift.</li>
+								<li>Ein Kommandozeilenwerkzeug und Service(erstellen, starten, deployen, löschen) zum Verwalten von Container und den dazugehörigen Images auf verschiednene Platformen (linux, mac, win) und mittlerweile Architekturen.</li>
+								<li>Ein Host für Images (eine Art Appstore,)</li>
+								<li>Ein Bibliothek und Interface für cgroups im Linux Kernel. Heute eher libcontainer.</li>
+							</ul>
+
+							Docker ist eine Menge an verschiedene Sachen, darum gibt es inzwischen auch jeden Menge Konkurrenz und Standardisierungen und Philosophien
+							Wie Tempo das der Marken/Produktbegriff auch die Technologie beschreibt, obwohl es etwas anderes ist. Werden wir gleich noch sehen.
+						</aside>
+					</section>
+					<section>
+						<h2>Virtualisation vs Containerisation</h2>
+						<p>
+							Was ist der Unterschied?
+						</p>
+						
+						<aside class="notes">
+							Nur als recap
+							<ul>
+								<li>Full virtualised systems: jedes System hat seinen eigenen Kernel laufen. Moderne Hardware hat Support, um das mit minimalen Performan-Overhead laufen zu lassen. Ressourcen müssen dediziert zugewiesen werden.</li>
+								<li>Paravirtualised systems: jedes System hat seinen eigenen Kernel laufen, aber der Kernel weiss das er virtualisiert wird.</li>
+								<li>Containerized systems: alle System laufen auf dem selben Kernel. Dieser eine Kernel hat die globale Kontrolle über alle Resourcen, macht dieses aber nur eingeschränkt sichtbar für die einzelnen Systeme. Start solcher System ist extrem schnell.</li>
+							</ul>
+							
+							<p>
+								Die Performance und vor allem Ressourcenausnutzung ist dadurch besser.
+								Container versprechen "create once - deploy everywhere",
+								Da die Kernelschnittstelle in der Praxis tatsächlich sehr stabil kann das Versprechen meistens gehalten werden. Das schliesst allerdings keine Bugs mit ein. In diesem Fall kann z.B. ein seperater Kernel diese Versprechen vielleicht besser halten.
+							</p>
+						</aside>
+					</section>
+	
+					<section>
+						<h2>Containerization Unterschiede/Alternativen</h2>
+						
 						<ul>
 							<li>uml</li>
 							<li>OpenVZ</li>
 							<li>Linux VServer</li>
 						</ul>
-						Diese Lösungen gab es bereits vor den cgroups allerdings haben sie nie die Aufnahme in der Kernel geschafft oder waren proprietär.
-					
+						
 						<ul>
-							<li>docker</li>
-							<li>podman</li>
 							<li>lxc/lxd</li>
-							<li>lmctfy</li>
-							<li>rkt</li>
+							<li>docker</li>
+							<li><s>rkt</s></li>
+							<li><s>lmctfy</s></li>
+							<li>containerd/runc</li>
+							<li>cri-o</li>
+							<li>podman</li>
 							<li>systemd-nsspawn</li>
 							<li>flatpak/snap</li>
 						</ul>
-						Die aktuellen Optionen auf dem "Markt". Wichtig alle basieren auf cgroups. Unterschied ist die Kitchensink und wie z.B. die Daten herum ausgetauscht werden. (Images) Das ist der Punkt auf den wir eingehen werden.
-						
+							
 						<ul>
 							<li>jails</li>
 							<li>zones</li>
 						</ul>
-						Auf anderen Kernels gibt es anderen Lösungen (BSD und Solaris).
 						
-					</aside>
+						<aside class="notes">
+							Das ist die kleine Geschichte der Container.  
+							<ul>
+								<li>uml</li>
+								<li>OpenVZ</li>
+								<li>Linux VServer</li>
+							</ul>
+							Diese Lösungen gab es bereits vor den cgroups allerdings haben sie nie die Aufnahme in der Kernel geschafft oder waren proprietär.
+
+							<ul>
+								<li>lxc/lxd</li>
+								<li>docker</li>
+								<li><s>rkt</s></li>
+								<li><s>lmctfy</s></li>
+								<li>containerd/runc</li>
+								<li>cri-o</li>
+								<li>podman</li>
+								<li>systemd-nsspawn</li>
+								<li>flatpak/snap</li>
+							</ul>
+							Die aktuellen Optionen auf dem "Markt". Wichtig alle basieren auf cgroups und haben sich auf containerd/runc standardisiert. Unterschied ist die Kitchensink und wie z.B. die Daten herum ausgetauscht werden. (Images) Das ist der Punkt auf den wir eingehen werden.
+
+							<ul>
+								<li>jails</li>
+								<li>zones</li>
+							</ul>
+							Auf anderen Kernels gibt es anderen Lösungen (BSD und Solaris).
+						</aside>
+					</section>
 				</section>
 
+
 				<section>
-					<h2>Bekannte Probleme von Docker</h2>
+					<h2>Dockerprobleme</h2>
 					<p>
-						Ich will nicht auf <a href="#/references">alles</a> eingehen.
-						
-						<a href="https://github.com/moby/moby/blob/master/ROADMAP.md#12-image-builder">Aktuelles</a>
+						Allgemeine Kritik an Docker in den <a href="#/references">Referenzen</a>.
+					</p>
+
+					<p>
+						<a href="https://github.com/moby/moby/blob/master/ROADMAP.md#12-image-builder">Buildprobleme</a>
 					</p>
 					
 					<aside class="notes">
@@ -179,7 +211,7 @@
 						
 						Man kann verschiedene Meinungen haben, aber das Container vorerst ein Mittel der Wahl bleiben werden ist sicher.
 						
-						Der Vortrag richtet sich an Leute die schon docker build verwendet haben und und sich dann gedacht haben da muss ich mehr machen als nur ein COPY einer einzelnen Datei und dann läuft das.
+						Der Vortrag richtet sich an Leute, die schon docker build verwendet haben und und sich dann gedacht haben da muss ich mehr machen als nur ein COPY einer einzelnen Datei und dann läuft das.
 					</aside>
 				</section>
 
@@ -245,9 +277,9 @@ EXPOSE 80 443
 						
 						Aber auf den zweiten Blick?
 						
-						phusion/baseimage ist quasi zu unserer Distribution geworden. Es ist allerdings nicht sofort klar was das genau ist. Was ist die Philosophie von Phusion das aktuell zu halten?
+						phusion/baseimage ist quasi zu unserer Distribution geworden. Es ist allerdings nicht sofort klar was das genau ist. Was ist die Philosophie von Phusion das aktuell zu halten? Dazu muss man erstmal etwas suchen.
 						
-						danach wird ein Ordner in das Image kopiert und dann ein Bash-Script ausgeführt. Da bin ich neutral dazu wir sehen später schlimmeres. Der kopierte Ordner wird auf jeden Fall in der Historie der Images bleiben.
+						danach wird ein Ordner in das Image kopiert und dann ein Bash-Script ausgeführt. Da bin ich neutral dazu. Wir sehen später schlimmeres. Der kopierte Ordner wird auf jeden Fall in der Historie der Images bleiben.
 						
 						Das Bash-Skript nimmt das eigentliche Setup des Images vor. 
 						
@@ -263,7 +295,7 @@ EXPOSE 80 443
 				<section>
 					<h2>Beispiel (Redmine)</h2>
 					
-					<a href="https://github.com/docker-library/redmine/blob/4064a505db909322bda24823c200f4c97985d638/4.0/Dockerfile">Redmine 4.0 Dockerfile</a>
+					<a href="https://github.com/docker-library/redmine/blob/f5895d1d4bff53a590b6048e294dc96b26206883/4.1/Dockerfile">Redmine 4.1 Dockerfile</a>
 					
 					<pre><code data-trim>
 FROM ruby:2.6-slim-buster
@@ -277,6 +309,8 @@ FROM ruby:2.6-slim-buster
 					</p>
 					<aside class="notes">
 						Gibt bestimmt einen guten Grund aber bleibt weiterhin die Frage woher man weiss welchen man nehmen soll.
+
+						Wenn die Ruby Image-Mantainer sich nicht einig sind woher soll ich es dann wissen.
 						
 						Normal, slim oder das noch "slimmere" alpine?
 					</aside>
@@ -285,7 +319,7 @@ FROM ruby:2.6-slim-buster
 				<section>
 					<h2>Beispiel (Redmine)</h2>
 					
-					<a href="https://github.com/docker-library/redmine/blob/4064a505db909322bda24823c200f4c97985d638/4.0/Dockerfile">Redmine 4.0 Dockerfile</a>
+					<a href="https://github.com/docker-library/redmine/blob/f5895d1d4bff53a590b6048e294dc96b26206883/4.1/Dockerfile">Redmine 4.1 Dockerfile</a>
 					
 					<pre><code data-trim>
 RUN set -eux; \
@@ -301,7 +335,7 @@ RUN set -eux; \
 	\
 # grab gosu for easy step-down from root
 # https://github.com/tianon/gosu/releases
-	export GOSU_VERSION='1.11'; \
+	export GOSU_VERSION='1.12'; \
 	wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch"; \
 	wget -O /usr/local/bin/gosu.asc "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch.asc"; \
 	export GNUPGHOME="$(mktemp -d)"; \
@@ -314,7 +348,7 @@ RUN set -eux; \
 	\
 # grab tini for signal processing and zombie killing
 # https://github.com/krallin/tini/releases
-	export TINI_VERSION='0.18.0'; \
+	export TINI_VERSION='0.19.0'; \
 	wget -O /usr/local/bin/tini "https://github.com/krallin/tini/releases/download/v$TINI_VERSION/tini-$dpkgArch"; \
 	wget -O /usr/local/bin/tini.asc "https://github.com/krallin/tini/releases/download/v$TINI_VERSION/tini-$dpkgArch.asc"; \
 	export GNUPGHOME="$(mktemp -d)"; \
@@ -343,21 +377,14 @@ RUN set -eux; \
 				<section>
 					<h2>Docker build capabilities</h2>
 					
-					Nicht verfügbar
+					Nicht verfügbar*
 					
 					<aside class="notes">
 						ncurses cannot be built because this uses ptrace syscall,
 						this is syscall which is not allowed by default
 						you can use add-cap, but not during build only during run
-					</aside>
-				</section>
-				
-				<section>
-					<h2>Umgebungsvariablen</h2>
-					
-					Nicht verfügbar
-					
-					<aside class="notes">
+
+						* it will be available in the new buildkit
 					</aside>
 				</section>
 				
@@ -396,7 +423,7 @@ RUN set -eux; \
 						that's why there is a plethora of different package managers out there
 						They have been in development in a long time
 						There are distributions with packagers out there with intimate knowledge about their users and their packages
-						They feed these package mangers with information
+						They feed these package managers with information
 						
 						You don't want to throw this knowledge away but use it (and built it yourself see the Dockerfile dance)
 						
@@ -454,11 +481,10 @@ RUN set -eux; \
 						
 						Das ist natürlich ein reines Spiel mit Zahlen. Es gibt im produktiven Einsatz wahrscheinlich nicht alle möglichen Kombinationen der PHP-Extensions. Wir werden auch nicht alle Kombinationen durchgenen. Diese muss man aber während der Entwicklung schon irgendwie als Möglichkeit haben.
 						
-						Das Verhalten wenn weitere Dimensionen wie  accelerators APCu oder Caches Redis/Memcache hinzukommen wird nur noch schlimmer.
+						Das Verhalten wenn weitere Dimensionen wie accelerators APCu oder Caches Redis/Memcache hinzukommen wird nur noch schlimmer. Aber auch einezelen Komponenten können viele Flags haben, z.B. PHP Erweiterungen, mit/ohne Debug-Flags.
 						
 						Das Problem mag einfach erscheinen aber es ist das selbe das hinter der Dependency Hell steckt oder anderen kombinatorischen Explosionen bei der Versionierung von Artefakten
 						
-						https://worklifenotes.com/2020/03/04/microservices-combinatorial-explosion-of-versions/
 					</aside>
 				</section>
 				
@@ -494,6 +520,7 @@ RUN set -eux; \
 					</ul>
 					<aside class="notes">
 						Das Phänomen wird ersichtlich wenn man bemerkt das es zu aufwenig ist von einem basimage auf ein anderes zu wechseln.
+						Oder zu schwierig ist eine PHP-Erweiterung für ein Plugin zu installieren.
 					</aside>
 				</section>
 
@@ -530,10 +557,10 @@ RUN set -eux; \
 						Normale Paketmanager machen das nur schon ein paar Dekaden. Das Ziel ist es zu zeigen wie sie dabei helfen:
 						* effizient Images zu bauen
 						* auf eine sichere Art und Weise
-						* mit einer sinnvollen Grösse (man musst die erzeugten Images ja dann doch noch austauschen)
+						* mit einer sinnvollen Grösse
 						
 						Ich mache das im nachfolgenden mit Gentoo, bin mir sehr bewusst das andere das auch können
-						würde micht über einen Talk freuen der mich ich einem der Punkt one-upped.
+						würde micht über einen Talk freuen der mich ich einem der Punkte one-upped.
 					</aside>
 				</section>
 				
@@ -541,20 +568,20 @@ RUN set -eux; \
 					<h2>Beispiel - ein Image für Nextcloud</h2>
 
 					<p>
-						 Referenz: das offizielle <a href="https://hub.docker.com/_/nextcloud?tab=description">Image (18-apache)</a>.
+						 Referenz: das offizielle <a href="https://hub.docker.com/_/nextcloud?tab=description">Image (20-apache)</a>.
 					</p>
 
 					<aside class="notes">
 						Wir schauen uns zuerst das Image an.
 						
 						<pre>
-						cd work
-						docker create --name nextcloud-apache nextcloud:18-apache
-						docker export nextcloud-apache | tar -xv
-						baobab .
+cd work
+docker create --name nextcloud-apache nextcloud:20-apache
+docker export nextcloud-apache | tar -xv
+baobab .
 						</pre>
 						
-						Grossteil macht die ilbc und Nextcloud Installation aus
+						Grossteil macht die glibc und Nextcloud Installation aus
 						
 						Wir sehen aber das auch ein Init-System vorhanden ist.
 					</aside>
@@ -571,7 +598,7 @@ RUN set -eux; \
 					<aside class="notes">
 						Das Setup sollte mit eigentlich jeder Distribution möglich sein. Ich verwende aber ein paar Eigenschaften von Gentoo die mir hier sehr nützlich erscheinen.
 						
-						Das sind hauptsächlich zwei Umgebungsvariablen ROOT und PORTAGE_CONFIGROOT. Sie setzen ein alternative Verzeichnisse für den Paketmanager
+						Das sind hauptsächlich zwei Umgebungsvariablen ROOT und PORTAGE_CONFIGROOT. Sie setzen einige alternative Verzeichnisse für den Paketmanager
 						
 						Profile in Gentoo ermöglich einige Voreinstellungen. Darunter z.B. Standardpakete die installiert werden sollen. In Containern sind nicht alle Pakete nötig die auf einer physischen Maschine laufen.
 						Das Profil ist nicht in Gentoo, ich hab das auf Github, falls da jemand interessiert ist.
@@ -589,34 +616,15 @@ RUN set -eux; \
 					
 					<aside class="notes">
 						Baobab
-						Gentoo Image ist grösser, das liegt zum einen daran das wir glibc verwenden. Vorteil ist wir haben weniger Stress mit Paketen die nicht so gut getestet sind mit musl. Anscheind auch Performance ist besser in manchen Fällen, z.B. auflösen von DNS-Sachen. Aber ich will hier auch nicht in einen Flamewar.
-						
-						Das ist aber nicht der einzige Grund. Alpine baut manche Pakete ohne Doku und manpages und nicht alle Pakete in Gentoo machen das.
-						
-						In Gentoo ist das gcc Paket nicht gut aufgeteilt.
-						
-						Wir haben ein komplettes init-Sytem mit dabei. Vorteil das Image kann mit der Dockerphilosophie gestartet werden oder klassisch wie eine VM. Nützlich wenn man sich keinen Kopf machen will um z.B. einen Cron in seiner Anwendung mitlaufen lassen will.
-						
-						Alpine hat aber z.B. für alle Datenbank-Triber mit dabei. Das ist ein Vorteil unseres Images.
-						
-						Ich zieh meinen Hut vor den Alpine Leuten die Standard-Installation ist kleiner. Ich bin aber ein schlechter Verlierer und werf noch händisch unnötiges Zeug raus.
-						
-						delete documentation
-						delete locales
-						delete includes
-						
-						Damit sollte alles gezeigt sein:
-						* wir können damit kleinere Images bauen (sicherer)
-						* wir haben mehr Funktionalität und Flexibiltät 
-						* wir können existierende Paketmanager verwenden (existierendes Wissen)
-						* und sind damit nicht auf die Image-Ersteller als Mittelsmann angewiesen (keine vendor lockin)
+						Kleine Besonderheit nextcloud wird hier gar nicht installiert sondern nur die Abhängigkeiten. Das ist eine Gentoo Besonderheit, weil es solche Webapps-Multitenant fähig installieren kann.
+						Machen wir hier zwar nicht, aber wir brauchen einen zweiten Schritt.
 					</aside>
 				</section>
 				
 				<section>
 					<h2>Setup III</h2>
 					<ul>
-						<li>webapp-config -d nextcloud -s nginx -c -I nextcloud 18.0.1</li>
+						<li>webapp-config -d nextcloud -s nginx -c -I nextcloud 20.0.5</li>
 					</ul>
 					
 					<aside class="notes">
@@ -625,8 +633,6 @@ RUN set -eux; \
 mkdir -p /var/build-root/rootfs/usr/share/webapps
 ln -sf /usr/share/webapps/nextcloud /var/build-root/rootfs/usr/share/webapps/nextcloud
 mkdir /var/build-root/rootfs/var/db/webapps
-chroot /var/build-root/rootfs/ groupadd -g 249 -r nginx
-chroot /var/build-root/rootfs/ useradd -r -u 999 -g 249 -s /sbin/nologin nginx
 						</pre>
 						Baobab
 						Gentoo Image ist grösser, das liegt zum einen daran das wir glibc verwenden. Vorteil ist wir haben weniger Stress mit Paketen die nicht so gut getestet sind mit musl. Anscheind auch Performance ist besser in manchen Fällen, z.B. auflösen von DNS-Sachen. Aber ich will hier auch nicht in einen Flamewar.
@@ -649,7 +655,7 @@ chroot /var/build-root/rootfs/ useradd -r -u 999 -g 249 -s /sbin/nologin nginx
 						* wir können damit kleinere Images bauen (sicherer)
 						* wir haben mehr Funktionalität und Flexibiltät 
 						* wir können existierende Paketmanager verwenden (existierendes Wissen)
-						* und sind damit nicht auf die Image-Ersteller als Mittelsmann angewiesen (keine vendor lockin)
+						* und sind damit nicht auf die Image-Ersteller als Mittelsmann angewiesen (kein vendor lock-in)
 					</aside>
 				</section>
 
@@ -706,13 +712,15 @@ chroot /var/build-root/rootfs/ useradd -r -u 999 -g 249 -s /sbin/nologin nginx
 
 					<ul>
 						<li><a href="http://en.wikipedia.org/wiki/Operating-system-level_virtualization">Wikipedia: Operating-system-level Virtualization</a></li>
+						<li><a href="https://www.inovex.de/blog/containers-docker-containerd-nabla-kata-firecracker/">Container runtimes</a></li>
+						<li><a href="https://worklifenotes.com/2020/03/04/microservices-combinatorial-explosion-of-versions/">Microservices combinatorial explosion of versions</a></li>
 						<li><a href="https://pythonspeed.com/articles/alpine-docker-python/">Alpine-Docker &amp; Python</a></li>
 						<li><a href="https://github.com/docker-slim/docker-slim">Profiling for image reduction</a></li>
 						<li><a href="https://jaxenter.com/anti-docker-blog-114422.html">Boycott Docker</a></li>
-						<li><a href="http://thenewstack.io/coreos-calls-docker-fundamentally-flawed-releases-prototype-alternative/">coreos and rocket</a></li>
+						<li><a href="http://thenewstack.io/coreos-calls-docker-fundamentally-flawed-releases-prototype-alternative/">CoreOS and rocket</a></li>
 						<li><a href="https://www.packer.io/docs/builders/docker.html">packer</a></li>
 						<li><a href="https://buildah.io/">buildah</a></li>
-						<li><a href="http://www.vitavonni.de/blog/201503/2015031201-the-sad-state-of-sysadmin-in-the-age-of-containers.html">container rant</a></li>
+						<li><a href="http://www.vitavonni.de/blog/201503/2015031201-the-sad-state-of-sysadmin-in-the-age-of-containers.html">Container rant</a></li>
 						<li><a href="https://chimeracoder.github.io/docker-without-docker">Docker without Docker</a></li>
 					</ul>
 				</section>
