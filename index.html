@@ -71,13 +71,13 @@
 					<h2>Zur Person</h2>
 					<h3>Stefan Langenmaier</h3>
 
-					<p>aktuell</p>
-
-					<img src="images/makandra-icon.svg" />
+					<p>
+						
+					</p>
 
 					<ul>
-						<li>Operations Engineer bei <a href="https://makandra.de">makandra</a></li>
-						<li>Ruby Webentwicklung, Linux-Hosting sowie Beratung für gössere Setups</li>
+						<li>Operations Engineer bei <a href="https://makandra.de">makandra <img src="images/makandra-icon.svg" style="height: 10vh; vertical-align: middle;" /> </a></li>
+						<li>Ruby Webentwicklung, Linux-Hosting sowie Beratung</li>
 					</ul>
 
 					<p>früher</p>
@@ -116,27 +116,6 @@
 
 							Docker ist eine Menge an verschiedene Sachen, darum gibt es inzwischen auch jeden Menge Konkurrenz und Standardisierungen und Philosophien
 							Wie Tempo das der Marken/Produktbegriff auch die Technologie beschreibt, obwohl es etwas anderes ist. Werden wir gleich noch sehen.
-						</aside>
-					</section>
-					<section>
-						<h2>Virtualisation vs Containerisation</h2>
-						<p>
-							Was ist der Unterschied?
-						</p>
-						
-						<aside class="notes">
-							Nur als recap
-							<ul>
-								<li>Full virtualised systems: jedes System hat seinen eigenen Kernel laufen. Moderne Hardware hat Support, um das mit minimalen Performan-Overhead laufen zu lassen. Ressourcen müssen dediziert zugewiesen werden.</li>
-								<li>Paravirtualised systems: jedes System hat seinen eigenen Kernel laufen, aber der Kernel weiss das er virtualisiert wird.</li>
-								<li>Containerized systems: alle System laufen auf dem selben Kernel. Dieser eine Kernel hat die globale Kontrolle über alle Resourcen, macht dieses aber nur eingeschränkt sichtbar für die einzelnen Systeme. Start solcher System ist extrem schnell.</li>
-							</ul>
-							
-							<p>
-								Die Performance und vor allem Ressourcenausnutzung ist dadurch besser.
-								Container versprechen "create once - deploy everywhere",
-								Da die Kernelschnittstelle in der Praxis tatsächlich sehr stabil kann das Versprechen meistens gehalten werden. Das schliesst allerdings keine Bugs mit ein. In diesem Fall kann z.B. ein seperater Kernel diese Versprechen vielleicht besser halten.
-							</p>
 						</aside>
 					</section>
 	
@@ -594,7 +573,7 @@ baobab .
 					<ol>
 						<li>export PORTAGE_CONFIGROOT=/var/build-root/portage-configroot/</li>
 						<li>export ROOT=/var/build-root/rootfs/</li>
-						<li>emerge @system -av --jobs=5</li>
+						<li>emerge @system nginx --jobs=5 -v</li>
 					</ol>
 					
 					<aside class="notes">
@@ -612,30 +591,11 @@ baobab .
 				<section>
 					<h2>Setup II</h2>
 					<ol>
-						<li>emerge nextcloud --onlydeps --jobs=5 -av</li>
-						<li>emerge nginx --jobs=5 -av</li>
+						<li>emerge nextcloud --onlydeps --jobs=5 -v</li>
+						<li>webapp-config -d nextcloud -s nginx -c -I nextcloud 20.0.5</li>
 					</ol>
 					
 					<aside class="notes">
-						Baobab
-						Kleine Besonderheit nextcloud wird hier gar nicht installiert sondern nur die Abhängigkeiten. Das ist eine Gentoo Besonderheit, weil es solche Webapps-Multitenant fähig installieren kann.
-						Machen wir hier zwar nicht, aber wir brauchen einen zweiten Schritt.
-					</aside>
-				</section>
-				
-				<section>
-					<h2>Setup III</h2>
-					<ul>
-						<li>webapp-config -d nextcloud -s nginx -c -I nextcloud 20.0.5</li>
-					</ul>
-					
-					<aside class="notes">
-					
-						<pre>
-mkdir -p /var/build-root/rootfs/usr/share/webapps
-ln -sf /usr/share/webapps/nextcloud /var/build-root/rootfs/usr/share/webapps/nextcloud
-mkdir /var/build-root/rootfs/var/db/webapps
-						</pre>
 						Baobab
 						Gentoo Image ist grösser, das liegt zum einen daran das wir glibc verwenden. Vorteil ist wir haben weniger Stress mit Paketen die nicht so gut getestet sind mit musl. Anscheind auch Performance ist besser in manchen Fällen, z.B. auflösen von DNS-Sachen. Aber ich will hier auch nicht in einen Flamewar.
 						
